@@ -38,6 +38,7 @@ Batafsil jadval va pozitsiyalash xaritasi — brendbukning 3-sahifasida.
 
 | Papka | Nima uchun | Formatlar |
 |---|---|---|
+| `00_DOWNLOAD/` | Bir bosishda yuklab olish: barcha AI fayllar va to‘liq to‘plam | ZIP |
 | `01_MASTER/` | Barcha 16 versiya bitta artbordda, har biri alohida qatlamda | AI · EPS · PDF (RGB va CMYK) · SVG |
 | `02_vector_RGB/` | Ekran: Instagram, sayt, taqdimot | SVG · AI · EPS · PDF |
 | `03_vector_CMYK_print/` | Bosma: banner, xonadon kartochkasi, buklet | AI · EPS · PDF (CMYK) |
