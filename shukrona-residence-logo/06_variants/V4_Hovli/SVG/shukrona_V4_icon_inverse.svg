@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="216" height="216" viewBox="0 0 216 216">
+<title>Shukrona Residence — logotip</title>
+<rect id="Fon" x="0" y="0" width="216" height="216" fill="#1B6A77"/>
+<g id="Belgi" fill="#FFFFFF">
+<path id="Belgi-bino-1" d="M108 50L143.786 85.786L124.24 105.332L88.454 69.546Z"/>
+<path id="Belgi-bino-2" d="M146.454 88.454L166 108L130.214 143.786L110.668 124.24Z"/>
+<path id="Belgi-bino-3" d="M91.76 110.668L127.546 146.454L108 166L72.214 130.214Z"/>
+<path id="Belgi-bino-4" d="M85.786 72.214L105.332 91.76L69.546 127.546L50 108Z"/>
+<path id="Belgi-hovuz" d="M108 97.63L118.37 108L108 118.37L97.63 108Z"/>
+</g>
+</svg>

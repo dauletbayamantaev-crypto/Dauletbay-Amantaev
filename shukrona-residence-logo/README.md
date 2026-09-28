@@ -34,6 +34,22 @@ RESIDENCE — *Montserrat Medium* (bosh harflar, harf oralig‘i +600). Ikkala s
 
 Batafsil jadval va pozitsiyalash xaritasi — brendbukning 3-sahifasida.
 
+## Muqobil variantlar (V2–V5)
+
+![Barcha variantlar](06_variants/Shukrona_barcha_variantlar_preview.png)
+
+| Variant | G‘oya | Shrift |
+|---|---|---|
+| **V1 «Ostona»** — asosiy taklif | Peshtoq, temuriy ravoq, nur chizig‘i, ikki tavaqali eshik | Tenor Sans |
+| **V2 «Derazalar»** | Monolit fasad, ravoqli derazalar va kirish eshigi — har bir deraza ortida bir oila | Montserrat SemiBold |
+| **V3 «Ravoqlar»** | Ichma-ich ravoqlar — peshtoq chuqurligi, avlodlar davomiyligi; eng nafis, «butik» ohang | Cormorant Garamond |
+| **V4 «Hovli»** | Yuqoridan reja: umumiy hovli atrofida to‘rt bino va hovuz, koshin naqshidek 45° | Jost Regular |
+| **V5 «Eshik-O»** | Yozuvli logotip: «O» harfi ravoqli eshikka aylangan; «O»ning o‘zi avatar | Jost Medium |
+
+Taqdimot va taqqoslash: **[06_variants/Shukrona_Residence_Variantlar.pdf](06_variants/Shukrona_Residence_Variantlar.pdf)**.
+Har bir variant papkasida (`06_variants/V2_Derazalar/` va h.k.): gorizontal, vertikal va belgi — asosiy rangda
+va petrol fonda; AI (RGB, CMYK), EPS, SVG, PNG hamda barcha versiyalar bitta artbordda (`…_MASTER_*.ai`).
+
 ## Fayllar
 
 | Papka | Nima uchun | Formatlar |
@@ -44,6 +60,7 @@ Batafsil jadval va pozitsiyalash xaritasi — brendbukning 3-sahifasida.
 | `03_vector_CMYK_print/` | Bosma: banner, xonadon kartochkasi, buklet | AI · EPS · PDF (CMYK) |
 | `04_PNG/` | Tayyor rasm (shaffof fon) va Instagram avatar 1080×1080 | PNG |
 | `05_brandbook/` | Logotip qo‘llanmasi | PDF |
+| `06_variants/` | Muqobil konsepsiyalar V2–V5 va taqdimot | AI · EPS · SVG · PNG · PDF |
 | `source/` | Generator skriptlari va shriftlar | Python · TTF |
 
 **Fayl nomi:** `shukrona_[kompozitsiya]_[rang]`
@@ -92,4 +109,5 @@ pip install fonttools uharfbuzz cairosvg
 cd source
 python3 build_logo.py        # 01–04 papkalar
 python3 build_brandbook.py   # 05_brandbook (Chromium kerak; CHROME=/yo‘l/chrome)
+python3 build_variants.py && python3 build_variants_deck.py   # 06_variants
 ```
