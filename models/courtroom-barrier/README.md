@@ -30,7 +30,7 @@ Rasmda fon olib tashlanganda to'siqning bir qismi kesilib ketgan. Ular shunday t
 ## Model parametrlari
 
 - Uzunligi **3.70 m** (qalpoq va plintuslar bilan 3.78 m), to'siq balandligi **1.00 m**, ustun qalpoqlari 1.11 m, stol orqa taxtasi 1.32 m.
-- Chuqurligi: to'siq 0.30 m; guvoh joyi 0.66 m (+Z tomonga chiqib turadi), stol sud tomonga 0.19 m osilib turadi.
+- Chuqurligi: to'siq 0.30 m; guvoh joyi 0.66 m (+Z tomonga chiqib turadi). Stol orqa panel bilan bir tekisda turadi, sud tomonga osilib chiqmaydi.
 - Guvoh turadigan ochiq joy kengligi 0.70 m.
 - 1 unit = 1 metr. Unity'da rotation `0,0,0`, scale `1,1,1`. Pivot polda, to'siq chizig'ining markazida.
 - Guvoh joyi **+Z** (Unity forward) tomonga ochiladi; sud −Z tomonda.

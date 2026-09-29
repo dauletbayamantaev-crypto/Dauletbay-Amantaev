@@ -42,7 +42,7 @@ RAIL_TOP = 1.00          # top of the handrail board
 PIER = (0.20, 0.66)      # witness-stand piers: width (x), depth (z)
 PIER_Z0 = -0.11          # piers start at the court-side face of the rail
 OPENING = 0.70           # clear opening between the piers
-TRAY = (0.90, 0.38)      # desk tray width, depth
+TRAY = (0.90, 0.40)      # desk tray width, depth
 PLINTH = (0.09, 0.015)   # skirt height, projection
 
 W_CENTER = OPENING + 2 * PIER[0]
@@ -270,7 +270,7 @@ def build(mat):
     # desk tray on top: floor board, back board, S-curved side boards, low front lip
     tray = Part(bm, uvl, 0, (0.18, 0.62))
     tw, td = TRAY
-    tz0 = pz0 - 0.19                          # overhangs toward the court
+    tz0 = pz0                                 # flush with the court-side back panel, no overhang
     tz1 = tz0 + td
     ty = CAP_TOP
     tray.box((-tw / 2, ty, tz0), (tw / 2, ty + 0.022, tz1), bevel=0.003)                 # floor board
