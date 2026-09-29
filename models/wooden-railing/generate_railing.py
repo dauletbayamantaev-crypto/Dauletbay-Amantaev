@@ -109,6 +109,8 @@ def make_materials(p_alb, p_nrm):
     bsdf = nt.nodes["Principled BSDF"]
     tex = nt.nodes.new("ShaderNodeTexImage")
     tex.image = bpy.data.images.load(p_alb)
+    # exported as the FBX DiffuseColor; Unity multiplies it with the texture
+    bsdf.inputs["Base Color"].default_value = (1.0, 1.0, 1.0, 1.0)
     nt.links.new(tex.outputs["Color"], bsdf.inputs["Base Color"])
     ntex = nt.nodes.new("ShaderNodeTexImage")
     ntex.image = bpy.data.images.load(p_nrm)
