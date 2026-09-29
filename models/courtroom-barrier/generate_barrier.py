@@ -42,7 +42,7 @@ RAIL_TOP = 1.00          # top of the handrail board
 PIER = (0.20, 0.66)      # witness-stand piers: width (x), depth (z)
 PIER_Z0 = -0.11          # piers start at the court-side face of the rail
 OPENING = 0.70           # clear opening between the piers
-TRAY = (0.90, 0.40)      # desk tray width, depth
+TRAY = (0.75, 0.62)      # desk tray width, depth (nearly square, as in the photo)
 PLINTH = (0.09, 0.015)   # skirt height, projection
 
 W_CENTER = OPENING + 2 * PIER[0]
@@ -276,11 +276,11 @@ def build(mat):
     tray.box((-tw / 2, ty, tz0), (tw / 2, ty + 0.022, tz1), bevel=0.003)                 # floor board
     tray.box((-tw / 2 + 0.02, ty + 0.022, tz0), (tw / 2 - 0.02, ty + 0.21, tz0 + 0.02), bevel=0.003)   # back board
     tray.box((-tw / 2 + 0.02, ty + 0.022, tz1 - 0.02), (tw / 2 - 0.02, ty + 0.055, tz1), bevel=0.003)  # front lip
-    front_h, back_h = 0.11, 0.21                             # side board height above the tray bottom
+    front_h, back_h = 0.115, 0.21                            # side board height above the tray bottom
     side = [(tz0, ty + 0.022), (tz1, ty + 0.022), (tz1, ty + front_h)]
-    for i in range(1, 25):                                   # top edge: convex quarter-round, level at the back and
-        a = math.radians(90 - 90 * i / 24)                   # falling toward a still-tall front end, as in the photo
-        side.append((tz0 + (tz1 - tz0) * math.sin(a), ty + front_h + (back_h - front_h) * math.cos(a)))
+    for i in range(1, 25):                                   # top edge: level at the back, falling ever faster
+        t = 1 - i / 24                                       # toward a half-height front end (t: 0 back .. 1 front)
+        side.append((tz0 + (tz1 - tz0) * t, ty + back_h - (back_h - front_h) * t ** 1.7))
     sides = Part(bm, uvl, 2, (0.44, 0.07))
     for sx in (-1, 1):
         a0, a1 = sorted((sx * (tw / 2 - 0.02), sx * tw / 2))

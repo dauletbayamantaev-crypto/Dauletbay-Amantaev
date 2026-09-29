@@ -15,7 +15,9 @@ Rasmda fon olib tashlanganda to'siqning bir qismi kesilib ketgan. Ular shunday t
 - **O'rta qism:** stol ostidagi hamma narsa kesilgan edi. Ikki chuqur ustun polgacha tushirildi va
   chetdagi ustunlar kabi pastki taglik (plintus) bilan tugallandi. Sud tomonida polgacha orqa panel
   qo'yildi. Guvoh tomoni (oldi) ochiq qoldirildi, chunki rasmda ichki burchaklar ko'rinib turibdi.
-- **Stol:** rasmdagidek orqa taxtasi baland; yon taxtalarning ustki qirrasi qavariq bo'lib oldinga pasayadi, oldingi uchi baland qoladi; oldida past lab.
+- **Stol:** rasmdagidek deyarli kvadrat (0.75 × 0.62 m). Orqa taxtasi baland (0.21 m), yon taxtalarning ustki qirrasi
+  orqada tekis boshlanib oldinga tobora pasayadi, oldingi uchi taxminan yarim balandlikda qoladi; oldida past lab.
+  Stol ustunlar ustida, orqa panel bilan bir tekisda turadi.
 
 ## Fayllar
 
@@ -30,7 +32,7 @@ Rasmda fon olib tashlanganda to'siqning bir qismi kesilib ketgan. Ular shunday t
 ## Model parametrlari
 
 - Uzunligi **3.70 m** (qalpoq va plintuslar bilan 3.78 m), to'siq balandligi **1.00 m**, ustun qalpoqlari 1.11 m, stol orqa taxtasi 1.32 m.
-- Chuqurligi: to'siq 0.30 m; guvoh joyi 0.66 m (+Z tomonga chiqib turadi). Stol orqa panel bilan bir tekisda turadi, sud tomonga osilib chiqmaydi.
+- Chuqurligi: to'siq 0.30 m; guvoh joyi 0.66 m (+Z tomonga chiqib turadi). Stol 0.75 × 0.62 m, orqa panel bilan bir tekisda, hech tomonga osilib chiqmaydi.
 - Guvoh turadigan ochiq joy kengligi 0.70 m.
 - 1 unit = 1 metr. Unity'da rotation `0,0,0`, scale `1,1,1`. Pivot polda, to'siq chizig'ining markazida.
 - Guvoh joyi **+Z** (Unity forward) tomonga ochiladi; sud −Z tomonda.
