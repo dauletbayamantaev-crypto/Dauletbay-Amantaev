@@ -6,3 +6,6 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Blender zaxira fayllari
+*.blend1

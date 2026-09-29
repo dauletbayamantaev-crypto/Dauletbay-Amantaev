@@ -36,14 +36,14 @@ gorizontal, yon oyoqlarda vertikal.
 
 - Stoleshnitsa: **1.80 × 0.90 m**, balandlik **0.76 m**
 - Umumiy gabarit (pastki plita bilan): 1.86 × 0.93 × 0.76 m
-- Oyoq uchun bo'sh joy: 0.76 m kenglik, 0.70 m balandlik
-- ~2 600 uchburchak, 2 ta material — VR (Quest ham) uchun juda yengil
+- Oyoq uchun bo'sh joy: 1.64 m kenglik (oyoqlar orasi), 0.70 m balandlik
+- ~1 500 uchburchak, 2 ta material — VR (Quest ham) uchun juda yengil
 
 ## Orqa tomon (o'tiruvchi uchun)
 
-- Ikki yonda **ochiq tokchali tumbalar** — tortma va eshiksiz, har birida
-  2 ta tokcha (3 ta bo'lim).
-- O'rtada oyoq uchun keng bo'sh joy (0.76 m kenglik).
+- Tumba, tortma, eshik va tokchalar **yo'q** — orqada narsa qo'yadigan joy yo'q.
+- Ikki yon oyoq orasida butunlay ochiq oyoq joyi; ichkaridan faqat old panelning
+  orqa yuzasi ko'rinadi.
 - Stoleshnitsa tekis — kabel teshiklari yo'q.
 - Barcha qirralarda yumaloq faskalar (bevel), ular yorug'likni realistik aks ettiradi.
 
@@ -77,7 +77,7 @@ tomoni **−Z** da. Masshtab 1 = 1 metr, Rotation = 0, Scale = 1.
 ### VR uchun kolliderlar
 
 `Stol_Korpus` ga bir nechta **Box Collider** qo'shing (stoleshnitsa, ikkala
-oyoq, old panel, ikkala tumba) yoki bitta **Mesh Collider** (Convex o'chiq) —
+oyoq, old panel) yoki bitta **Mesh Collider** (Convex o'chiq) —
 stol qo'zg'almas bo'lgani uchun ikkalasi ham ishlaydi.
 
 ## Qayta yaratish
@@ -91,4 +91,4 @@ python source/build_desk.py --no-render # faqat model + FBX
 ```
 
 `build_desk.py` ning boshida barcha o'lchamlar (metrda) bor — stolni
-kattalashtirish, tokchalar sonini o'zgartirish va hokazolar uchun o'sha yerni tahrirlang.
+kattalashtirish yoki kichraytirish uchun o'sha yerni tahrirlang.

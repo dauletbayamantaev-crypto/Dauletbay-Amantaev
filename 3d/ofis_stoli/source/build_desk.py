@@ -6,8 +6,8 @@ Old tomon (mehmon tomoni) - berilgan rasm asosida:
   * ikki qavatli, yivli yon oyoqlar,
   * old panel ustida ikkita bo'rtma (fasetli) panel va alyuminiy planka.
 Orqa tomon (o'tiruvchi tomoni) - rasmda yo'q, shu skriptda loyihalangan:
-  * ikki yonda ochiq tokchali tumbalar (tortma va eshiksiz, har birida 3 ta bo'lim),
-  * o'rtada oyoq uchun keng bo'sh joy.
+  * tumba, tortma va tokchalarsiz - yon oyoqlar orasida butunlay ochiq oyoq joyi,
+  * ichkaridan faqat old panelning orqa yuzasi ko'rinadi.
 
 Koordinatalar (Blender): Z - yuqori, -Y - old (mehmon) tomon, +Y - o'tiruvchi tomoni.
 O'lchov: metr. Pivot - stol markazi, pol sathida.
@@ -39,6 +39,7 @@ random.seed(7)
 
 # ---------------------------------------------------------------- sahna
 bpy.ops.wm.read_factory_settings(use_empty=True)
+bpy.context.preferences.filepaths.save_version = 0   # .blend1 zaxira fayli yaratilmasin
 scene = bpy.context.scene
 scene.unit_settings.system = "METRIC"
 scene.unit_settings.scale_length = 1.0
@@ -183,10 +184,6 @@ LEG_OUT, LEG_IN = 0.880, 0.822          # yon oyoq tashqi / ichki X
 LEG_Y = 0.425                           # oyoqlar chuqurligi (±)
 FRONT_Y0, FRONT_Y1 = -0.395, -0.370     # old panel (mehmon tomoni)
 FRONT_Z0 = 0.072
-PED_IN = 0.400                          # tumba ichki devori (|x|)
-PED_SIDE_T = 0.018
-PED_Y1 = LEG_Y - 0.005                  # tumba old qirrasi (o'tiruvchi tomoni)
-SHELVES = ((0.290, 0.308), (0.522, 0.540))   # har bir tumbada 2 ta tokcha -> 3 ta bo'lim
 BODY = "Stol_Korpus"
 
 # ---------------------------------------------------------------- stoleshnitsa (3 qatlam)
@@ -219,14 +216,6 @@ for s in (-1, 1):
             Vector((x0 + side_c, yf, zt - top_c)), Vector((x1 - side_c, yf, zt - top_c))]
     add_hull([q + n * 0.0012 for q in quad] + [q - n * 0.002 for q in quad],
              BODY, METAL, "X", 0.0005, 1)
-
-# ---------------------------------------------------------------- tumbalar (ochiq tokchalar)
-for s in (-1, 1):
-    box(s * (PED_IN - PED_SIDE_T), s * PED_IN, FRONT_Y1, PED_Y1, 0, Z_SUB0, BODY, grain="Z")
-    box(s * PED_IN, s * LEG_IN, FRONT_Y1, PED_Y1, 0.058, 0.076, BODY, grain="X", bevel=0.0015)
-    box(s * PED_IN, s * LEG_IN, 0.330, 0.348, 0, 0.058, BODY, grain="X", bevel=0.001)   # sokol
-    for z0, z1 in SHELVES:
-        box(s * PED_IN, s * LEG_IN, FRONT_Y1, PED_Y1, z0, z1, BODY, grain="X", bevel=0.0015)
 
 GROUPS = {BODY: Vector((0, 0, 0))}   # nom -> pivot (Blender koordinatalarida)
 
