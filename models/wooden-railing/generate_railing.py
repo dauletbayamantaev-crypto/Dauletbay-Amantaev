@@ -34,6 +34,8 @@ N_FRONT = 10    # balusters on the front span
 N_SIDE = 8      # balusters on each side span
 UV_M = 0.8      # metres of wood covered by one texture tile
 TEX_SIZE = 2048
+WOOD_LIGHT = "#4A2F2A"  # main wood tone
+WOOD_DARK = "#331F19"   # grain lines
 SEED = 7
 
 BAL_Z0 = BASE_H
@@ -55,13 +57,18 @@ def periodic_noise(n, sx, sy, rng):
     return out / (out.std() + 1e-9)
 
 
+def hex_rgb(h):
+    h = h.lstrip("#")
+    return [float(int(h[i:i + 2], 16)) for i in (0, 2, 4)]
+
+
 def smoothstep(e0, e1, x):
     t = np.clip((x - e0) / (e1 - e0), 0.0, 1.0)
     return t * t * (3 - 2 * t)
 
 
 def make_wood_textures(outdir, n=TEX_SIZE):
-    """Cherry wood with the grain running along V. Returns (albedo, normal) paths."""
+    """Dark wood (WOOD_LIGHT -> WOOD_DARK) with the grain running along V. Returns (albedo, normal) paths."""
     from PIL import Image
 
     rng = np.random.default_rng(SEED)
@@ -77,12 +84,14 @@ def make_wood_textures(outdir, n=TEX_SIZE):
     pores = smoothstep(2.2, 3.2, periodic_noise(n, 700.0, 50.0, rng))
     big = periodic_noise(n, 3.0, 2.0, rng)               # board-to-board variation
 
-    t = np.clip(0.12 * figure + 0.26 * line + 0.18 * (0.5 + 0.35 * streak) + 0.05 * fib + 0.3, 0.0, 1.0)
-    light = np.array([152.0, 62.0, 25.0])
-    dark = np.array([84.0, 29.0, 10.0])
+    t = 0.12 * figure + 0.26 * line + 0.18 * streak * 0.35 + 0.05 * fib
+    lo, hi = np.percentile(t, (1.0, 99.5))
+    t = np.clip((t - lo) / (hi - lo), 0.0, 1.0)          # span exactly WOOD_LIGHT..WOOD_DARK
+    light = np.array(hex_rgb(WOOD_LIGHT))
+    dark = np.array(hex_rgb(WOOD_DARK))
     col = light * (1 - t[..., None]) + dark * t[..., None]
-    col *= (1 + 0.05 * big)[..., None]
-    col *= (1 - 0.25 * pores)[..., None]
+    col *= (1 + 0.02 * np.clip(big, -2, 2))[..., None]    # subtle board-to-board variation
+    col = col * (1 - 0.3 * pores[..., None]) + dark * 0.3 * pores[..., None]
     albedo = Image.fromarray(np.clip(col, 0, 255).astype(np.uint8), "RGB")
 
     height = -0.5 * line - 0.3 * figure - 0.1 * fib - 0.8 * pores
@@ -509,11 +518,19 @@ def render_preview(path, cam_loc, target, lens=50, res=(1400, 1120), samples=96)
     if scene.camera is None:
         world = bpy.data.worlds.new("World")
         world.use_nodes = True
-        world.node_tree.nodes["Background"].inputs["Color"].default_value = (1, 1, 1, 1)
-        world.node_tree.nodes["Background"].inputs["Strength"].default_value = 0.75
+        wt = world.node_tree
+        light_bg = wt.nodes["Background"]           # soft fill light, dim so dark wood keeps its colour
+        light_bg.inputs["Strength"].default_value = 0.3
+        cam_bg = wt.nodes.new("ShaderNodeBackground")  # plain white backdrop seen by the camera
+        mix = wt.nodes.new("ShaderNodeMixShader")
+        ray = wt.nodes.new("ShaderNodeLightPath")
+        wt.links.new(ray.outputs["Is Camera Ray"], mix.inputs["Fac"])
+        wt.links.new(light_bg.outputs["Background"], mix.inputs[1])
+        wt.links.new(cam_bg.outputs["Background"], mix.inputs[2])
+        wt.links.new(mix.outputs["Shader"], wt.nodes["World Output"].inputs["Surface"])
         scene.world = world
         sun = bpy.data.objects.new("Sun", bpy.data.lights.new("Sun", "SUN"))
-        sun.data.energy = 3.0
+        sun.data.energy = 3.5
         sun.data.angle = math.radians(8)
         sun.rotation_euler = (math.radians(40), 0, math.radians(-35))
         scene.collection.objects.link(sun)

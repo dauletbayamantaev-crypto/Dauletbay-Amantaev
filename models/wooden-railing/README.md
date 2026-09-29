@@ -11,7 +11,7 @@ va pastki taglik reykasi.
 | Fayl | Tavsif |
 | --- | --- |
 | `WoodenRailing.fbx` | Asosiy model (teksturalar ichiga joylangan) |
-| `Textures/Wood_Cherry_BaseColor.jpg` | Yog'och rangi (albedo), 2048×2048, tile qilinadi |
+| `Textures/Wood_Cherry_BaseColor.jpg` | Yog'och rangi (albedo), 2048×2048, tile qilinadi: asosiy rang `#4A2F2A`, tolalar `#331F19` |
 | `Textures/Wood_Cherry_Normal.png` | Normal map (OpenGL / Unity formati) |
 | `preview_front.jpg`, `preview_back.jpg` | Render ko'rinishlari |
 | `generate_railing.py` | Modelni qayta yaratuvchi Blender skripti |
@@ -42,7 +42,7 @@ va pastki taglik reykasi.
 
 ## Qayta generatsiya qilish (o'lcham/balyasina sonini o'zgartirish)
 
-Skript boshidagi o'zgaruvchilar (`H`, `N_FRONT`, `N_SIDE`, `GAP`, `BAL_W` …) ni o'zgartiring:
+Skript boshidagi o'zgaruvchilar (`H`, `N_FRONT`, `N_SIDE`, `GAP`, `BAL_W`, ranglar uchun `WOOD_LIGHT` / `WOOD_DARK` …) ni o'zgartiring:
 
 ```bash
 pip install bpy==4.2.0 numpy pillow
