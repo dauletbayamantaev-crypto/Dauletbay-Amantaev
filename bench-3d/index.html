@@ -1,0 +1,929 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ikki o‘rinli skameyka</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: full-bleed 3D stage; spec card pinned top-left, view controls docked bottom-centre. */
+:root{
+  --bg:#ece7e2; --bg-deep:#d5ccc5; --ink:#2b1c1a; --muted:#6e5d56; --panel:rgba(251,248,245,.84);
+  --line:rgba(74,40,34,.15); --accent:#7b2b2e; --accent-ink:#fbf3f0; --dim:#7b2b2e;
+  --wood:#5c2023; --fabric:#8f7e74; --cord:#c29a4a;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Figtree","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1f1a19; --bg-deep:#110e0d; --ink:#f2e9e4; --muted:#a8968e; --panel:rgba(38,31,29,.84);
+    --line:rgba(255,236,226,.13); --accent:#d98c8f; --accent-ink:#1f1a19; --dim:#e8a9ab; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1f1a19; --bg-deep:#110e0d; --ink:#f2e9e4; --muted:#a8968e; --panel:rgba(38,31,29,.84);
+  --line:rgba(255,236,226,.13); --accent:#d98c8f; --accent-ink:#1f1a19; --dim:#e8a9ab; color-scheme:dark;
+}
+html,body{height:100%}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--f-body);overflow:hidden;-webkit-font-smoothing:antialiased}
+.app{position:relative;height:100%;overflow:hidden;background:radial-gradient(120% 95% at 50% 40%,var(--bg) 0%,var(--bg) 42%,var(--bg-deep) 100%)}
+#stage{position:absolute;inset:0}
+#stage canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab;outline:none}
+#stage canvas:active{cursor:grabbing}
+.status{position:absolute;inset:0;display:grid;place-items:center;padding-inline:16px;text-align:center;color:var(--muted);font:500 13px/1.4 var(--f-mono);letter-spacing:.02em;pointer-events:none}
+.card{position:absolute;top:16px;left:16px;width:min(330px,calc(100% - 32px));box-sizing:border-box;display:grid;gap:12px;padding:16px 18px;background:var(--panel);border:1px solid var(--line);border-radius:14px;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.eyebrow{margin:0;font:500 11px/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{margin:0;font:700 27px/1.05 var(--f-display);letter-spacing:-.015em;text-wrap:balance}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px;margin:0;padding:12px 0 0;border-top:1px solid var(--line)}
+.stat{display:grid;gap:1px;min-width:0}
+.stat dt{font-size:12px;color:var(--muted)}
+.stat dd{margin:0;font:500 15px/1.3 var(--f-mono);font-variant-numeric:tabular-nums}
+.materials{display:grid;gap:7px;margin:0;padding:12px 0 0;list-style:none;font-size:13px;line-height:1.35;border-top:1px solid var(--line)}
+.materials li{display:flex;align-items:center;gap:10px}
+.swatch{width:14px;height:14px;flex:none;border-radius:4px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.18)}
+.note{margin:0;font-size:12px;line-height:1.45;color:var(--muted)}
+.dock{position:absolute;left:16px;right:16px;bottom:16px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;pointer-events:none}
+.group{pointer-events:auto;display:flex;flex-wrap:wrap;gap:2px;padding:4px;background:var(--panel);border:1px solid var(--line);border-radius:12px;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.group button{appearance:none;border:0;margin:0;background:transparent;color:var(--ink);font:600 13px/1 var(--f-body);padding:9px 12px;border-radius:9px;cursor:pointer;transition:background-color .15s ease,color .15s ease}
+.group button:hover{background:var(--line)}
+.group button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.group button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.dim{font:500 11.5px/1 var(--f-mono);color:var(--dim);background:var(--panel);border:1px solid var(--line);padding:4px 7px;border-radius:6px;white-space:nowrap;font-variant-numeric:tabular-nums}
+@media (max-width:640px){
+  .card{right:16px;width:auto;gap:8px;padding:12px 14px}
+  .dock{gap:6px}
+  .group{padding:3px}
+  h1{font-size:21px}
+  .eyebrow,.materials,.note{display:none}
+  .stats{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px 8px;padding-top:8px}
+  .stat dt{font-size:11px}
+  .stat dd{font-size:13px}
+  .group button{padding:8px 11px;font-size:12.5px}
+}
+@media (prefers-reduced-motion:reduce){.group button{transition:none}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div id="stage" role="img" aria-label="Ikki o‘rinli yog‘och skameykaning aylantiriladigan 3D modeli"></div>
+  <div class="status" id="status" role="status">3D model tayyorlanmoqda…</div>
+
+  <section class="card" aria-labelledby="title">
+    <p class="eyebrow">3D model · 3 ta fotosurat asosida</p>
+    <h1 id="title">Ikki o‘rinli skameyka</h1>
+    <dl class="stats">
+      <div class="stat"><dt>Eni</dt><dd id="d-w">114 sm</dd></div>
+      <div class="stat"><dt>Chuqurligi</dt><dd id="d-d">58 sm</dd></div>
+      <div class="stat"><dt>Balandligi</dt><dd id="d-h">99 sm</dd></div>
+      <div class="stat"><dt>O‘rindiq</dt><dd id="d-s">46 sm</dd></div>
+    </dl>
+    <ul class="materials">
+      <li><span class="swatch" style="background:var(--wood)"></span>Karkas: qizg‘ish-jigarrang lakli yog‘och</li>
+      <li><span class="swatch" style="background:var(--fabric)"></span>Qoplama: kulrang-jigarrang mato, 4 ta yostiqcha</li>
+      <li><span class="swatch" style="background:var(--cord)"></span>Hoshiya: tillarang eshilgan shnur</li>
+    </ul>
+    <p class="note">O‘lchamlar fotosuratlardagi nisbatlardan taxminan olingan. Aylantirish uchun torting, yaqinlashtirish uchun g‘ildirak yoki ikki barmoqdan foydalaning.</p>
+  </section>
+
+  <nav class="dock" aria-label="Ko‘rinish boshqaruvi">
+    <div class="group" role="group" aria-label="Ko‘rinish">
+      <button type="button" id="v-iso" data-view="iso" aria-pressed="false">3/4</button>
+      <button type="button" id="v-front" data-view="front" aria-pressed="false">Old</button>
+      <button type="button" id="v-side" data-view="side" aria-pressed="false">Yon</button>
+      <button type="button" id="v-back" data-view="back" aria-pressed="false">Orqa</button>
+    </div>
+    <div class="group" role="group" aria-label="Fotosuratdagi rakurslar">
+      <button type="button" id="v-p1" data-view="p1" aria-pressed="false">1-rasm</button>
+      <button type="button" id="v-p2" data-view="p2" aria-pressed="false">2-rasm</button>
+      <button type="button" id="v-p3" data-view="p3" aria-pressed="false">3-rasm</button>
+    </div>
+    <div class="group" role="group" aria-label="Sozlamalar">
+      <button type="button" id="btn-rotate" aria-pressed="true">Aylanish</button>
+      <button type="button" id="btn-dims" aria-pressed="false">O‘lchamlar</button>
+    </div>
+  </nav>
+</div>
+
+<script>
+  setTimeout(function () {
+    var s = document.getElementById('status');
+    if (s && !s.hidden) s.textContent = '3D kutubxonasi yuklanmadi. Internet aloqasini tekshirib, sahifani qayta oching.';
+  }, 15000);
+</script>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+import { toCreasedNormals } from 'three/addons/utils/BufferGeometryUtils.js';
+import { HorizontalBlurShader } from 'three/addons/shaders/HorizontalBlurShader.js';
+import { VerticalBlurShader } from 'three/addons/shaders/VerticalBlurShader.js';
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+
+const V3 = THREE.Vector3;
+const statusEl = document.getElementById('status');
+const stage = document.getElementById('stage');
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function mulberry32(a) {
+  return function () {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const rnd = mulberry32(20260929);
+const smooth = (e0, e1, x) => { const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0))); return t * t * (3 - 2 * t); };
+
+/* ------------------------------------------------------------------ */
+/*  Dimensions (metres). Estimated from the three reference photos.    */
+/* ------------------------------------------------------------------ */
+const W = 1.10;            // seat width across the legs
+const D = 0.46;            // seat depth
+const SH = 0.46;           // seat top height
+const LEG = 0.045;         // leg / post section
+const SEAT_T = 0.03;       // seat board thickness
+const APRON_H = 0.07;
+const XL = W / 2 - LEG / 2;              // leg centre x
+const ZF = D / 2 - LEG / 2 - 0.004;      // front leg centre z
+const ZR = -D / 2 + LEG / 2 + 0.004;     // rear leg centre z
+const TILT = THREE.MathUtils.degToRad(12);
+const M = Math.tan(TILT);
+const Y_BEND = 0.44;                     // rear post starts to lean back here
+const Y_FRAME0 = 0.55;                   // bottom of the back frame
+const FRAME_L = 0.40, FRAME_T = 0.022;   // back frame height (along the tilt) and thickness
+const Y_FRAME1 = Y_FRAME0 + FRAME_L * Math.cos(TILT);
+const Y_POST_TOP = Y_FRAME1 + 0.026;
+const OPEN_W = 0.36, OPEN_H = 0.30, OPEN_CY = 0.045 + OPEN_H / 2;
+const PANEL_X = [-0.225, 0.225];
+const PAD_W = 0.38, PAD_D = 0.30;
+
+// Backward (-z) offset of the rear post centreline: straight leg, a bend above
+// the seat, a straight reclined run behind the back frame and a small curl on top.
+function postBack(y) {
+  if (y < 0.28) return 0.008 * ((0.28 - y) / 0.28) ** 2;
+  if (y < Y_BEND) return 0;
+  if (y < Y_FRAME0) { const t = y - Y_BEND; return M * t * t / (2 * (Y_FRAME0 - Y_BEND)); }
+  const b1 = M * (Y_FRAME0 - Y_BEND) / 2;
+  if (y < Y_FRAME1) return b1 + M * (y - Y_FRAME0);
+  const t = y - Y_FRAME1;
+  return b1 + M * (Y_FRAME1 - Y_FRAME0) + M * t + 9 * t * t;
+}
+const postZ = (y) => ZR - postBack(y);
+
+// Sabre flare of the front legs (outward and forward towards the floor).
+function frontFlare(y) { const t = Math.max(0, (0.25 - y) / 0.25); return [0.026 * t * t, 0.016 * t * t]; }
+
+/* ------------------------------------------------------------------ */
+/*  Renderer, scene, camera                                            */
+/* ------------------------------------------------------------------ */
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+} catch (e) {
+  statusEl.textContent = 'Brauzeringiz WebGL’ni qo‘llab-quvvatlamaydi, shuning uchun 3D modelni ko‘rsatib bo‘lmadi.';
+  throw e;
+}
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.setClearColor(0x000000, 0);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.NeutralToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.autoUpdate = false;
+renderer.shadowMap.needsUpdate = true;
+stage.appendChild(renderer.domElement);
+
+const labelRenderer = new CSS2DRenderer();
+labelRenderer.domElement.style.position = 'absolute';
+labelRenderer.domElement.style.inset = '0';
+labelRenderer.domElement.style.pointerEvents = 'none';
+stage.appendChild(labelRenderer.domElement);
+
+const scene = new THREE.Scene();
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = 0.85;
+
+const camera = new THREE.PerspectiveCamera(32, 1, 0.05, 50);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minDistance = 0.7;
+controls.maxDistance = 9;
+controls.maxPolarAngle = Math.PI / 2 - 0.03;
+controls.autoRotate = !reduceMotion;
+controls.autoRotateSpeed = 0.7;
+const TARGET = new V3(0, 0.47, -0.04);
+controls.target.copy(TARGET);
+
+const key = new THREE.DirectionalLight(0xfff4ea, 2.1);
+key.position.set(1.4, 3.8, 2.2);
+key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048);
+Object.assign(key.shadow.camera, { left: -1, right: 1, top: 1, bottom: -1, near: 0.5, far: 8 });
+key.shadow.bias = -0.0002;
+key.shadow.normalBias = 0.006;
+scene.add(key);
+const rim = new THREE.DirectionalLight(0xe9eeff, 0.55);
+rim.position.set(-2.2, 2.4, -3);
+scene.add(rim);
+scene.add(new THREE.HemisphereLight(0xfff8f2, 0x3a2a26, 0.25));
+
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(10, 10).rotateX(-Math.PI / 2), new THREE.ShadowMaterial({ opacity: 0.16 }));
+ground.receiveShadow = true;
+scene.add(ground);
+
+/* ------------------------------------------------------------------ */
+/*  Procedural textures                                                */
+/* ------------------------------------------------------------------ */
+function makeNoise2D(nx, ny, r) {
+  const tab = new Float32Array(nx * ny);
+  for (let i = 0; i < tab.length; i++) tab[i] = r();
+  return (u, v) => {
+    const x0 = Math.floor(u), y0 = Math.floor(v), fx = u - x0, fy = v - y0;
+    const sx = fx * fx * (3 - 2 * fx), sy = fy * fy * (3 - 2 * fy);
+    const xi = ((x0 % nx) + nx) % nx, yi = ((y0 % ny) + ny) % ny, xj = (xi + 1) % nx, yj = (yi + 1) % ny;
+    const a = tab[yi * nx + xi], b = tab[yi * nx + xj], c = tab[yj * nx + xi], d = tab[yj * nx + xj];
+    return a + (b - a) * sx + (c - a) * sy + (a - b - c + d) * sx * sy;
+  };
+}
+function canvasTexture(img, srgb, aniso) {
+  const cv = document.createElement('canvas');
+  cv.width = img.width; cv.height = img.height;
+  cv.getContext('2d').putImageData(img, 0, 0);
+  const t = new THREE.CanvasTexture(cv);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.anisotropy = aniso;
+  if (srgb) t.colorSpace = THREE.SRGBColorSpace;
+  return t;
+}
+
+// Mahogany-stained wood: warped growth bands, fine streaks and pores. Grain runs along u.
+function makeWood(aniso) {
+  const S = 1024, r = mulberry32(11);
+  const nA = makeNoise2D(3, 20, r), nB = makeNoise2D(6, 70, r), nC = makeNoise2D(12, 260, r);
+  const nP = makeNoise2D(40, 900, r), nM = makeNoise2D(4, 4, r);
+  const col = new ImageData(S, S), rough = new ImageData(S, S);
+  const dark = [48, 17, 19], light = [76, 29, 31];
+  const p1 = r() * 6.2832, p2 = r() * 6.2832;
+  for (let y = 0; y < S; y++) {
+    const v0 = y / S;
+    for (let x = 0; x < S; x++) {
+      const u = x / S;
+      const v = v0 + 0.010 * Math.sin(6.2832 * 2 * u + p1) + 0.004 * Math.sin(6.2832 * (5 * u + 3 * v0) + p2);
+      let g = 0.5 * nA(u * 3, v * 20) + 0.32 * nB(u * 6, v * 70) + 0.18 * nC(u * 12, v * 260);
+      g = smooth(0.2, 0.8, g);
+      const pr = nP(u * 40, v * 900);
+      const pore = pr > 0.8 ? (pr - 0.8) * 5 : 0;
+      const t = 0.25 + g * 0.55 + nM(u * 4, v0 * 4) * 0.2;
+      const shade = 1 - pore * 0.22;
+      const i = (y * S + x) * 4;
+      col.data[i] = (dark[0] + (light[0] - dark[0]) * t) * shade;
+      col.data[i + 1] = (dark[1] + (light[1] - dark[1]) * t) * shade;
+      col.data[i + 2] = (dark[2] + (light[2] - dark[2]) * t) * shade;
+      col.data[i + 3] = 255;
+      const ro = (0.46 + 0.1 * (1 - g) + 0.2 * pore) * 255;
+      rough.data[i] = rough.data[i + 1] = rough.data[i + 2] = ro;
+      rough.data[i + 3] = 255;
+    }
+  }
+  return { map: canvasTexture(col, true, aniso), roughnessMap: canvasTexture(rough, false, aniso) };
+}
+
+// Heathered plain-weave upholstery fabric with a matching normal map.
+function makeFabric(aniso) {
+  const S = 512, TW = 4, NT = S / TW, r = mulberry32(5);
+  const heather = () => { const q = r(); return q < 0.15 ? -1 : q > 0.87 ? 1 : (r() - 0.5) * 0.6; };
+  const warp = Array.from({ length: NT }, heather), weft = Array.from({ length: NT }, heather);
+  const nL = makeNoise2D(8, 8, r), nF = makeNoise2D(64, 64, r);
+  const base = [118, 104, 96];
+  const col = new ImageData(S, S), nrm = new ImageData(S, S), h = new Float32Array(S * S);
+  for (let y = 0; y < S; y++) {
+    for (let x = 0; x < S; x++) {
+      const ci = (x / TW) | 0, cj = (y / TW) | 0;
+      const over = (ci + cj) & 1;
+      const px = ((x % TW) + 0.5) / TW, py = ((y % TW) + 0.5) / TW;
+      const prof = over ? Math.sin(Math.PI * px) : Math.sin(Math.PI * py);
+      const arch = over ? Math.sin(Math.PI * py) : Math.sin(Math.PI * px);
+      const hh = 0.35 + 0.65 * prof * (0.6 + 0.4 * arch);
+      h[y * S + x] = hh;
+      const tone = (over ? warp[ci] : weft[cj]) * 0.045 + (nF(x / S * 64, y / S * 64) - 0.5) * 0.1 + (nL(x / S * 8, y / S * 8) - 0.5) * 0.05;
+      const lum = (0.86 + 0.14 * hh) * (1 + tone);
+      const i = (y * S + x) * 4;
+      col.data[i] = base[0] * lum; col.data[i + 1] = base[1] * lum; col.data[i + 2] = base[2] * lum; col.data[i + 3] = 255;
+    }
+  }
+  const k = 1.4;
+  for (let y = 0; y < S; y++) {
+    for (let x = 0; x < S; x++) {
+      const dx = h[y * S + ((x + 1) % S)] - h[y * S + ((x - 1 + S) % S)];
+      const dy = h[((y + 1) % S) * S + x] - h[((y - 1 + S) % S) * S + x];
+      let nx = -dx * k, ny = dy * k, nz = 1;
+      const l = Math.hypot(nx, ny, nz); nx /= l; ny /= l; nz /= l;
+      const i = (y * S + x) * 4;
+      nrm.data[i] = (nx * 0.5 + 0.5) * 255; nrm.data[i + 1] = (ny * 0.5 + 0.5) * 255; nrm.data[i + 2] = (nz * 0.5 + 0.5) * 255; nrm.data[i + 3] = 255;
+    }
+  }
+  return { map: canvasTexture(col, true, aniso), normalMap: canvasTexture(nrm, false, aniso) };
+}
+
+const aniso = Math.min(8, renderer.capabilities.getMaxAnisotropy());
+const woodTex = makeWood(aniso);
+const fabricTex = makeFabric(aniso);
+
+const woodMat = new THREE.MeshPhysicalMaterial({
+  name: 'Yogoch_lak', map: woodTex.map, roughnessMap: woodTex.roughnessMap, roughness: 1, metalness: 0,
+  clearcoat: 0.45, clearcoatRoughness: 0.3,
+});
+const fabricMat = new THREE.MeshPhysicalMaterial({
+  name: 'Mato', map: fabricTex.map, normalMap: fabricTex.normalMap, normalScale: new THREE.Vector2(0.6, 0.6),
+  roughness: 0.95, metalness: 0, sheen: 0.45, sheenRoughness: 0.6, sheenColor: new THREE.Color('#a8968b'),
+});
+const cordMat = new THREE.MeshStandardMaterial({ name: 'Shnur', vertexColors: true, metalness: 0.55, roughness: 0.36 });
+
+/* ------------------------------------------------------------------ */
+/*  Geometry builders                                                  */
+/* ------------------------------------------------------------------ */
+function roundedRectProfile(w, h, r, seg) {
+  const hw = w / 2, hh = h / 2;
+  r = Math.max(0.0004, Math.min(r, hw * 0.98, hh * 0.98));
+  const cs = [[hw - r, hh - r, 0], [-(hw - r), hh - r, Math.PI / 2], [-(hw - r), -(hh - r), Math.PI], [hw - r, -(hh - r), Math.PI * 1.5]];
+  const pts = [];
+  for (const [cx, cy, a0] of cs) {
+    for (let k = 0; k <= seg; k++) { const a = a0 + (k / seg) * Math.PI / 2; pts.push(cx + r * Math.cos(a), cy + r * Math.sin(a)); }
+  }
+  return pts;
+}
+
+// Sweeps a rounded-rectangle section along a polyline. Section width runs along
+// `ref` (made perpendicular to the path), height along tangent × ref.
+function sweep(path, o) {
+  const { size, r = 0.004, seg = 4, ref = new V3(1, 0, 0), capStart = 'flat', capEnd = 'flat', capLen = 0.02, capSteps = 7 } = o;
+  const sizeAt = typeof size === 'function' ? size : () => size;
+  const n = path.length, pos = [], idx = [];
+  const m = (seg + 1) * 4;
+  const frames = path.map((p, i) => {
+    const T = new V3().subVectors(path[Math.min(i + 1, n - 1)], path[Math.max(i - 1, 0)]).normalize();
+    const S = ref.clone().addScaledVector(T, -ref.dot(T)).normalize();
+    return { p, T, S, U: new V3().crossVectors(T, S) };
+  });
+  const ring = (c, f, w, h, rr) => {
+    const prof = roundedRectProfile(w, h, rr, seg), base = pos.length / 3;
+    for (let k = 0; k < prof.length; k += 2) {
+      const a = prof[k], b = prof[k + 1];
+      pos.push(c.x + f.S.x * a + f.U.x * b, c.y + f.S.y * a + f.U.y * b, c.z + f.S.z * a + f.U.z * b);
+    }
+    return base;
+  };
+  const vert = (v) => { pos.push(v.x, v.y, v.z); return pos.length / 3 - 1; };
+  const f0 = frames[0], fN = frames[n - 1];
+  const [w0, h0] = sizeAt(path[0], 0), [wN, hN] = sizeAt(path[n - 1], 1);
+  const rings = [];
+  let tipStart = -1, tipEnd = -1;
+  if (capStart === 'round') {
+    tipStart = vert(f0.p.clone().addScaledVector(f0.T, -capLen));
+    for (let k = capSteps - 1; k >= 1; k--) {
+      const a = (k / capSteps) * Math.PI / 2, c = Math.cos(a);
+      rings.push(ring(f0.p.clone().addScaledVector(f0.T, -capLen * Math.sin(a)), f0, w0 * c, h0 * c, r * c));
+    }
+  }
+  frames.forEach((f, i) => { const [w, h] = sizeAt(f.p, i / (n - 1)); rings.push(ring(f.p, f, w, h, r)); });
+  if (capEnd === 'round') {
+    for (let k = 1; k < capSteps; k++) {
+      const a = (k / capSteps) * Math.PI / 2, c = Math.cos(a);
+      rings.push(ring(fN.p.clone().addScaledVector(fN.T, capLen * Math.sin(a)), fN, wN * c, hN * c, r * c));
+    }
+    tipEnd = vert(fN.p.clone().addScaledVector(fN.T, capLen));
+  }
+  for (let i = 0; i < rings.length - 1; i++) {
+    const b0 = rings[i], b1 = rings[i + 1];
+    for (let j = 0; j < m; j++) { const j1 = (j + 1) % m; idx.push(b0 + j, b0 + j1, b1 + j, b0 + j1, b1 + j1, b1 + j); }
+  }
+  const first = rings[0], last = rings[rings.length - 1];
+  if (tipStart >= 0) { for (let j = 0; j < m; j++) idx.push(tipStart, first + (j + 1) % m, first + j); }
+  else { const c = vert(f0.p), b = ring(f0.p, f0, w0, h0, r); for (let j = 0; j < m; j++) idx.push(c, b + (j + 1) % m, b + j); }
+  if (tipEnd >= 0) { for (let j = 0; j < m; j++) idx.push(last + j, last + (j + 1) % m, tipEnd); }
+  else { const c = vert(fN.p), b = ring(fN.p, fN, wN, hN, r); for (let j = 0; j < m; j++) idx.push(c, b + j, b + (j + 1) % m); }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setIndex(idx);
+  return g;
+}
+
+// Planar box projection so the grain follows each part's long axis.
+function boxUV(g, grain, su = 0.9, sv = 0.3) {
+  const p = g.attributes.position, n = p.count, uv = new Float32Array(n * 2);
+  const ou = rnd() * 7, ov = rnd() * 7;
+  const a = new V3(), b = new V3(), c = new V3(), e1 = new V3(), e2 = new V3(), fn = new V3();
+  for (let i = 0; i < n; i += 3) {
+    a.fromBufferAttribute(p, i); b.fromBufferAttribute(p, i + 1); c.fromBufferAttribute(p, i + 2);
+    fn.crossVectors(e1.subVectors(b, a), e2.subVectors(c, a));
+    const ax = Math.abs(fn.x), ay = Math.abs(fn.y), az = Math.abs(fn.z);
+    const dom = ax >= ay && ax >= az ? 0 : (ay >= az ? 1 : 2);
+    for (let k = 0; k < 3; k++) {
+      const x = p.getX(i + k), y = p.getY(i + k), z = p.getZ(i + k);
+      let U, V;
+      if (grain === 'x') { [U, V] = dom === 0 ? [z, y] : dom === 1 ? [x, z] : [x, y]; }
+      else if (grain === 'y') { [U, V] = dom === 0 ? [y, z] : dom === 1 ? [x, z] : [y, x]; }
+      else { [U, V] = dom === 0 ? [z, y] : dom === 1 ? [z, x] : [x, y]; }
+      uv[(i + k) * 2] = U / su + ou;
+      uv[(i + k) * 2 + 1] = V / sv + ov;
+    }
+  }
+  g.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+  return g;
+}
+function smoothWood(g, grain) { g.computeVertexNormals(); return boxUV(g.toNonIndexed(), grain); }
+function creasedWood(g, grain) { g.deleteAttribute('uv'); g.deleteAttribute('normal'); return boxUV(toCreasedNormals(g, THREE.MathUtils.degToRad(10)), grain); }
+function clampFloor(g) {
+  const p = g.attributes.position;
+  for (let i = 0; i < p.count; i++) if (p.getY(i) < 0) p.setY(i, 0);
+  return g;
+}
+
+function roundRectSD(x, z, hw, hd, r) {
+  const qx = Math.abs(x) - (hw - r), qz = Math.abs(z) - (hd - r);
+  return Math.hypot(Math.max(qx, 0), Math.max(qz, 0)) + Math.min(Math.max(qx, qz), 0) - r;
+}
+// Scale that moves a point on the rectangle's edge onto the rounded outline along its ray.
+function rayToRounded(bx, bz, hw, hd, r) {
+  if (Math.abs(bx) <= hw - r || Math.abs(bz) <= hd - r) return 1;
+  const cx = Math.sign(bx) * (hw - r), cz = Math.sign(bz) * (hd - r);
+  const bb = bx * bx + bz * bz, bc = bx * cx + bz * cz, cc = cx * cx + cz * cz;
+  return (bc + Math.sqrt(Math.max(0, bc * bc - bb * (cc - r * r)))) / bb;
+}
+// Upholstered pad: height field on a rounded rectangle, rounded rim and a soft dome.
+function pillowGeometry(w, d, r, { rim = 0.016, rimW = 0.015, dome = 0.008, domeW = 0.09, N = 96, tile = 0.1 } = {}) {
+  const hw = w / 2, hd = d / 2, pos = [], uv = [], idx = [];
+  const ts = [];
+  for (let i = 0; i <= N; i++) ts.push(Math.sin((-1 + 2 * i / N) * Math.PI / 2));
+  for (let i = 0; i <= N; i++) {
+    for (let j = 0; j <= N; j++) {
+      const u = ts[i], v = ts[j];
+      let x = u * hw, z = v * hd;
+      const mm = Math.max(Math.abs(u), Math.abs(v));
+      if (mm > 1e-6) { const k = rayToRounded(u / mm * hw, v / mm * hd, hw, hd, r); x *= k; z *= k; }
+      const dist = Math.max(0, -roundRectSD(x, z, hw, hd, r));
+      const s = Math.min(1, dist / rimW);
+      const y = rim * Math.sqrt(1 - (1 - s) * (1 - s)) + dome * smooth(0, domeW, dist);
+      pos.push(x, y, z);
+      uv.push(x / tile + 0.37, z / tile + 0.61);
+    }
+  }
+  const R = N + 1;
+  for (let i = 0; i < N; i++) {
+    for (let j = 0; j < N; j++) {
+      const a = i * R + j, b = a + 1, c = a + R, d2 = c + 1;
+      idx.push(a, b, c, b, d2, c);
+    }
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  g.setIndex(idx);
+  g.computeVertexNormals();
+  return g;
+}
+
+// Twisted three-strand cord (two gold strands, one dark) following a rounded rectangle.
+function cordGeometry(hw, hd, r, R, { pitch = 0.015, spacing = 0.001, radial = 15, y0 = R * 0.85 } = {}) {
+  const sx = hw - r, sz = hd - r, arc = Math.PI * r / 2;
+  const corner = (cx, cz, a0) => (s) => { const a = a0 + s / r; return [cx + r * Math.cos(a), cz + r * Math.sin(a), -Math.sin(a), Math.cos(a), Math.cos(a), Math.sin(a)]; };
+  const segs = [
+    { len: 2 * sx, f: (s) => [-sx + s, -hd, 1, 0, 0, -1] },
+    { len: arc, f: corner(sx, -sz, -Math.PI / 2) },
+    { len: 2 * sz, f: (s) => [hw, -sz + s, 0, 1, 1, 0] },
+    { len: arc, f: corner(sx, sz, 0) },
+    { len: 2 * sx, f: (s) => [sx - s, hd, -1, 0, 0, 1] },
+    { len: arc, f: corner(-sx, sz, Math.PI / 2) },
+    { len: 2 * sz, f: (s) => [-hw, sz - s, 0, -1, -1, 0] },
+    { len: arc, f: corner(-sx, -sz, Math.PI) },
+  ];
+  const L = segs.reduce((acc, s) => acc + s.len, 0);
+  const n = Math.round(L / spacing);
+  const P = L / Math.max(1, Math.round(L / pitch));
+  const strands = ['#c9a45a', '#b38d48', '#6e4c2f'].map((c) => new THREE.Color(c));
+  const pos = new Float32Array(n * radial * 3), col = new Float32Array(n * radial * 3), idx = [];
+  const TAU = Math.PI * 2;
+  for (let i = 0; i < n; i++) {
+    let s = (i / n) * L, k = 0;
+    while (k < segs.length - 1 && s > segs[k].len) { s -= segs[k].len; k++; }
+    const [x, z, , , nx, nz] = segs[k].f(Math.min(s, segs[k].len));
+    const along = (i / n) * L;
+    for (let j = 0; j < radial; j++) {
+      const phi = (j / radial) * TAU;
+      const psi = phi - TAU * along / P;
+      const c = Math.abs(Math.cos(1.5 * psi));
+      const rho = R * (0.72 + 0.28 * Math.pow(c, 0.6));
+      const o = (i * radial + j) * 3;
+      pos[o] = x + rho * Math.cos(phi) * nx;
+      pos[o + 1] = y0 + rho * Math.sin(phi);
+      pos[o + 2] = z + rho * Math.cos(phi) * nz;
+      const st = ((Math.round(psi / (TAU / 3)) % 3) + 3) % 3;
+      const shade = 0.55 + 0.45 * Math.pow(c, 0.5);
+      col[o] = strands[st].r * shade; col[o + 1] = strands[st].g * shade; col[o + 2] = strands[st].b * shade;
+      const i1 = (i + 1) % n, j1 = (j + 1) % radial;
+      const v00 = i * radial + j, v01 = i * radial + j1, v10 = i1 * radial + j, v11 = i1 * radial + j1;
+      idx.push(v00, v01, v10, v01, v11, v10);
+    }
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  g.setAttribute('color', new THREE.BufferAttribute(col, 3));
+  g.setIndex(idx);
+  g.computeVertexNormals();
+  return g;
+}
+
+function apronGeometry(len, H, T, rise) {
+  const a = len / 2, s = new THREE.Shape();
+  s.moveTo(-a, 0); s.lineTo(a, 0); s.lineTo(a, -H);
+  if (rise > 0) s.quadraticCurveTo(0, -H + 2 * rise, -a, -H); else s.lineTo(-a, -H);
+  s.lineTo(-a, 0);
+  const bt = 0.002;
+  const g = new THREE.ExtrudeGeometry(s, { depth: T - 2 * bt, bevelEnabled: true, bevelThickness: bt, bevelSize: bt, bevelOffset: -bt, bevelSegments: 2, curveSegments: 24 });
+  g.translate(0, 0, -(T - 2 * bt) / 2);
+  return g;
+}
+
+function roundRectPath(p, cx, cy, w, h, r) {
+  const x0 = cx - w / 2, x1 = cx + w / 2, y0 = cy - h / 2, y1 = cy + h / 2;
+  p.moveTo(x0 + r, y0); p.lineTo(x1 - r, y0); p.quadraticCurveTo(x1, y0, x1, y0 + r);
+  p.lineTo(x1, y1 - r); p.quadraticCurveTo(x1, y1, x1 - r, y1);
+  p.lineTo(x0 + r, y1); p.quadraticCurveTo(x0, y1, x0, y1 - r);
+  p.lineTo(x0, y0 + r); p.quadraticCurveTo(x0, y0, x0 + r, y0);
+}
+
+/* ------------------------------------------------------------------ */
+/*  The bench                                                          */
+/* ------------------------------------------------------------------ */
+const bench = new THREE.Group();
+bench.name = 'Skameyka';
+scene.add(bench);
+function add(geo, mat, name, parent = bench) {
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.name = name;
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  parent.add(mesh);
+  return mesh;
+}
+const Y = new V3(0, 1, 0), X = new V3(1, 0, 0);
+
+for (const sx of [-1, 1]) {
+  const side = sx < 0 ? 'chap' : 'o‘ng';
+
+  // Rear leg + back post: one continuous piece.
+  const post = [];
+  for (let y = -0.012; y < Y_POST_TOP; y += 0.01) post.push(new V3(sx * XL, y, postZ(y)));
+  post.push(new V3(sx * XL, Y_POST_TOP, postZ(Y_POST_TOP)));
+  const postGeo = sweep(post, {
+    size: (p) => { const s = 0.04 + 0.005 * smooth(0, 0.3, p.y); return [s, s]; },
+    r: 0.006, seg: 5, ref: X, capEnd: 'round', capLen: 0.021,
+  });
+  add(smoothWood(clampFloor(postGeo), 'y'), woodMat, `Orqa oyoq va suyanchiq ustuni (${side})`);
+
+  // Sabre-shaped front leg.
+  const leg = [], legTop = SH - SEAT_T + 0.006;
+  const legPoint = (y) => { const [ox, oz] = frontFlare(y); return new V3(sx * (XL + ox), y, ZF + oz); };
+  for (let y = -0.012; y < legTop - 0.004; y += 0.01) leg.push(legPoint(y));
+  leg.push(legPoint(legTop));
+  const legGeo = sweep(leg, {
+    size: (p) => { const s = 0.034 + 0.011 * smooth(0, 0.32, p.y); return [s, s]; },
+    r: 0.006, seg: 5, ref: X,
+  });
+  add(smoothWood(clampFloor(legGeo), 'y'), woodMat, `Old oyoq (${side})`);
+
+  // Side stretcher.
+  const ys = 0.16, [fx, fz] = frontFlare(ys);
+  const st = sweep([new V3(sx * XL, ys, postZ(ys)), new V3(sx * (XL + fx), ys, ZF + fz)], { size: [0.032, 0.024], r: 0.005, ref: Y });
+  add(smoothWood(st, 'z'), woodMat, `Yon tirgak (${side})`);
+
+  // Side apron.
+  const sa = apronGeometry(ZF - ZR, APRON_H, 0.02, 0.006).rotateY(Math.PI / 2).translate(sx * (XL + LEG / 2 - 0.014), SH - SEAT_T, (ZF + ZR) / 2);
+  add(creasedWood(sa, 'z'), woodMat, `Yon tsarga (${side})`);
+}
+
+// Rear stretcher.
+{
+  const yr = 0.12;
+  const g = sweep([new V3(-XL, yr, postZ(yr)), new V3(XL, yr, postZ(yr))], { size: [0.034, 0.024], r: 0.005, ref: Y });
+  add(smoothWood(g, 'x'), woodMat, 'Orqa tirgak');
+}
+
+// Front and rear aprons.
+add(creasedWood(apronGeometry(2 * XL, APRON_H, 0.02, 0.012).translate(0, SH - SEAT_T, ZF + LEG / 2 - 0.013), 'x'), woodMat, 'Old tsarga');
+add(creasedWood(apronGeometry(2 * XL, APRON_H, 0.02, 0).translate(0, SH - SEAT_T, ZR - LEG / 2 + 0.014), 'x'), woodMat, 'Orqa tsarga');
+
+// Seat board.
+{
+  const g = sweep([new V3(-W / 2 - 0.006, SH - SEAT_T / 2, 0), new V3(W / 2 + 0.006, SH - SEAT_T / 2, 0)], { size: [SEAT_T, D], r: 0.009, seg: 6, ref: Y });
+  add(smoothWood(g, 'x'), woodMat, 'O‘rindiq taxtasi');
+}
+
+// Seat pads with cord piping.
+PANEL_X.forEach((cx, i) => {
+  const name = i === 0 ? 'chap' : 'o‘ng';
+  add(pillowGeometry(PAD_W, PAD_D, 0.03, { rim: 0.017, rimW: 0.016, dome: 0.008 }).translate(cx, SH, 0), fabricMat, `O‘rindiq yostig‘i (${name})`);
+  const R = 0.0042;
+  add(cordGeometry(PAD_W / 2 - R * 0.3, PAD_D / 2 - R * 0.3, 0.03 - R * 0.3, R).translate(cx, SH, 0), cordMat, `O‘rindiq shnuri (${name})`);
+});
+
+// Back frame (a board with two openings), reclined to follow the posts.
+const back = new THREE.Group();
+back.name = 'Suyanchiq';
+back.position.set(0, Y_FRAME0, postZ(Y_FRAME0));
+back.rotation.x = -TILT;
+bench.add(back);
+{
+  const FX = XL - LEG / 2 + 0.012;
+  const s = new THREE.Shape();
+  s.moveTo(-FX, 0); s.lineTo(FX, 0); s.lineTo(FX, FRAME_L); s.lineTo(-FX, FRAME_L); s.lineTo(-FX, 0);
+  for (const cx of PANEL_X) { const h = new THREE.Path(); roundRectPath(h, cx, OPEN_CY, OPEN_W, OPEN_H, 0.006); s.holes.push(h); }
+  const bt = 0.0025;
+  const g = new THREE.ExtrudeGeometry(s, { depth: FRAME_T - 2 * bt, bevelEnabled: true, bevelThickness: bt, bevelSize: bt, bevelOffset: -bt, bevelSegments: 3, curveSegments: 6 });
+  g.translate(0, 0, -(FRAME_T - 2 * bt) / 2);
+  add(creasedWood(g, 'x'), woodMat, 'Suyanchiq ramasi', back);
+
+  PANEL_X.forEach((cx, i) => {
+    const name = i === 0 ? 'chap' : 'o‘ng';
+    const pw = OPEN_W + 0.02, ph = OPEN_H + 0.02;
+    const pad = pillowGeometry(pw, ph, 0.022, { rim: 0.013, rimW: 0.013, dome: 0.007 }).rotateX(Math.PI / 2).translate(cx, OPEN_CY, FRAME_T / 2);
+    add(pad, fabricMat, `Suyanchiq yostig‘i (${name})`, back);
+    const R = 0.0038;
+    const cord = cordGeometry(pw / 2 - R * 0.3, ph / 2 - R * 0.3, 0.022 - R * 0.3, R).rotateX(Math.PI / 2).translate(cx, OPEN_CY, FRAME_T / 2);
+    add(cord, cordMat, `Suyanchiq shnuri (${name})`, back);
+
+    // Fabric seen through the opening from behind.
+    const bp = new THREE.PlaneGeometry(OPEN_W + 0.004, OPEN_H + 0.004).rotateY(Math.PI).translate(cx, OPEN_CY, -FRAME_T / 2 + 0.006);
+    const p = bp.attributes.position, uv = bp.attributes.uv;
+    for (let k = 0; k < p.count; k++) uv.setXY(k, p.getX(k) / 0.1, p.getY(k) / 0.1);
+    add(bp, fabricMat, `Suyanchiq orqa matosi (${name})`, back);
+  });
+}
+
+bench.updateMatrixWorld(true);
+const bbox = new THREE.Box3().setFromObject(bench);
+const cm = (m) => `${Math.round(m * 100)} sm`;
+const dims = { w: bbox.max.x - bbox.min.x, d: bbox.max.z - bbox.min.z, h: bbox.max.y, s: SH };
+document.getElementById('d-w').textContent = cm(dims.w);
+document.getElementById('d-d').textContent = cm(dims.d);
+document.getElementById('d-h').textContent = cm(dims.h);
+document.getElementById('d-s').textContent = cm(dims.s);
+
+/* ------------------------------------------------------------------ */
+/*  Contact shadow (baked once: the bench does not move)               */
+/* ------------------------------------------------------------------ */
+const CS = { w: 1.7, h: 1.05, camH: 0.45, blur: 2.4, darkness: 1.35 };
+const shadowGroup = new THREE.Group();
+shadowGroup.position.set(0, 0.0015, (bbox.min.z + bbox.max.z) / 2);
+scene.add(shadowGroup);
+const rtA = new THREE.WebGLRenderTarget(512, 512); rtA.texture.generateMipmaps = false;
+const rtB = new THREE.WebGLRenderTarget(512, 512); rtB.texture.generateMipmaps = false;
+const csGeo = new THREE.PlaneGeometry(CS.w, CS.h).rotateX(Math.PI / 2);
+const csPlane = new THREE.Mesh(csGeo, new THREE.MeshBasicMaterial({ map: rtA.texture, opacity: 0.62, transparent: true, depthWrite: false }));
+csPlane.renderOrder = 1;
+csPlane.scale.y = -1;
+shadowGroup.add(csPlane);
+const blurPlane = new THREE.Mesh(csGeo);
+blurPlane.visible = false;
+shadowGroup.add(blurPlane);
+const shadowCam = new THREE.OrthographicCamera(-CS.w / 2, CS.w / 2, CS.h / 2, -CS.h / 2, 0, CS.camH);
+shadowCam.rotation.x = Math.PI / 2;
+shadowGroup.add(shadowCam);
+const depthMat = new THREE.MeshDepthMaterial();
+depthMat.userData.darkness = { value: CS.darkness };
+depthMat.onBeforeCompile = (shader) => {
+  shader.uniforms.darkness = depthMat.userData.darkness;
+  shader.fragmentShader = `uniform float darkness;\n${shader.fragmentShader.replace(
+    'gl_FragColor = vec4( vec3( 1.0 - fragCoordZ ), opacity );',
+    'gl_FragColor = vec4( vec3( 0.0 ), ( 1.0 - fragCoordZ ) * darkness );'
+  )}`;
+};
+depthMat.depthTest = false;
+depthMat.depthWrite = false;
+const hBlur = new THREE.ShaderMaterial(HorizontalBlurShader); hBlur.depthTest = false;
+const vBlur = new THREE.ShaderMaterial(VerticalBlurShader); vBlur.depthTest = false;
+function blurShadow(amount) {
+  blurPlane.visible = true;
+  blurPlane.material = hBlur; hBlur.uniforms.tDiffuse.value = rtA.texture; hBlur.uniforms.h.value = amount / 256;
+  renderer.setRenderTarget(rtB); renderer.render(blurPlane, shadowCam);
+  blurPlane.material = vBlur; vBlur.uniforms.tDiffuse.value = rtB.texture; vBlur.uniforms.v.value = amount / 256;
+  renderer.setRenderTarget(rtA); renderer.render(blurPlane, shadowCam);
+  blurPlane.visible = false;
+}
+function bakeContactShadow() {
+  const hidden = [csPlane, ground, dimsGroup].map((o) => [o, o.visible]);
+  hidden.forEach(([o]) => { o.visible = false; });
+  scene.overrideMaterial = depthMat;
+  const alpha = renderer.getClearAlpha();
+  renderer.setClearAlpha(0);
+  renderer.setRenderTarget(rtA);
+  renderer.render(scene, shadowCam);
+  scene.overrideMaterial = null;
+  blurShadow(CS.blur);
+  blurShadow(CS.blur * 0.4);
+  renderer.setRenderTarget(null);
+  renderer.setClearAlpha(alpha);
+  hidden.forEach(([o, v]) => { o.visible = v; });
+}
+
+/* ------------------------------------------------------------------ */
+/*  Dimension overlay                                                  */
+/* ------------------------------------------------------------------ */
+const dimsGroup = new THREE.Group();
+dimsGroup.visible = false;
+scene.add(dimsGroup);
+const dimMat = new THREE.LineBasicMaterial({ color: 0x7b2b2e, transparent: true, opacity: 0.9, depthTest: false });
+const dimLabels = [];
+{
+  const pts = [];
+  const seg = (a, b) => pts.push(a.x, a.y, a.z, b.x, b.y, b.z);
+  const tick = (p, d) => seg(p.clone().add(d), p.clone().sub(d));
+  const label = (text, p) => {
+    const el = document.createElement('div');
+    el.className = 'dim';
+    el.textContent = text;
+    const o = new CSS2DObject(el);
+    o.position.copy(p);
+    o.visible = false;
+    dimsGroup.add(o);
+    dimLabels.push(o);
+  };
+  const { min, max } = bbox;
+  const g0 = 0.002, zF = max.z + 0.13, xR = max.x + 0.13, t = 0.016;
+  // width, along the floor in front
+  seg(new V3(min.x, g0, zF), new V3(max.x, g0, zF));
+  seg(new V3(min.x, g0, max.z + 0.02), new V3(min.x, g0, zF + 0.025));
+  seg(new V3(max.x, g0, max.z + 0.02), new V3(max.x, g0, zF + 0.025));
+  tick(new V3(min.x, g0, zF), new V3(t, 0, -t)); tick(new V3(max.x, g0, zF), new V3(t, 0, -t));
+  label(`Eni ${cm(dims.w)}`, new V3(0, g0, zF));
+  // depth, along the floor on the right
+  seg(new V3(xR, g0, min.z), new V3(xR, g0, max.z));
+  seg(new V3(max.x + 0.02, g0, min.z), new V3(xR + 0.025, g0, min.z));
+  seg(new V3(max.x + 0.02, g0, max.z), new V3(xR + 0.025, g0, max.z));
+  tick(new V3(xR, g0, min.z), new V3(t, 0, -t)); tick(new V3(xR, g0, max.z), new V3(t, 0, -t));
+  label(`Chuqurligi ${cm(dims.d)}`, new V3(xR, g0, (min.z + max.z) / 2));
+  // overall height, at the back
+  const zTop = postZ(Y_POST_TOP) - 0.012;
+  seg(new V3(xR, 0, zTop), new V3(xR, max.y, zTop));
+  seg(new V3(XL + 0.03, max.y, zTop), new V3(xR + 0.025, max.y, zTop));
+  tick(new V3(xR, 0, zTop), new V3(t, t, 0)); tick(new V3(xR, max.y, zTop), new V3(t, t, 0));
+  label(`Balandligi ${cm(dims.h)}`, new V3(xR, max.y * 0.62, zTop));
+  // seat height, at the front
+  const zS = D / 2;
+  seg(new V3(xR, 0, zS), new V3(xR, SH, zS));
+  seg(new V3(W / 2 + 0.015, SH, zS), new V3(xR + 0.025, SH, zS));
+  tick(new V3(xR, 0, zS), new V3(t, t, 0)); tick(new V3(xR, SH, zS), new V3(t, t, 0));
+  label(`O‘rindiq ${cm(SH)}`, new V3(xR, SH * 0.5, zS));
+  const lg = new THREE.BufferGeometry();
+  lg.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
+  const lines = new THREE.LineSegments(lg, dimMat);
+  lines.renderOrder = 10;
+  dimsGroup.add(lines);
+}
+function setDims(on) {
+  dimsGroup.visible = on;
+  dimLabels.forEach((o) => { o.visible = on; });
+  document.getElementById('btn-dims').setAttribute('aria-pressed', String(on));
+  dirty = true;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Theme                                                              */
+/* ------------------------------------------------------------------ */
+function applyTheme() {
+  const cs = getComputedStyle(document.documentElement);
+  const dimColor = cs.getPropertyValue('--dim').trim();
+  if (dimColor) dimMat.color.set(dimColor);
+  const dark = (cs.colorScheme || '').includes('dark');
+  ground.material.opacity = dark ? 0.32 : 0.16;
+  csPlane.material.opacity = dark ? 0.75 : 0.62;
+  dirty = true;
+}
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+new MutationObserver(applyTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class', 'style'] });
+
+/* ------------------------------------------------------------------ */
+/*  Camera views                                                       */
+/* ------------------------------------------------------------------ */
+const VIEWS = {
+  iso:   { dir: [1.0, 0.62, 1.3],   mul: 1.0 },
+  front: { dir: [0, 0.3, 1],        mul: 1.0 },
+  side:  { dir: [1, 0.3, 0.02],     mul: 0.8 },
+  back:  { dir: [-0.6, 0.55, -1],   mul: 1.0 },
+  p1:    { dir: [0, 1.05, 0.9],     mul: 0.92 },
+  p2:    { dir: [-0.55, 1.0, -1.0], mul: 0.95 },
+  p3:    { dir: [1.0, 1.05, 0.28],  mul: 0.86 },
+};
+// The spec card and the dock cover part of the stage, so the bench is framed
+// inside the free area: the projection centre is shifted there with a view offset.
+const card = document.querySelector('.card'), dock = document.querySelector('.dock');
+let free = { x0: 0, x1: 1, y0: 0, y1: 1 };
+function layoutFrame() {
+  const w = stage.clientWidth, h = stage.clientHeight;
+  const sr = stage.getBoundingClientRect(), cr = card.getBoundingClientRect(), dr = dock.getBoundingClientRect();
+  free = { x0: 0, x1: w, y0: 0, y1: Math.max(h * 0.5, dr.top - sr.top - 8) };
+  if (w >= 900) free.x0 = cr.right - sr.left + 8;
+  else free.y0 = Math.min(h * 0.4, cr.bottom - sr.top + 8);
+  const cx = (free.x0 + free.x1) / 2, cy = (free.y0 + free.y1) / 2;
+  camera.setViewOffset(w, h, w / 2 - cx, h / 2 - cy, w, h);
+}
+function fitDistance() {
+  const t = Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
+  const w = stage.clientWidth, h = stage.clientHeight;
+  const tv = t * (free.y1 - free.y0) / h, th = t * camera.aspect * (free.x1 - free.x0) / w;
+  return 0.8 / Math.sin(Math.atan(Math.max(0.05, Math.min(tv, th))));
+}
+function viewPosition(name) {
+  const v = VIEWS[name];
+  return new V3(...v.dir).normalize().multiplyScalar(fitDistance() * v.mul).add(TARGET);
+}
+let tween = null;
+function goTo(name) {
+  const s0 = new THREE.Spherical().setFromVector3(camera.position.clone().sub(controls.target));
+  const s1 = new THREE.Spherical().setFromVector3(viewPosition(name).sub(TARGET));
+  let dTheta = s1.theta - s0.theta;
+  dTheta = ((dTheta + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI;
+  tween = { t0: performance.now(), dur: reduceMotion ? 0 : 1100, s0, s1, dTheta, from: controls.target.clone() };
+}
+function stepTween(now) {
+  const k = tween.dur ? Math.min(1, (now - tween.t0) / tween.dur) : 1;
+  const e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+  const { s0, s1 } = tween;
+  controls.target.lerpVectors(tween.from, TARGET, e);
+  camera.position.setFromSphericalCoords(
+    s0.radius + (s1.radius - s0.radius) * e,
+    s0.phi + (s1.phi - s0.phi) * e,
+    s0.theta + tween.dTheta * e
+  ).add(controls.target);
+  camera.lookAt(controls.target);
+  if (k >= 1) tween = null;
+}
+
+const viewButtons = [...document.querySelectorAll('[data-view]')];
+const rotateBtn = document.getElementById('btn-rotate');
+function setActiveView(name) { viewButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.view === name))); }
+function setRotate(on) { controls.autoRotate = on; rotateBtn.setAttribute('aria-pressed', String(on)); }
+viewButtons.forEach((b) => b.addEventListener('click', () => { setRotate(false); setActiveView(b.dataset.view); goTo(b.dataset.view); }));
+rotateBtn.addEventListener('click', () => { const on = !controls.autoRotate; setRotate(on); if (on) setActiveView(null); });
+document.getElementById('btn-dims').addEventListener('click', () => setDims(!dimsGroup.visible));
+controls.addEventListener('start', () => { tween = null; setRotate(false); setActiveView(null); });
+controls.addEventListener('change', () => { dirty = true; });
+setRotate(controls.autoRotate);
+
+/* ------------------------------------------------------------------ */
+/*  Loop                                                               */
+/* ------------------------------------------------------------------ */
+let dirty = true;
+function resize() {
+  const w = Math.max(1, stage.clientWidth), h = Math.max(1, stage.clientHeight);
+  renderer.setSize(w, h, false);
+  labelRenderer.setSize(w, h);
+  camera.aspect = w / h;
+  layoutFrame();
+  camera.updateProjectionMatrix();
+  dirty = true;
+}
+const ro = new ResizeObserver(resize);
+[stage, card, dock].forEach((el) => ro.observe(el));
+resize();
+camera.position.copy(viewPosition('iso'));
+camera.lookAt(TARGET);
+applyTheme();
+bakeContactShadow();
+
+const clock = new THREE.Clock();
+function frame(now) {
+  requestAnimationFrame(frame);
+  const dt = clock.getDelta();
+  let moved;
+  if (tween) { stepTween(now); moved = true; } else { moved = controls.update(dt); }
+  if (!moved && !dirty) return;
+  dirty = false;
+  renderer.render(scene, camera);
+  labelRenderer.render(scene, camera);
+  if (!statusEl.hidden) statusEl.hidden = true;
+}
+requestAnimationFrame(frame);
+
+// Used to export the model as a single .glb file.
+window.exportBenchGLB = () => new Promise((resolve, reject) => {
+  new GLTFExporter().parse(bench, resolve, reject, { binary: true });
+});
+</script>
+</body>
+</html>
