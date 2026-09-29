@@ -1,10 +1,10 @@
 """
-Modular steel mesh cage (holding cell) generator for Unity / VR.
+Modular steel-framed glass cage (courtroom dock / holding cell) generator for Unity / VR.
 
-Built from the reference picture with its inconsistencies fixed: every wall
-and door opening is fully meshed, one uniform mesh type per surface, a door
-plate that no longer overlaps the jamb, working hinges, an openable food
-hatch with hinge and latch, and true rectangular geometry.
+Walls and door leaves are glazed, the roof is expanded metal mesh, as on the
+real enclosure. Fixes kept from the first reference picture: a door plate that
+no longer overlaps the jamb, working hinges, an openable food hatch with hinge
+and latch, and true rectangular geometry.
 
 Doors, handles and hatches are separate objects whose pivots sit on their
 real hinge / spindle axes, so they can be animated or grabbed in VR.
@@ -45,18 +45,19 @@ HATCH_V0, HATCH_V1 = 0.915, 1.035
 HINGE_R = 0.011
 HINGE_KNUCKLE = 0.055
 
-WIRE_R = 0.0017                      # 3.4 mm welded wire
-WIRE_PITCH = 0.05                    # 50 mm diamonds on the walls
+GLASS_T = 0.010                      # 10 mm glass, edges held inside the frame tubes
 ROOF_LWD, ROOF_SWD = 0.072, 0.030    # expanded metal diamond (long / short way)
 STRAND_W, STRAND_T = 0.0055, 0.0016
 EDGE_BEVEL = 0.002
 
 # colours measured from the reference picture (sRGB)
 PAINT_HEX = "#A0A9B2"   # blue-grey powder coat of the frame
-MESH_HEX = "#A9ACAF"    # neutral galvanised mesh
+MESH_HEX = "#A9ACAF"    # neutral galvanised roof mesh
+GLASS_HEX = "#F0F2F2"   # clear glass, no tint
+GLASS_ALPHA = 0.2
 STEEL_HEX = "#C8CACC"   # stainless handle / lock
 
-PAINT, MESH, STEEL = 0, 1, 2
+PAINT, MESH, STEEL, GLASS = 0, 1, 2, 3
 
 
 def srgb_to_linear(c):
@@ -103,14 +104,6 @@ class Builder:
         for i in range(k):
             j = (i + 1) % k
             self.bm.faces.new((ra[i], ra[j], rb[j], rb[i])).material_index = mat
-
-    def wire(self, a, b, normal, radius, sides=6, mat=MESH):
-        d = (b - a).normalized()
-        n1 = normal.normalized()
-        n2 = d.cross(n1)
-        self._section = [(radius * math.cos(2 * math.pi * i / sides), radius * math.sin(2 * math.pi * i / sides))
-                         for i in range(sides)]
-        self.ring_tube(a, b, n1, n2, mat)
 
     def strip(self, a, b, normal, width, thick, tilt, mat=MESH):
         d = (b - a).normalized()
@@ -187,27 +180,26 @@ class Frame:
         b.box([min(a[i], c[i]) for i in range(3)], [max(a[i], c[i]) for i in range(3)], mat, bevel)
 
 
-def fill_mesh(b, fr, us, vs, wc, kind):
-    ext = 0.012   # wires run into the tube so their cut ends stay hidden
+def fill(b, fr, us, vs, wc, kind):
+    """Fill a frame opening with glass or expanded metal; edges run into the tubes."""
+    ext = 0.012
     ua, ub, va, vb = us[0] - ext, us[1] + ext, vs[0] - ext, vs[1] + ext
-    if kind == "wire":
-        for sgn, (u0, v0), (u1, v1) in diamond_lines(ua, ub, va, vb, 1.0, WIRE_PITCH):
-            w = wc + sgn * WIRE_R * 0.9          # the two layers touch like welded mesh
-            b.wire(fr.p(u0, v0, w), fr.p(u1, v1, w), fr.w, WIRE_R)
+    if kind == "glass":
+        fr.box(b, (ua, ub), (va, vb), (wc - GLASS_T / 2, wc + GLASS_T / 2), mat=GLASS, bevel=0)
     else:
         for sgn, (u0, v0), (u1, v1) in diamond_lines(ua, ub, va, vb, ROOF_SWD / ROOF_LWD, ROOF_SWD):
             w = wc + sgn * STRAND_T * 0.4
             b.strip(fr.p(u0, v0, w), fr.p(u1, v1, w), fr.w, STRAND_W, STRAND_T, math.radians(28 * sgn))
 
 
-def panel(frame_b, mesh_b, fr, width, height, kind="wire", bolts=True):
+def panel(frame_b, fill_b, fr, width, height, kind="glass", bolts=True):
     t = TUBE
     fr.box(frame_b, (0, t), (0, height), (0, t))
     fr.box(frame_b, (width - t, width), (0, height), (0, t))
     fr.box(frame_b, (t, width - t), (0, t), (0, t))
     fr.box(frame_b, (t, width - t), (height - t, height), (0, t))
     if kind:
-        fill_mesh(mesh_b, fr, (t, width - t), (t, height - t), t / 2, kind)
+        fill(fill_b, fr, (t, width - t), (t, height - t), t / 2, kind)
     if bolts:
         for u in (t / 2, width - t / 2):
             for v in (t / 2, height - t / 2):
@@ -215,9 +207,9 @@ def panel(frame_b, mesh_b, fr, width, height, kind="wire", bolts=True):
 
 
 def door_bay(frame_b, fr, width, height):
-    """Jamb frame + leaf. Returns builders and pivots of the leaf, handle and hatch."""
+    """Jamb frame + leaf. Returns builders and pivots of the leaf, its glass, handle and hatch."""
     panel(frame_b, None, fr, width, height, kind=None)
-    leaf, handle, hatch = Builder(), Builder(), Builder()
+    leaf, glass, handle, hatch = Builder(), Builder(), Builder(), Builder()
     u0, u1 = TUBE + GAP, width - TUBE - GAP
     v0, v1 = TUBE + GAP, height - TUBE - GAP
     ws, s = (LEAF_W0, LEAF_W1), LEAF_STILE
@@ -236,8 +228,8 @@ def door_bay(frame_b, fr, width, height):
     fr.box(leaf, (hb, u1 - s), (KICK_V0, KICK_V1), ws)
     fr.box(leaf, (ha, hb), (KICK_V0, HATCH_V0), ws)
     fr.box(leaf, (ha, hb), (HATCH_V1, KICK_V1), ws)
-    fill_mesh(leaf, fr, (u0 + s, u1 - s), (KICK_V1, v1 - s), wc, "wire")
-    fill_mesh(leaf, fr, (u0 + s, u1 - s), (v0 + s, KICK_V0), wc, "wire")
+    fill(glass, fr, (u0 + s, u1 - s), (KICK_V1, v1 - s), wc, "glass")
+    fill(glass, fr, (u0 + s, u1 - s), (v0 + s, KICK_V0), wc, "glass")
 
     # hatch: recessed plate hinged along its bottom edge, two fixing screws, latch
     fr.box(hatch, (ha + 0.003, hb - 0.003), (HATCH_V0 + 0.002, HATCH_V1 - 0.002), (LEAF_W1 - 0.012, LEAF_W1 - 0.002))
@@ -275,7 +267,8 @@ def door_bay(frame_b, fr, width, height):
     fr.box(leaf, (uh - 0.0012, uh + 0.0012), (kv - 0.006, kv + 0.006), (LEAF_W1 + 0.011, LEAF_W1 + 0.0125),
            mat=STEEL, bevel=0)
 
-    return leaf, fr.p(u_ax, 0, w_ax), handle, fr.p(uh, HANDLE_V, LEAF_W1), hatch, fr.p(hc, HATCH_V0, LEAF_W1)
+    return (leaf, glass, fr.p(u_ax, 0, w_ax), handle, fr.p(uh, HANDLE_V, LEAF_W1),
+            hatch, fr.p(hc, HATCH_V0, LEAF_W1))
 
 
 # ---------------------------------------------------------------- objects / materials
@@ -292,6 +285,16 @@ def make_materials():
         b.inputs["Roughness"].default_value = rough
         m.diffuse_color = hex_linear(hx)
         out.append(m)
+    glass = bpy.data.materials.new("Cage_Glass_Clear")
+    glass.use_nodes = True
+    b = glass.node_tree.nodes["Principled BSDF"]
+    b.inputs["Base Color"].default_value = hex_linear(GLASS_HEX)
+    b.inputs["Roughness"].default_value = 0.02
+    b.inputs["IOR"].default_value = 1.52
+    b.inputs["Transmission Weight"].default_value = 1.0
+    b.inputs["Alpha"].default_value = GLASS_ALPHA          # exported as FBX opacity for Unity
+    glass.diffuse_color = hex_linear(GLASS_HEX)[:3] + (GLASS_ALPHA,)
+    out.append(glass)
     return out
 
 
@@ -345,7 +348,7 @@ def to_object(b, name, mats, pivot=Vector(), parent=None):
 def build(mats):
     root = bpy.data.objects.new("SecurityCage", None)
     bpy.context.scene.collection.objects.link(root)
-    frame_b, wall_b, roof_b = Builder(), Builder(), Builder()
+    frame_b, glass_b, roof_b = Builder(), Builder(), Builder()
     X, Y, Z = Vector((1, 0, 0)), Vector((0, 1, 0)), Vector((0, 0, 1))
 
     front = Frame((-W / 2, -D / 2 + TUBE, 0), X, Z, -Y)
@@ -355,22 +358,24 @@ def build(mats):
 
     doors = []
     for fr, name in ((front, "Door_Front"), (back, "Door_Back")):
-        panel(frame_b, wall_b, fr, FRONT_FIXED, H_WALL)
+        panel(frame_b, glass_b, fr, FRONT_FIXED, H_WALL)
         doors.append((name, door_bay(frame_b, fr.shifted(FRONT_FIXED), DOOR_BAY, H_WALL)))
     for fr in (right, left):
         for i in range(N_SIDE):
-            panel(frame_b, wall_b, fr.shifted(i * SIDE_PANEL), SIDE_PANEL, H_WALL)
+            panel(frame_b, glass_b, fr.shifted(i * SIDE_PANEL), SIDE_PANEL, H_WALL)
     for i in range(N_SIDE):
         roof = Frame((-W / 2, -D / 2 + i * D / N_SIDE, H_WALL), X, Y, Z)
         panel(frame_b, roof_b, roof, W, D / N_SIDE, kind="expanded")
 
-    parts = [to_object(frame_b, "Cage_Frame", mats), to_object(wall_b, "Cage_WallMesh", mats),
+    parts = [to_object(frame_b, "Cage_Frame", mats), to_object(glass_b, "Cage_Glass", mats),
              to_object(roof_b, "Cage_RoofMesh", mats)]
     for ob in parts:
         ob.parent = root
-    for name, (leaf, p_leaf, handle, p_handle, hatch, p_hatch) in doors:
+    # glass stays a separate child so Unity sorts the transparent panes on their own
+    for name, (leaf, glass, p_leaf, handle, p_handle, hatch, p_hatch) in doors:
         door = to_object(leaf, name, mats, p_leaf, root)
-        parts += [door, to_object(handle, name + "_Handle", mats, p_handle, door),
+        parts += [door, to_object(glass, name + "_Glass", mats, p_leaf, door),
+                  to_object(handle, name + "_Handle", mats, p_handle, door),
                   to_object(hatch, name + "_Hatch", mats, p_hatch, door)]
 
     # Store everything below the root in Y-up space and tilt only the root by +90 deg X.
