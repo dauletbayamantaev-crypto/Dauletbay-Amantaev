@@ -6,11 +6,8 @@ Old tomon (mehmon tomoni) - berilgan rasm asosida:
   * ikki qavatli, yivli yon oyoqlar,
   * old panel ustida ikkita bo'rtma (fasetli) panel va alyuminiy planka.
 Orqa tomon (o'tiruvchi tomoni) - rasmda yo'q, shu skriptda loyihalangan:
-  * o'ng tumba: 3 ta tortma (pastkisi - hujjat/fayl tortmasi),
-  * chap tumba: 1 ta tortma + ichida tokchasi bor eshikli shkaf,
-  * o'rtada qalam/klaviatura tortmasi, oyoq uchun keng bo'sh joy,
-  * tortmalar ichki qutisi va yo'naltirgichlari (VR da ochilganda ko'rinadi),
-  * qulflar, kabel teshiklari (grommet).
+  * ikki yonda ochiq tokchali tumbalar (tortma va eshiksiz, har birida 3 ta bo'lim),
+  * o'rtada oyoq uchun keng bo'sh joy.
 
 Koordinatalar (Blender): Z - yuqori, -Y - old (mehmon) tomon, +Y - o'tiruvchi tomoni.
 O'lchov: metr. Pivot - stol markazi, pol sathida.
@@ -96,9 +93,8 @@ def make_simple(name, color, metallic, roughness):
 MATS = [
     make_wood(),
     make_simple("Metall_Alyuminiy", (0.80, 0.80, 0.82), 1.0, 0.28),
-    make_simple("Plastik_Qora", (0.015, 0.015, 0.016), 0.0, 0.45),
 ]
-WOOD, METAL, PLASTIC = 0, 1, 2
+WOOD, METAL = 0, 1
 AXIS = {"X": 0, "Y": 1, "Z": 2}
 
 # ---------------------------------------------------------------- geometriya yordamchilari
@@ -176,47 +172,6 @@ def box(x0, x1, y0, y1, z0, z1, group, mat=WOOD, grain="X", bevel=0.0015, segs=2
     add_hull(pts, group, mat, grain, bevel, segs)
 
 
-def cylinder(center, axis, r, h0, h1, group, mat=METAL, segs=24, bevel=0.0006):
-    a = AXIS[axis]
-    b, c = [i for i in range(3) if i != a]
-    pts = []
-    for h in (h0, h1):
-        for k in range(segs):
-            t = 2 * math.pi * k / segs
-            p = Vector(center)
-            p[a] = h
-            p[b] += r * math.cos(t)
-            p[c] += r * math.sin(t)
-            pts.append(p)
-    add_hull(pts, group, mat, "X", bevel, 2)
-
-
-def bar_handle(cx, cz, y_face, length, group, vertical=False):
-    """Alyuminiy tutqich: qirralari qiya (old tomondagi plankalar uslubida) + 2 ta ustuncha."""
-    h, t, gap, c = 0.022, 0.009, 0.026, 0.010      # balandlik, qalinlik, qo'l uchun oraliq, faska
-    y0, y1 = y_face + gap, y_face + gap + t
-    half = length / 2
-    pts = []
-    for y, inset in ((y0, 0.0), (y1, c)):
-        for s in (-1, 1):
-            for q in (-1, 1):
-                along = s * (half - inset)
-                across = q * h / 2
-                x, z = (cx + across, cz + along) if vertical else (cx + along, cz + across)
-                pts.append(Vector((x, y, z)))
-    add_hull(pts, group, METAL, "X", 0.0012, 2)
-    post_off = half - 0.035
-    for s in (-1, 1):
-        px, pz = (cx, cz + s * post_off) if vertical else (cx + s * post_off, cz)
-        cylinder((px, 0, pz), "Y", 0.0055, y_face - 0.001, y0 + 0.001, group, METAL, 16)
-
-
-def lock(cx, cz, y_face, group):
-    cylinder((cx, 0, cz), "Y", 0.0095, y_face - 0.001, y_face + 0.004, group, METAL, 24)
-    box(cx - 0.0011, cx + 0.0011, y_face + 0.0035, y_face + 0.0045, cz - 0.005, cz + 0.005,
-        group, PLASTIC, bevel=0)
-
-
 # ---------------------------------------------------------------- o'lchamlar (metr)
 H = 0.760                     # umumiy balandlik
 TOP_T, GAP_T, SUB_T = 0.028, 0.008, 0.026
@@ -230,9 +185,8 @@ FRONT_Y0, FRONT_Y1 = -0.395, -0.370     # old panel (mehmon tomoni)
 FRONT_Z0 = 0.072
 PED_IN = 0.400                          # tumba ichki devori (|x|)
 PED_SIDE_T = 0.018
-FACE_Y0, FACE_Y1 = 0.400, 0.420         # tortma fasadlari
-FACE_Z0, FACE_Z1 = 0.064, 0.694
-GAP = 0.003
+PED_Y1 = LEG_Y - 0.005                  # tumba old qirrasi (o'tiruvchi tomoni)
+SHELVES = ((0.290, 0.308), (0.522, 0.540))   # har bir tumbada 2 ta tokcha -> 3 ta bo'lim
 BODY = "Stol_Korpus"
 
 # ---------------------------------------------------------------- stoleshnitsa (3 qatlam)
@@ -266,78 +220,15 @@ for s in (-1, 1):
     add_hull([q + n * 0.0012 for q in quad] + [q - n * 0.002 for q in quad],
              BODY, METAL, "X", 0.0005, 1)
 
-# ---------------------------------------------------------------- tumbalar korpusi
+# ---------------------------------------------------------------- tumbalar (ochiq tokchalar)
 for s in (-1, 1):
-    box(s * (PED_IN - PED_SIDE_T), s * PED_IN, FRONT_Y1, FACE_Y0, 0, Z_SUB0, BODY, grain="Z")
-    box(s * PED_IN, s * LEG_IN, FRONT_Y1, FACE_Y0, 0.058, 0.076, BODY, grain="X", bevel=0.001)
+    box(s * (PED_IN - PED_SIDE_T), s * PED_IN, FRONT_Y1, PED_Y1, 0, Z_SUB0, BODY, grain="Z")
+    box(s * PED_IN, s * LEG_IN, FRONT_Y1, PED_Y1, 0.058, 0.076, BODY, grain="X", bevel=0.0015)
     box(s * PED_IN, s * LEG_IN, 0.330, 0.348, 0, 0.058, BODY, grain="X", bevel=0.001)   # sokol
-# chap tumba (o'tiruvchidan qaraganda chap = +X): tortma va shkaf orasidagi to'siq + tokcha
-box(PED_IN, LEG_IN, FRONT_Y1, FACE_Y0, 0.522, 0.540, BODY, grain="X", bevel=0.001)
-box(PED_IN, LEG_IN, FRONT_Y1 + 0.02, FACE_Y0 - 0.02, 0.290, 0.308, BODY, grain="X", bevel=0.0015)
+    for z0, z1 in SHELVES:
+        box(s * PED_IN, s * LEG_IN, FRONT_Y1, PED_Y1, z0, z1, BODY, grain="X", bevel=0.0015)
 
-# kabel teshiklari (grommet)
-for s in (-1, 1):
-    cylinder((s * 0.70, 0.36, 0), "Z", 0.036, H - 0.003, H + 0.0015, BODY, METAL, 32)
-    cylinder((s * 0.70, 0.36, 0), "Z", 0.030, H, H + 0.0025, BODY, PLASTIC, 32)
-
-
-# ---------------------------------------------------------------- tortmalar
-GROUPS = {}   # nom -> pivot (Blender koordinatalarida)
-
-
-def drawer(name, fx0, fx1, fz0, fz1, open_x0, open_x1, depth, with_lock=False, lock_side=1):
-    """Fasad + ichki quti + tutqich. Karkas ichidagi yo'naltirgichlar korpusga qo'shiladi."""
-    fx0, fx1 = sorted((fx0, fx1))
-    open_x0, open_x1 = sorted((open_x0, open_x1))
-    cx = (fx0 + fx1) / 2
-    GROUPS[name] = Vector((cx, FACE_Y1, fz0))
-    box(fx0, fx1, FACE_Y0, FACE_Y1, fz0, fz1, name, grain="X", bevel=0.002, segs=3)
-    h = fz1 - fz0
-    bar_handle(cx, fz1 - min(0.05, h / 2), FACE_Y1, 0.224 if fx1 - fx0 > 0.3 else 0.18, name)
-    if with_lock:
-        lx = fx1 - 0.035 if lock_side > 0 else fx0 + 0.035
-        lock(lx, fz1 - 0.03, FACE_Y1, name)
-    # quti
-    bx0, bx1 = open_x0 + 0.013, open_x1 - 0.013
-    bz0 = max(fz0 + 0.015, 0.082) if h > 0.1 else fz0 + 0.008
-    bz1 = fz1 - (0.025 if h > 0.1 else 0.012)
-    by0, by1 = FACE_Y0 - depth, FACE_Y0
-    t = 0.012
-    box(bx0, bx0 + t, by0, by1, bz0, bz1, name, grain="Y", bevel=0.001)
-    box(bx1 - t, bx1, by0, by1, bz0, bz1, name, grain="Y", bevel=0.001)
-    box(bx0 + t, bx1 - t, by0, by0 + t, bz0, bz1 - 0.01, name, grain="X", bevel=0.001)
-    box(bx0 + t, bx1 - t, by0 + t, by1, bz0, bz0 + 0.008, name, grain="X", bevel=0.0008)
-    # metall yo'naltirgichlar (korpusda qoladi)
-    for x0, x1 in ((open_x0, bx0), (bx1, open_x1)):
-        box(x0, x1, FACE_Y0 - depth + 0.02, FACE_Y0 - 0.005, bz0 + 0.004, bz0 + 0.032,
-            BODY, METAL, bevel=0.0008)
-
-
-# o'ng tumba (o'tiruvchi uchun o'ng = -X): 3 ta tortma
-R_IN, R_OUT = -(PED_IN - PED_SIDE_T + 0.002), -(LEG_IN - 0.002)
-z_top0 = FACE_Z1 - 0.150
-z_mid0 = z_top0 - GAP - 0.195
-drawer("Tortma_Ong_1", R_IN, R_OUT, z_top0, FACE_Z1, -PED_IN, -LEG_IN, 0.55,
-       with_lock=True, lock_side=1)
-drawer("Tortma_Ong_2", R_IN, R_OUT, z_mid0, z_top0 - GAP, -PED_IN, -LEG_IN, 0.55)
-drawer("Tortma_Ong_3", R_IN, R_OUT, FACE_Z0, z_mid0 - GAP, -PED_IN, -LEG_IN, 0.60)
-
-# chap tumba (+X): tortma + eshik
-L_IN, L_OUT = -R_IN, -R_OUT
-drawer("Tortma_Chap_1", L_IN, L_OUT, z_top0, FACE_Z1, PED_IN, LEG_IN, 0.55,
-       with_lock=True, lock_side=-1)
-
-# o'rta qalam/klaviatura tortmasi
-C_X = -R_IN - GAP
-drawer("Tortma_Markaz", -C_X, C_X, 0.620, FACE_Z1, -(PED_IN - PED_SIDE_T), PED_IN - PED_SIDE_T, 0.45)
-
-# eshik: sharnir tashqi (oyoq) tomonda, pivot sharnir o'qida
-DOOR = "Eshik_Chap"
-d_x0, d_x1, d_z1 = L_IN, L_OUT, z_top0 - GAP
-GROUPS[DOOR] = Vector((d_x1, FACE_Y1, FACE_Z0))
-box(d_x0, d_x1, FACE_Y0, FACE_Y1, FACE_Z0, d_z1, DOOR, grain="X", bevel=0.002, segs=3)
-bar_handle(d_x0 + 0.04, d_z1 - 0.15, FACE_Y1, 0.224, DOOR, vertical=True)
-GROUPS[BODY] = Vector((0, 0, 0))
+GROUPS = {BODY: Vector((0, 0, 0))}   # nom -> pivot (Blender koordinatalarida)
 
 
 # ---------------------------------------------------------------- guruhlarni obyektga yig'ish
@@ -461,9 +352,4 @@ if RENDER:
     shot("01_old_tomon.png", (0, -3.6, 1.75), (0, 0, 0.42))
     shot("02_orqa_tomon.png", (0, 3.5, 1.3), (0, 0, 0.38))
     shot("03_old_3x4.png", (-2.3, -2.9, 1.55), (0, 0, 0.36))
-    # ochiq tortma va eshik bilan
-    objs["Tortma_Ong_1"].location.y += 0.32
-    objs["Tortma_Markaz"].location.y += 0.22
-    objs["Tortma_Chap_1"].location.y += 0.18
-    objs[DOOR].rotation_euler.z = math.radians(-75)
-    shot("04_orqa_3x4_ochiq.png", (1.9, 2.9, 1.55), (0, 0.1, 0.36))
+    shot("04_orqa_3x4.png", (1.9, 2.9, 1.55), (0, 0.1, 0.36))
