@@ -11,6 +11,7 @@ import {
 } from 'firebase/auth';
 import { collection, deleteDoc, doc, onSnapshot, setDoc, updateDoc } from 'firebase/firestore';
 import { auth, db, firebaseEnabled } from './firebase';
+import { capability, dbErrorText, isArtifact, type ArtifactDB } from './artifact';
 import {
   COLLECTIONS,
   type CollName,
@@ -33,7 +34,8 @@ export interface AppUser {
 interface AuthCtx {
   user: AppUser | null;
   loading: boolean;
-  mode: 'cloud' | 'local';
+  /** cloud — Firebase; artifact — claude.ai Artifact xotirasi; local — faqat shu brauzer */
+  mode: 'cloud' | 'artifact' | 'local';
   loginGoogle: () => Promise<void>;
   loginEmail: (email: string, password: string) => Promise<void>;
   registerEmail: (name: string, email: string, password: string) => Promise<void>;
@@ -45,11 +47,36 @@ interface AuthCtx {
 const AuthContext = createContext<AuthCtx | null>(null);
 const LOCAL_USER_KEY = 'lifeos:local-user';
 
+/** Artifact rejimida `db` imkoniyati shu yerda saqlanadi (DataProvider undan foydalanadi) */
+let artifactDb: ArtifactDB | null = null;
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AppUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const [mode, setMode] = useState<AuthCtx['mode']>(isArtifact ? 'artifact' : firebaseEnabled ? 'cloud' : 'local');
 
   useEffect(() => {
+    if (isArtifact) {
+      // claude.ai hisobi orqali avtomatik kirish; xotira mavjud bo'lmasa — mahalliy rejim
+      let alive = true;
+      (async () => {
+        const [userCap, dbCap] = await Promise.all([capability('user'), capability('db')]);
+        const id = userCap ? await userCap.id().catch(() => null) : null;
+        if (!alive) return;
+        if (dbCap && id) {
+          artifactDb = dbCap;
+          setMode('artifact');
+          setUser({ uid: id, email: null, displayName: null, photoURL: null });
+        } else {
+          setMode('local');
+          setUser(localUser());
+        }
+        setLoading(false);
+      })();
+      return () => {
+        alive = false;
+      };
+    }
     if (!firebaseEnabled || !auth) {
       if (safeGet(LOCAL_USER_KEY)) setUser(localUser());
       setLoading(false);
@@ -65,7 +92,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     () => ({
       user,
       loading,
-      mode: firebaseEnabled ? 'cloud' : 'local',
+      mode,
       loginGoogle: async () => {
         if (!auth) return;
         await signInWithPopup(auth, new GoogleAuthProvider());
@@ -98,7 +125,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setUser(localUser());
       },
     }),
-    [user, loading],
+    [user, loading, mode],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -155,6 +182,57 @@ function firestoreBackend(userId: string): Backend {
     set: (c, id, data) => setDoc(ref(c, id), data),
     update: (c, id, patch) => updateDoc(ref(c, id), patch),
     remove: (c, id) => deleteDoc(ref(c, id)),
+  };
+}
+
+/**
+ * claude.ai Artifact xotirasi. Har bir foydalanuvchining ma'lumotlari `data/users/<id>/` ostida —
+ * boshqalarga (hatto artifact egasiga ham) ko'rinmaydi.
+ */
+function artifactBackend(store: ArtifactDB, userId: string): Backend {
+  const items = (c: CollName) => store.doc(`data/users/${userId}/${c}`).collection('items');
+  const cache = new Map<CollName, Map<string, AnyDoc>>();
+  const cacheOf = (c: CollName) => {
+    let m = cache.get(c);
+    if (!m) cache.set(c, (m = new Map()));
+    return m;
+  };
+  const wrap = (p: Promise<void>) =>
+    p.catch((e) => {
+      throw new Error(dbErrorText(e));
+    });
+  return {
+    subscribe: (c, cb, onError) =>
+      items(c).onSnapshot(
+        (snap) => {
+          // Kelgan hujjatlar muzlatilgan — nusxa olamiz
+          const docs = snap.docs
+            .filter((d) => d.exists)
+            .map((d) => ({ ...(JSON.parse(JSON.stringify(d.data() ?? {})) as Record<string, unknown>), id: d.id }));
+          const m = cacheOf(c);
+          m.clear();
+          docs.forEach((d) => m.set(d.id, d));
+          cb(docs);
+        },
+        (e) => onError(new Error(dbErrorText(e))),
+      ),
+    set: (c, id, data) => {
+      cacheOf(c).set(id, data);
+      return wrap(items(c).doc(id).set(data));
+    },
+    // Firestore bilan bir xil ma'no: yuqori darajadagi maydonlar to'liq almashtiriladi
+    // (db.update ichki obyektlarni birlashtiradi, bu esa o'chirilgan kalitlarni qoldirib ketardi)
+    update: (c, id, patch) => {
+      const cur = cacheOf(c).get(id);
+      if (!cur) return wrap(items(c).doc(id).update(patch));
+      const next = { ...cur, ...patch };
+      cacheOf(c).set(id, next);
+      return wrap(items(c).doc(id).set(next));
+    },
+    remove: (c, id) => {
+      cacheOf(c).delete(id);
+      return wrap(items(c).doc(id).delete());
+    },
   };
 }
 
@@ -234,7 +312,12 @@ const emptyState = (): DataState =>
   Object.fromEntries(COLLECTIONS.map((c) => [c, []])) as unknown as DataState;
 
 export function DataProvider({ userId, children }: { userId: string; children: React.ReactNode }) {
-  const backend = useMemo(() => (firebaseEnabled && userId !== 'local' ? firestoreBackend(userId) : localBackend()), [userId]);
+  const { mode } = useAuth();
+  const backend = useMemo(() => {
+    if (mode === 'artifact' && artifactDb) return artifactBackend(artifactDb, userId);
+    if (mode === 'cloud' && userId !== 'local') return firestoreBackend(userId);
+    return localBackend();
+  }, [userId, mode]);
   const [data, setData] = useState<DataState>(emptyState);
   const [loaded, setLoaded] = useState<Set<CollName>>(new Set());
   const [error, setError] = useState<string | null>(null);
@@ -311,7 +394,7 @@ export function DataProvider({ userId, children }: { userId: string; children: R
         const docs = dump[c];
         if (!Array.isArray(docs)) continue;
         for (const d of docs as unknown as AnyDoc[]) {
-          if (!d || typeof d.id !== 'string') continue;
+          if (!d || typeof d.id !== 'string' || !/^[\w\-.~:@+]{1,200}$/.test(d.id)) continue;
           await backend.set(c, d.id, d);
           count++;
         }

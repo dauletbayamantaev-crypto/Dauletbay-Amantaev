@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
 import { useAuth, useData } from '../lib/store';
+import { isArtifact } from '../lib/artifact';
 import { cls } from '../lib/utils';
 
 // ---------------- Marshrutlash (hash asosida) ----------------
@@ -132,11 +133,15 @@ function UserBox() {
       )}
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium text-slate-800">{name}</p>
-        <p className="truncate text-xs text-slate-500">{mode === 'cloud' ? 'Bulutda saqlanmoqda' : 'Mahalliy rejim'}</p>
+        <p className="truncate text-xs text-slate-500">
+          {mode === 'cloud' ? 'Bulutda saqlanmoqda' : mode === 'artifact' ? 'Claude hisobida saqlanmoqda' : 'Mahalliy rejim'}
+        </p>
       </div>
-      <button onClick={logout} title="Chiqish" aria-label="Chiqish" className="rounded-lg p-1.5 text-slate-400 hover:bg-white hover:text-slate-700">
-        <LogOut className="h-4 w-4" />
-      </button>
+      {!isArtifact && (
+        <button onClick={logout} title="Chiqish" aria-label="Chiqish" className="rounded-lg p-1.5 text-slate-400 hover:bg-white hover:text-slate-700">
+          <LogOut className="h-4 w-4" />
+        </button>
+      )}
     </div>
   );
 }
@@ -174,7 +179,9 @@ export function Shell({ page, children }: { page: string; children: React.ReactN
       <div className="lg:pl-64">
         {mode === 'local' && (
           <div className="border-b border-amber-200 bg-amber-50 px-4 py-2 text-center text-xs text-amber-800">
-            Mahalliy rejim: ma'lumotlar faqat shu brauzerda saqlanadi. Bulutga saqlash uchun Firebase'ni sozlang (README).
+            {isArtifact
+              ? "Bulut xotirasi bu ko'rinishda mavjud emas: ma'lumotlar faqat shu brauzerda saqlanadi. Sahifani claude.ai'ga kirgan holda oching."
+              : "Mahalliy rejim: ma'lumotlar faqat shu brauzerda saqlanadi. Bulutga saqlash uchun Firebase'ni sozlang (README)."}
           </div>
         )}
         {error && (

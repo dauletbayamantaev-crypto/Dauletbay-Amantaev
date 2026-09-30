@@ -8,7 +8,7 @@ import { Button, Card, PageHeader, Textarea } from '../components/ui';
 import { AIErrorNote, Markdown } from '../components/ai';
 
 const CHAT_ID = 'main';
-const MAX_SAVED = 60;
+const MAX_SAVED = 40;
 
 const STARTERS = [
   'Hozirgi holatimga qarab, bu hafta nimaga e\'tibor qaratishim kerak?',

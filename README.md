@@ -21,6 +21,17 @@ Shaxsiy hayotni boshqarish tizimi: strategiya, maqsad va loyihalar, ularning bos
 
 **Aqlli tavsiyalar** AI kalitisiz ham ishlaydi — ular ma'lumotlaringizdan qoidalar asosida hisoblanadi (muddati o'tgan bosqichlar, ortda qolayotgan maqsadlar, byudjet oshishi, xavfsizlik yostig'i, kam uyqu, haftasiga 150 daqiqadan kam faollik va h.k.).
 
+## Claude ichida ishlatish (Artifact)
+
+Ilova claude.ai Artifact sifatida ochilganda o'zi buni aniqlaydi va hech qanday sozlashsiz ishlaydi:
+
+- **Login** — claude.ai hisobingiz orqali (alohida parol kerak emas);
+- **Saqlash** — Artifact xotirasida, `data/users/<id>/` ostida: faqat sizga ko'rinadi, barcha qurilmalarda bir xil;
+- **AI** — Claude hisobingiz orqali (`sample` imkoniyati), API kalit kerak emas; birinchi so'rovda ruxsat so'raladi;
+- **Eksport** — platformaning `downloads` imkoniyati orqali.
+
+Artifact'ni yangilash uchun `npx vite build --base=./` natijasini (`index.html` o'rniga faqat `<title>`, CSS/JS havolalari va `<div id="root">` dan iborat sahifa bilan) `db`, `user`, `sample`, `downloads` imkoniyatlari bilan chop etiladi.
+
 ## Ishga tushirish
 
 **Talab:** Node.js 20+
