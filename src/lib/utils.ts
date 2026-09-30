@@ -174,8 +174,11 @@ export const krProgress = (kr: { start: number; target: number; current: number 
 
 // ---------- Rasm ----------
 
-/** Rasmni kichraytirib JPEG dataURL ko'rinishida qaytaradi (Firestore 1MB chegarasi uchun) */
-export const compressImage = (file: File, maxSide = 960, quality = 0.7): Promise<string> =>
+/**
+ * Rasmni kichraytirib JPEG dataURL ko'rinishida qaytaradi. Natija `maxChars` dan oshmaguncha
+ * o'lcham va sifat pasaytiriladi — bitta bosqichdagi 3 ta rasm xotira chegarasiga (256 KB) sig'ishi uchun.
+ */
+export const compressImage = (file: File, maxSide = 960, quality = 0.7, maxChars = 70_000): Promise<string> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onerror = () => reject(new Error("Faylni o'qib bo'lmadi"));
@@ -183,14 +186,23 @@ export const compressImage = (file: File, maxSide = 960, quality = 0.7): Promise
       const img = new Image();
       img.onerror = () => reject(new Error('Rasm formati qo\'llab-quvvatlanmaydi'));
       img.onload = () => {
-        const scale = Math.min(1, maxSide / Math.max(img.width, img.height));
         const canvas = document.createElement('canvas');
-        canvas.width = Math.round(img.width * scale);
-        canvas.height = Math.round(img.height * scale);
         const ctx = canvas.getContext('2d');
         if (!ctx) return reject(new Error('Canvas mavjud emas'));
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL('image/jpeg', quality));
+        let side = maxSide;
+        let q = quality;
+        let out = '';
+        for (let i = 0; i < 8; i++) {
+          const scale = Math.min(1, side / Math.max(img.width, img.height));
+          canvas.width = Math.round(img.width * scale);
+          canvas.height = Math.round(img.height * scale);
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          out = canvas.toDataURL('image/jpeg', q);
+          if (out.length <= maxChars) break;
+          side = Math.round(side * 0.8);
+          q = Math.max(0.4, q - 0.05);
+        }
+        resolve(out);
       };
       img.src = reader.result as string;
     };

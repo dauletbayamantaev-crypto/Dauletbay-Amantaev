@@ -1,8 +1,10 @@
 import type Anthropic from '@anthropic-ai/sdk';
 import type { Profile } from './types';
 import { getApiKeys } from './store';
+import { capability, dataUrlToBlob, isArtifact, sampleErrorText } from './artifact';
 
-export type Provider = 'gemini' | 'claude';
+/** artifact — claude.ai Artifact ichida: foydalanuvchining Claude hisobi orqali, kalitsiz */
+export type Provider = 'gemini' | 'claude' | 'artifact';
 
 export interface AIConfig {
   provider: Provider;
@@ -31,6 +33,8 @@ const envGeminiKey = (() => {
 })();
 
 export function getAIConfig(profile: Profile): AIConfig {
+  // Artifact ichida tashqi API'larga ulanib bo'lmaydi — AI claude.ai hisobi orqali ishlaydi
+  if (isArtifact) return { provider: 'artifact', model: 'claude.ai', apiKey: 'artifact' };
   const keys = getApiKeys();
   if (profile.aiProvider === 'claude') {
     return { provider: 'claude', model: profile.claudeModel || 'claude-opus-5-5', apiKey: keys.claude };
@@ -39,7 +43,7 @@ export function getAIConfig(profile: Profile): AIConfig {
   return { provider: 'gemini', model: profile.geminiModel || 'gemini-3.8-flash', apiKey: keys.gemini || envKey };
 }
 
-export const providerLabel = (p: string) => (p === 'claude' ? 'Claude' : 'Gemini');
+export const providerLabel = (p: string) => (p === 'claude' || p === 'artifact' ? 'Claude' : 'Gemini');
 
 export class AIError extends Error {}
 
@@ -146,6 +150,7 @@ const parseJSON = <T>(text: string): T => {
 
 const friendlyError = (e: unknown, provider: Provider): AIError => {
   if (e instanceof AIError) return e;
+  if (provider === 'artifact') return new AIError(sampleErrorText(e));
   const status = (e as { status?: number })?.status;
   const msg = e instanceof Error ? e.message : String(e);
   if (status === 401 || status === 403 || /API key not valid|invalid x-api-key|PERMISSION_DENIED/i.test(msg))
@@ -204,6 +209,30 @@ export async function generateJSON<T>(cfg: AIConfig, req: JSONRequest): Promise<
   ensureKey(cfg);
   const system = `${SYSTEM_BASE}\n\n${req.system}`;
   try {
+    if (cfg.provider === 'artifact') {
+      const sample = await capability('sample');
+      if (!sample) throw new AIError("AI bu ko'rinishda mavjud emas. Sahifani claude.ai ichida oching.");
+      let blobs: Blob[] = [];
+      let note = '';
+      if (req.images?.length) {
+        const lim = await sample.limits().catch(() => null);
+        if (lim?.images) {
+          blobs = req.images
+            .slice(0, lim.images.maxCount)
+            .map((img) => dataUrlToBlob(`data:${img.mimeType};base64,${img.data}`))
+            .filter((b): b is Blob => !!b);
+        } else {
+          note = `\n\n(Eslatma: foydalanuvchi ${req.images.length} ta rasm biriktirgan, lekin ular bu muhitda yuborilmadi. Rasmlarni ko'rmaganingni hisobga ol.)`;
+        }
+      }
+      const input =
+        `${system}\n\n${req.prompt}${note}\n\n` +
+        `Javobni FAQAT bitta JSON obyekt ko'rinishida ber, undan oldin ham, keyin ham boshqa matn yozma. ` +
+        `JSON quyidagi JSON Schema'ga aniq mos bo'lsin (barcha maydonlar majburiy):\n${JSON.stringify(req.schema)}`;
+      const data = await sample.json<T>(input, { modelTier: 'default', ...(blobs.length ? { images: blobs } : {}) });
+      if (!data || typeof data !== 'object') throw new AIError("AI javobini o'qib bo'lmadi. Qayta urinib ko'ring.");
+      return { data, provider: 'artifact', model: 'claude.ai' };
+    }
     if (cfg.provider === 'gemini') {
       const ai = await geminiClient(cfg);
       const res = await ai.models.generateContent({
@@ -284,6 +313,19 @@ export async function streamChat(
   const sys = `${SYSTEM_BASE}\n\n${system}`;
   let full = '';
   try {
+    if (cfg.provider === 'artifact') {
+      const sample = await capability('sample');
+      if (!sample) throw new AIError("AI bu ko'rinishda mavjud emas. Sahifani claude.ai ichida oching.");
+      // Tizim ko'rsatmalari birinchi "user" navbati sifatida yuboriladi (sample'da system roli yo'q)
+      const res = await sample([{ role: 'user', content: sys }, ...turns.map((t) => ({ role: t.role, content: t.text }))], {
+        cache: false,
+        onText: ({ text }) => {
+          full = text;
+          onText(text);
+        },
+      });
+      return res.text;
+    }
     if (cfg.provider === 'gemini') {
       const ai = await geminiClient(cfg);
       const stream = await ai.models.generateContentStream({

@@ -3,6 +3,7 @@ import { Download, KeyRound, LogOut, Sparkles, Upload, User } from 'lucide-react
 import { getApiKeys, saveApiKeys, useAuth, useData } from '../lib/store';
 import { CLAUDE_MODELS, GEMINI_MODELS, getAIConfig, providerLabel, streamChat } from '../lib/ai';
 import { CURRENCIES, cls, today } from '../lib/utils';
+import { capability, isArtifact } from '../lib/artifact';
 import { COLLECTIONS, type DataState, type Profile } from '../lib/types';
 import { Button, Card, CardTitle, ErrorNote, Field, Input, PageHeader, Select } from '../components/ui';
 
@@ -48,6 +49,40 @@ function ProfileSettings() {
 }
 
 function AISettings() {
+  return isArtifact ? <ArtifactAISettings /> : <KeyAISettings />;
+}
+
+/** claude.ai ichida: AI foydalanuvchining Claude hisobi orqali ishlaydi, kalit kerak emas */
+function ArtifactAISettings() {
+  const { profile } = useData();
+  const [test, setTest] = useState<{ loading: boolean; ok?: string; error?: string }>({ loading: false });
+  const runTest = async () => {
+    setTest({ loading: true });
+    try {
+      const reply = await streamChat(getAIConfig(profile), 'Qisqa javob ber.', [{ role: 'user', text: 'Ulanish testi. Faqat "Tayyor" deb javob ber.' }], () => {});
+      setTest({ loading: false, ok: `Claude ishlayapti: “${reply.trim().slice(0, 60)}”` });
+    } catch (e) {
+      setTest({ loading: false, error: e instanceof Error ? e.message : String(e) });
+    }
+  };
+  return (
+    <Card>
+      <CardTitle icon={<Sparkles className="h-5 w-5 text-violet-600" />}>Sun'iy intellekt</CardTitle>
+      <div className="space-y-3 text-sm text-slate-600">
+        <p>
+          Ilova claude.ai ichida ochilgan, shuning uchun AI <b className="text-slate-800">sizning Claude hisobingiz orqali</b> ishlaydi. API kalit kiritish
+          shart emas.
+        </p>
+        <p>Birinchi AI so'rovida Claude ruxsat so'raydi — “Ruxsat berish”ni bosing. So'rovlar Claude obunangiz limitidan foydalanadi.</p>
+        <Button variant="secondary" loading={test.loading} onClick={runTest}>Ulanishni tekshirish</Button>
+        {test.ok && <p className="rounded-xl bg-emerald-50 px-3 py-2 text-sm text-emerald-700">{test.ok}</p>}
+        {test.error && <ErrorNote>{test.error}</ErrorNote>}
+      </div>
+    </Card>
+  );
+}
+
+function KeyAISettings() {
   const { profile, saveProfile } = useData();
   const [keys, setKeys] = useState(getApiKeys);
   const [savedMsg, setSavedMsg] = useState(false);
@@ -141,13 +176,25 @@ function DataSettings() {
   const [msg, setMsg] = useState<{ ok?: string; error?: string }>({});
   const count = COLLECTIONS.reduce((a, c) => a + data[c].length, 0);
 
-  const exportJSON = () => {
+  const exportJSON = async () => {
     const dump = { app: 'hayot-kompasi', version: 1, exportedAt: new Date().toISOString(), data };
+    const filename = `hayot-kompasi-${today()}.json`;
+    if (isArtifact) {
+      // Artifact ichida oddiy yuklab olish havolasi ishlamaydi — platformaning downloads imkoniyati ishlatiladi
+      const downloads = await capability('downloads');
+      if (!downloads) return setMsg({ error: "Bu ko'rinishda fayl yuklab olib bo'lmaydi" });
+      try {
+        await downloads.save({ filename, data: JSON.stringify(dump, null, 2) });
+      } catch {
+        /* foydalanuvchi bekor qildi */
+      }
+      return;
+    }
     const blob = new Blob([JSON.stringify(dump, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `hayot-kompasi-${today()}.json`;
+    a.download = filename;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -188,11 +235,13 @@ function AccountSettings() {
       <p className="text-sm text-slate-600">
         {mode === 'cloud' ? (
           <>Kirilgan: <b>{user?.email ?? user?.displayName}</b>. Ma'lumotlar Firebase bulutida saqlanadi va faqat sizga ochiq.</>
+        ) : mode === 'artifact' ? (
+          <>Ma'lumotlar claude.ai hisobingizga bog'langan holda saqlanadi va faqat sizga ko'rinadi. Boshqa qurilmada shu sahifani claude.ai'ga kirib oching — hammasi o'sha yerda bo'ladi.</>
         ) : (
           <>Mahalliy rejim: ma'lumotlar faqat shu brauzerda. Brauzer tozalansa yo'qoladi — muntazam eksport qiling.</>
         )}
       </p>
-      <Button variant="secondary" className="mt-3" icon={<LogOut className="h-4 w-4" />} onClick={logout}>Chiqish</Button>
+      {!isArtifact && <Button variant="secondary" className="mt-3" icon={<LogOut className="h-4 w-4" />} onClick={logout}>Chiqish</Button>}
     </Card>
   );
 }
