@@ -21,32 +21,89 @@ import { useAuth, useData } from '../lib/store';
 import { isArtifact } from '../lib/artifact';
 import { cls } from '../lib/utils';
 
-// ---------------- Marshrutlash (hash asosida) ----------------
+// ---------------- Marshrutlash ----------------
+// Oddiy saytda manzil (#/bo'lim) ishlatiladi — orqaga tugmasi va havolalar ishlaydi.
+// claude.ai Artifact ichida sahifa manzilini o'zgartirib bo'lmaydi (oq ekran bo'lib qoladi),
+// shuning uchun u yerda joriy bo'lim faqat xotirada saqlanadi.
+
+const USE_HASH = !isArtifact;
+let currentPath = USE_HASH ? window.location.hash : '';
+const routeListeners = new Set<() => void>();
+
+const parsePath = (p: string) => {
+  const parts = p.replace(/^#?\/?/, '').split('/').filter(Boolean);
+  return { page: parts[0] || 'dashboard', id: parts[1] as string | undefined };
+};
+
+if (USE_HASH) {
+  window.addEventListener('hashchange', () => {
+    currentPath = window.location.hash;
+    routeListeners.forEach((fn) => fn());
+  });
+}
 
 export function useRoute() {
-  const parse = () => {
-    const parts = window.location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
-    return { page: parts[0] || 'dashboard', id: parts[1] as string | undefined };
-  };
-  const [route, setRoute] = useState(parse);
+  const [route, setRoute] = useState(() => parsePath(currentPath));
   useEffect(() => {
     const on = () => {
-      setRoute(parse());
+      setRoute(parsePath(currentPath));
       window.scrollTo({ top: 0 });
     };
-    window.addEventListener('hashchange', on);
-    return () => window.removeEventListener('hashchange', on);
+    routeListeners.add(on);
+    return () => {
+      routeListeners.delete(on);
+    };
   }, []);
   return route;
 }
 
 export const navigate = (path: string) => {
-  window.location.hash = `/${path}`;
+  if (USE_HASH) {
+    window.location.hash = `/${path}`;
+    return;
+  }
+  currentPath = path;
+  routeListeners.forEach((fn) => fn());
 };
 
-export function Link({ to, className, children }: { to: string; className?: string; children: React.ReactNode }) {
+export function Link({
+  to,
+  className,
+  children,
+  onClick,
+}: {
+  to: string;
+  className?: string;
+  children: React.ReactNode;
+  onClick?: () => void;
+}) {
+  if (USE_HASH)
+    return (
+      <a href={`#/${to}`} className={className} onClick={onClick}>
+        {children}
+      </a>
+    );
+  // href'siz havola: brauzer ham, Claude oynasi ham hech qayerga o'tmaydi — faqat ilova ichida
+  const go = () => {
+    onClick?.();
+    navigate(to);
+  };
   return (
-    <a href={`#/${to}`} className={className}>
+    <a
+      role="link"
+      tabIndex={0}
+      className={cls('cursor-pointer', className)}
+      onClick={(e) => {
+        e.preventDefault();
+        go();
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          go();
+        }
+      }}
+    >
       {children}
     </a>
   );
@@ -97,9 +154,9 @@ function NavList({ page, onPick }: { page: string; onPick?: () => void }) {
               const Icon = it.icon;
               const active = page === it.id;
               return (
-                <a
+                <Link
                   key={it.id}
-                  href={`#/${it.id}`}
+                  to={it.id}
                   onClick={onPick}
                   className={cls(
                     'flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium transition',
@@ -108,7 +165,7 @@ function NavList({ page, onPick }: { page: string; onPick?: () => void }) {
                 >
                   <Icon className="h-[18px] w-[18px]" />
                   {it.label}
-                </a>
+                </Link>
               );
             })}
           </div>
@@ -202,10 +259,10 @@ export function Shell({ page, children }: { page: string; children: React.ReactN
             const it = NAV.flatMap((g) => g.items).find((x) => x.id === id)!;
             const Icon = it.icon;
             return (
-              <a key={id} href={`#/${id}`} className={cls('flex flex-col items-center gap-0.5 py-2 text-[11px]', page === id ? 'text-indigo-600' : 'text-slate-500')}>
+              <Link key={id} to={id} className={cls('flex flex-col items-center gap-0.5 py-2 text-[11px]', page === id ? 'text-indigo-600' : 'text-slate-500')}>
                 <Icon className="h-5 w-5" />
                 {it.label}
-              </a>
+              </Link>
             );
           })}
           <button onClick={() => setDrawer(true)} className={cls('flex flex-col items-center gap-0.5 py-2 text-[11px]', !MOBILE.includes(page) ? 'text-indigo-600' : 'text-slate-500')}>
