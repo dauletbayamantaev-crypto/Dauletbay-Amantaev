@@ -4,6 +4,7 @@ import type { AIAdvice, AIReview } from '../lib/types';
 import { VERDICTS, cls } from '../lib/utils';
 import { providerLabel } from '../lib/ai';
 import { Badge, ErrorNote } from './ui';
+import { Link } from './Layout';
 
 export function useAIRunner() {
   const [loading, setLoading] = useState(false);
@@ -134,9 +135,9 @@ export function AIErrorNote({ error }: { error: string | null }) {
     <ErrorNote>
       {error}
       {/kalit/i.test(error) && (
-        <a href="#/settings" className="ml-1 font-semibold underline">
+        <Link to="settings" className="ml-1 font-semibold underline">
           Sozlamalarga o'tish
-        </a>
+        </Link>
       )}
     </ErrorNote>
   );
