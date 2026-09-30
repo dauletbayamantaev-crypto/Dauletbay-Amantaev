@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+<title>Dauletbay Amantaev — V3 Qalqon</title>
+<g id="ikonka" transform="translate(-5,-7)">
+<path d="M30,120 V30 H130 A90,90 0 0 1 220,120 C220,172 160,198 125,222 C90,198 30,172 30,120 Z" stroke-linejoin="miter" fill="none" stroke="#0E1A2B" stroke-width="20" stroke-miterlimit="10"/>
+<path d="M30,110 H150 V130 H30 Z" fill="#0E1A2B"/>
+<path d="M85,130 L125,50 L165,130 L142.64,130 L125,94.72 L107.36,130 Z" fill="#C9A45C"/>
+</g>
+</svg>
