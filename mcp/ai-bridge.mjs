@@ -9,14 +9,15 @@
 
 import { createInterface } from 'node:readline';
 
-const TIMEOUT_MS = 180_000;
+// Claude Code MCP vositasini 60 soniyada uzadi — undan oldin aniq xato qaytarish uchun
+const TIMEOUT_MS = 55_000;
 const PROTOCOL_VERSIONS = ['2025-06-18', '2025-03-26', '2024-11-05'];
 
 const PROVIDERS = {
   gemini: {
     label: 'Google Gemini',
     keyVar: 'GEMINI_API_KEY',
-    defaultModel: process.env.GEMINI_MODEL || 'gemini-3.8-flash',
+    defaultModel: process.env.GEMINI_MODEL || 'gemini-3.5-flash',
     keyHint: 'https://aistudio.google.com/apikey',
     async ask({ prompt, system, model }, key) {
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
@@ -70,6 +71,9 @@ async function postJSON(url, headers, body, service) {
       signal: AbortSignal.timeout(TIMEOUT_MS),
     });
   } catch (err) {
+    if (err.name === 'TimeoutError') {
+      throw new Error(`${service} ${TIMEOUT_MS / 1000} soniyada javob bermadi — boshqa model bilan urinib ko'ring (\`model\` parametri)`);
+    }
     throw new Error(`${service} API'ga ulanib bo'lmadi: ${err.cause?.message || err.message}`);
   }
   const data = await res.json().catch(() => ({}));

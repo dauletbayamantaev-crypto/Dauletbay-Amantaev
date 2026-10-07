@@ -5,7 +5,7 @@
       "args": ["${CLAUDE_PROJECT_DIR:-.}/mcp/ai-bridge.mjs", "gemini"],
       "env": {
         "GEMINI_API_KEY": "${GEMINI_API_KEY:-}",
-        "GEMINI_MODEL": "${GEMINI_MODEL:-gemini-3.8-flash}",
+        "GEMINI_MODEL": "${GEMINI_MODEL:-gemini-3.5-flash}",
         "NODE_USE_ENV_PROXY": "1"
       }
     },

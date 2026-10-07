@@ -76,7 +76,7 @@ Server — [`mcp/ai-bridge.mjs`](mcp/ai-bridge.mjs): paket o'rnatishni talab qil
 |---|---|---|
 | `GEMINI_API_KEY` | Gemini uchun | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |
 | `OPENAI_API_KEY` | ChatGPT uchun | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) |
-| `GEMINI_MODEL` | ixtiyoriy (standart `gemini-3.8-flash`) | |
+| `GEMINI_MODEL` | ixtiyoriy (standart `gemini-3.5-flash`) | |
 | `OPENAI_MODEL` | ixtiyoriy (standart `gpt-5.5`) | |
 
 - **O'z kompyuteringizda:** `export GEMINI_API_KEY=...` va `export OPENAI_API_KEY=...` qilib, so'ng `claude` ni ishga tushiring. Tekshirish: `claude mcp list`.
