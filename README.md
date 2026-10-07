@@ -66,6 +66,24 @@ API kalitlar **bulutga saqlanmaydi** — faqat shu brauzerning `localStorage`'id
 
 Bosqichni baholashda AI'ga faqat shu bosqich, uning loyihasi, maqsadi va strategiyasi haqidagi ma'lumotlar (va biriktirilgan rasmlar) yuboriladi.
 
+## Claude Code'da Gemini va ChatGPT (MCP)
+
+Repoda [`.mcp.json`](.mcp.json) bor: Claude Code shu papkada ochilganda `gemini` va `chatgpt` MCP serverlari avtomatik ulanadi ([`.claude/settings.json`](.claude/settings.json) ularni oldindan tasdiqlaydi). Har biri bitta `ask` vositasini beradi — Claude Gemini yoki ChatGPT'dan ikkinchi fikr so'rashi, javoblarni solishtirishi mumkin.
+
+Server — [`mcp/ai-bridge.mjs`](mcp/ai-bridge.mjs): paket o'rnatishni talab qilmaydi (Node 18+), API'larni to'g'ridan-to'g'ri chaqiradi, kalitlarni faqat muhit o'zgaruvchilaridan o'qiydi.
+
+| O'zgaruvchi | Kerakmi | Qayerdan |
+|---|---|---|
+| `GEMINI_API_KEY` | Gemini uchun | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |
+| `OPENAI_API_KEY` | ChatGPT uchun | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) |
+| `GEMINI_MODEL` | ixtiyoriy (standart `gemini-3.8-flash`) | |
+| `OPENAI_MODEL` | ixtiyoriy (standart `gpt-5.5`) | |
+
+- **O'z kompyuteringizda:** `export GEMINI_API_KEY=...` va `export OPENAI_API_KEY=...` qilib, so'ng `claude` ni ishga tushiring. Tekshirish: `claude mcp list`.
+- **claude.ai/code (bulut sessiyasi):** environment sozlamalarida (sessiya sarlavhasidagi muhit menyusi → *Edit*) kalitlarni muhit o'zgaruvchisi sifatida qo'shing. ChatGPT uchun *Network access* ro'yxatiga `api.openai.com` domenini qo'shing. Yangi sessiyada kuchga kiradi.
+
+Kalitlarni hech qachon `.mcp.json` yoki boshqa repo fayliga yozmang.
+
 ## Buyruqlar
 
 ```bash
