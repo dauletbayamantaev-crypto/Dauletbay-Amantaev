@@ -6,6 +6,7 @@
       "env": {
         "GEMINI_API_KEY": "${GEMINI_API_KEY:-}",
         "GEMINI_MODEL": "${GEMINI_MODEL:-gemini-3.8-flash}",
+        "GEMINI_IMAGE_MODEL": "${GEMINI_IMAGE_MODEL:-gemini-3-pro-image}",
         "NODE_USE_ENV_PROXY": "1"
       }
     },

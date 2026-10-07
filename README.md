@@ -68,7 +68,7 @@ Bosqichni baholashda AI'ga faqat shu bosqich, uning loyihasi, maqsadi va strateg
 
 ## Claude Code'da Gemini va ChatGPT (MCP)
 
-Repoda [`.mcp.json`](.mcp.json) bor: Claude Code shu papkada ochilganda `gemini` va `chatgpt` MCP serverlari avtomatik ulanadi ([`.claude/settings.json`](.claude/settings.json) ularni oldindan tasdiqlaydi). Har biri bitta `ask` vositasini beradi — Claude Gemini yoki ChatGPT'dan ikkinchi fikr so'rashi, javoblarni solishtirishi mumkin.
+Repoda [`.mcp.json`](.mcp.json) bor: Claude Code shu papkada ochilganda `gemini` va `chatgpt` MCP serverlari avtomatik ulanadi ([`.claude/settings.json`](.claude/settings.json) ularni oldindan tasdiqlaydi). Har biri `ask` vositasini beradi — Claude Gemini yoki ChatGPT'dan ikkinchi fikr so'rashi, javoblarni solishtirishi mumkin. Gemini qo'shimcha ravishda `generate_image` vositasini beradi: matn va namuna rasmlar (masalan, xodimlar portretlari) asosida rasm yaratadi va natijani faylga yozadi (tomonlar nisbati va `1K`/`2K`/`4K` sifatni tanlash mumkin). Rasm modellari Google AI'ning bepul tarifida ishlamaydi — AI Studio'da billing yoqilgan bo'lishi kerak.
 
 Server — [`mcp/ai-bridge.mjs`](mcp/ai-bridge.mjs): paket o'rnatishni talab qilmaydi (Node 18+), API'larni to'g'ridan-to'g'ri chaqiradi, kalitlarni faqat muhit o'zgaruvchilaridan o'qiydi.
 
@@ -77,6 +77,7 @@ Server — [`mcp/ai-bridge.mjs`](mcp/ai-bridge.mjs): paket o'rnatishni talab qil
 | `GEMINI_API_KEY` | Gemini uchun | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |
 | `OPENAI_API_KEY` | ChatGPT uchun | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) |
 | `GEMINI_MODEL` | ixtiyoriy (standart `gemini-3.8-flash`) | |
+| `GEMINI_IMAGE_MODEL` | ixtiyoriy (standart `gemini-3-pro-image`) | |
 | `OPENAI_MODEL` | ixtiyoriy (standart `gpt-5.5`) | |
 
 - **O'z kompyuteringizda:** `export GEMINI_API_KEY=...` va `export OPENAI_API_KEY=...` qilib, so'ng `claude` ni ishga tushiring. Tekshirish: `claude mcp list`.
