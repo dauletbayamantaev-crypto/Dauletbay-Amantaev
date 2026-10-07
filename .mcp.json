@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "gemini": {
+      "command": "node",
+      "args": ["${CLAUDE_PROJECT_DIR:-.}/mcp/ai-bridge.mjs", "gemini"],
+      "env": {
+        "GEMINI_API_KEY": "${GEMINI_API_KEY:-}",
+        "GEMINI_MODEL": "${GEMINI_MODEL:-gemini-3.8-flash}",
+        "NODE_USE_ENV_PROXY": "1"
+      }
+    },
+    "chatgpt": {
+      "command": "node",
+      "args": ["${CLAUDE_PROJECT_DIR:-.}/mcp/ai-bridge.mjs", "chatgpt"],
+      "env": {
+        "OPENAI_API_KEY": "${OPENAI_API_KEY:-}",
+        "OPENAI_MODEL": "${OPENAI_MODEL:-gpt-5.5}",
+        "NODE_USE_ENV_PROXY": "1"
+      }
+    }
+  }
+}
