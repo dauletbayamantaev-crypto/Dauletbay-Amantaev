@@ -1,0 +1,21 @@
+{
+  "name": "winder",
+  "version": "0.2.0",
+  "private": true,
+  "description": "Winder — shaxsiy tender platformasi va kunlik tender agenti",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node agent/main.mjs",
+    "scan": "node agent/main.mjs --scan-once",
+    "news": "node agent/main.mjs --news-once",
+    "demo": "node agent/main.mjs --demo",
+    "probe": "node agent/probe.mjs",
+    "setup": "npx playwright install chromium",
+    "test": "node --test --test-concurrency=1 test/"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.132.1",
+    "playwright": "1.56.1"
+  }
+}
