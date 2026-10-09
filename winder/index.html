@@ -1,0 +1,1793 @@
+<title>Winder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: Apple uslubi — shaffof global navigatsiya, markazda 1120px ustun, kulrang fonda "bento" plitalar; tender tafsiloti o'ng tomondan chiquvchi varaqda. */
+:root{
+  --bg:#f5f5f7; --tile:#ffffff; --tile-2:#fafafc; --fill:#e8e8ed; --fill-2:#efeff3;
+  --ink:#1d1d1f; --ink-2:#6e6e73; --ink-3:#86868b; --line:#d2d2d7; --hair:rgba(0,0,0,.08);
+  --accent:#0071e3; --accent-ink:#0066cc; --accent-soft:rgba(0,113,227,.1); --on-accent:#ffffff;
+  --nav:rgba(250,250,252,.8); --scrim:rgba(0,0,0,.28);
+  --logo-bg:#1d1d1f; --logo-fg:#ffffff; --logo-arrow:#2997ff;
+  --shadow:0 2px 14px rgba(0,0,0,.06); --shadow-lg:0 30px 80px rgba(0,0,0,.22);
+  --blue:#0060c7; --blue-bg:rgba(0,113,227,.1);
+  --indigo:#4f4bd1; --indigo-bg:rgba(88,86,214,.12);
+  --orange:#b25000; --orange-bg:rgba(255,149,0,.16);
+  --purple:#8944ab; --purple-bg:rgba(175,82,222,.13);
+  --green:#1f7a34; --green-bg:rgba(52,199,89,.16);
+  --red:#d70015; --red-bg:rgba(255,59,48,.12);
+  --gray:#6e6e73; --gray-bg:rgba(142,142,147,.16);
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a;
+  --f-display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --f-text:-apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --r-tile:22px; --r-card:18px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#000000; --tile:#1c1c1e; --tile-2:#232325; --fill:#2c2c2e; --fill-2:#18181a;
+    --ink:#f5f5f7; --ink-2:#a1a1a6; --ink-3:#8e8e93; --line:#3a3a3c; --hair:rgba(255,255,255,.1);
+    --accent:#0a7cff; --accent-ink:#2997ff; --accent-soft:rgba(41,151,255,.16); --on-accent:#ffffff;
+    --nav:rgba(22,22,23,.8); --scrim:rgba(0,0,0,.6);
+    --logo-bg:#f5f5f7; --logo-fg:#1d1d1f; --logo-arrow:#0071e3;
+    --shadow:none; --shadow-lg:0 30px 80px rgba(0,0,0,.7);
+    --blue:#5aa9ff; --blue-bg:rgba(10,132,255,.2);
+    --indigo:#9c9aff; --indigo-bg:rgba(94,92,230,.26);
+    --orange:#ffb340; --orange-bg:rgba(255,159,10,.2);
+    --purple:#da8fff; --purple-bg:rgba(191,90,242,.22);
+    --green:#30d158; --green-bg:rgba(48,209,88,.18);
+    --red:#ff6961; --red-bg:rgba(255,69,58,.2);
+    --gray:#a1a1a6; --gray-bg:rgba(142,142,147,.22);
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#000000; --tile:#1c1c1e; --tile-2:#232325; --fill:#2c2c2e; --fill-2:#18181a;
+  --ink:#f5f5f7; --ink-2:#a1a1a6; --ink-3:#8e8e93; --line:#3a3a3c; --hair:rgba(255,255,255,.1);
+  --accent:#0a7cff; --accent-ink:#2997ff; --accent-soft:rgba(41,151,255,.16); --on-accent:#ffffff;
+  --nav:rgba(22,22,23,.8); --scrim:rgba(0,0,0,.6);
+  --logo-bg:#f5f5f7; --logo-fg:#1d1d1f; --logo-arrow:#0071e3;
+  --shadow:none; --shadow-lg:0 30px 80px rgba(0,0,0,.7);
+  --blue:#5aa9ff; --blue-bg:rgba(10,132,255,.2);
+  --indigo:#9c9aff; --indigo-bg:rgba(94,92,230,.26);
+  --orange:#ffb340; --orange-bg:rgba(255,159,10,.2);
+  --purple:#da8fff; --purple-bg:rgba(191,90,242,.22);
+  --green:#30d158; --green-bg:rgba(48,209,88,.18);
+  --red:#ff6961; --red-bg:rgba(255,69,58,.2);
+  --gray:#a1a1a6; --gray-bg:rgba(142,142,147,.22);
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{margin:0}
+body{color:var(--ink);font-family:var(--f-text);font-size:15px;line-height:1.47;letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+a{color:var(--accent-ink);text-decoration:none}
+a:hover{text-decoration:underline}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+.tnum{font-variant-numeric:tabular-nums}
+.ico{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ico.sm{width:14px;height:14px}
+.ico.lg{width:22px;height:22px}
+.lg-bg{fill:var(--logo-bg)} .lg-w{stroke:var(--logo-fg)} .lg-a{stroke:var(--logo-arrow)}
+
+/* Global nav */
+.gnav{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--nav);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--hair)}
+.gnav-in{max-width:1120px;margin:0 auto;padding-inline:22px;height:52px;display:flex;align-items:center;gap:20px}
+.brand{display:flex;align-items:center;gap:9px;color:var(--ink);font-family:var(--f-display);font-size:19px;letter-spacing:-.02em}
+.brand:hover{text-decoration:none}
+.brand .wm b{font-weight:700;color:var(--ink)} .brand .wm span{font-weight:500;color:var(--ink-2)}
+.gnav-links{display:flex;gap:4px;margin-inline:auto}
+.gnav-links a{color:var(--ink);opacity:.8;font-size:13px;padding:6px 11px;border-radius:980px;display:flex;align-items:center;gap:6px}
+.gnav-links a:hover{opacity:1;text-decoration:none;background:var(--fill)}
+.gnav-links a[aria-current="page"]{opacity:1;background:var(--fill);font-weight:600}
+.badge{min-width:18px;height:18px;border-radius:9px;background:var(--accent);color:var(--on-accent);font-size:11px;font-weight:600;display:inline-grid;place-items:center;padding-inline:5px}
+.gnav-right{display:flex;align-items:center;gap:6px}
+.iconbtn{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:var(--ink)}
+.iconbtn:hover{background:var(--fill)}
+.live{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-2);padding:6px 10px;border-radius:980px}
+.live:hover{background:var(--fill);text-decoration:none}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex:none}
+.dot.pulse{box-shadow:0 0 0 0 var(--green-bg);animation:pulse 2.4s infinite}
+.dot.off{background:var(--gray)} .dot.err{background:var(--red)} .dot.warn{background:var(--orange)}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(52,199,89,.45)}70%{box-shadow:0 0 0 8px rgba(52,199,89,0)}100%{box-shadow:0 0 0 0 rgba(52,199,89,0)}}
+.ribbon{background:var(--tile);border-bottom:1px solid var(--hair);text-align:center;font-size:13px;color:var(--ink-2);padding:10px 16px}
+.ribbon a{white-space:nowrap}
+
+/* Page */
+.wrap{max-width:1120px;margin:0 auto;padding-inline:22px;padding-block:36px 120px}
+.phead{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:28px}
+.phead .eyebrow{font-size:14px;font-weight:600;color:var(--accent-ink);margin-bottom:6px}
+h1{font-family:var(--f-display);font-size:48px;line-height:1.08;font-weight:700;letter-spacing:-.025em;margin:0;text-wrap:balance}
+.sub{font-size:19px;line-height:1.42;color:var(--ink-2);margin:10px 0 0;max-width:44em;text-wrap:pretty}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+h2{font-family:var(--f-display);font-size:28px;line-height:1.14;font-weight:700;letter-spacing:-.02em;margin:0}
+h3{font-family:var(--f-display);font-size:19px;line-height:1.26;font-weight:600;letter-spacing:-.015em;margin:0}
+.muted{color:var(--ink-2)} .faint{color:var(--ink-3)}
+.section{margin-top:48px}
+.section-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:16px}
+
+/* Buttons */
+.btn{height:36px;padding:0 18px;border-radius:980px;font-size:14px;font-weight:500;display:inline-flex;align-items:center;gap:7px;white-space:nowrap;transition:background .15s}
+.btn-primary{background:var(--accent);color:var(--on-accent)}
+.btn-primary:hover{filter:brightness(1.08)}
+.btn-ghost{background:var(--fill);color:var(--ink)}
+.btn-ghost:hover{background:var(--line)}
+.btn-danger{background:var(--red-bg);color:var(--red)}
+.btn[disabled]{opacity:.45;cursor:default}
+.btn-sm{height:30px;padding:0 13px;font-size:13px}
+.link{color:var(--accent-ink);font-size:14px;display:inline-flex;align-items:center;gap:2px}
+.link:hover{text-decoration:underline}
+.seg{display:inline-flex;background:var(--fill);border-radius:980px;padding:3px;gap:2px}
+.seg button{height:30px;padding:0 14px;border-radius:980px;font-size:13px;font-weight:500;color:var(--ink-2);display:flex;align-items:center;gap:6px}
+.seg button[aria-pressed="true"]{background:var(--tile);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+
+/* Bento */
+.bento{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.tile{background:var(--tile);border-radius:var(--r-tile);padding:24px;min-width:0;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.c-3{grid-column:span 3}.c-4{grid-column:span 4}.c-5{grid-column:span 5}.c-6{grid-column:span 6}.c-7{grid-column:span 7}.c-8{grid-column:span 8}.c-12{grid-column:span 12}
+.r-2{grid-row:span 2}
+.t-label{font-size:14px;font-weight:600;color:var(--ink-2);display:flex;align-items:center;gap:7px}
+.t-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:16px}
+.num-xl{font-family:var(--f-display);font-size:56px;line-height:1;font-weight:700;letter-spacing:-.035em;font-variant-numeric:tabular-nums}
+.num-l{font-family:var(--f-display);font-size:44px;line-height:1.02;font-weight:700;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.num-m{font-family:var(--f-display);font-size:28px;line-height:1.1;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.unit{font-size:.42em;font-weight:600;color:var(--ink-2);letter-spacing:0;margin-left:6px}
+.stat-sub{font-size:14px;color:var(--ink-2);margin-top:8px}
+.tile.click{cursor:pointer;transition:transform .2s ease}
+.tile.click:hover{transform:scale(1.012)}
+.spacer{flex:1}
+
+/* Status pills */
+.pill{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:980px;font-size:12px;font-weight:600;white-space:nowrap}
+.pill i{width:6px;height:6px;border-radius:50%;background:currentColor}
+.st-new{color:var(--blue);background:var(--blue-bg)}
+.st-review{color:var(--indigo);background:var(--indigo-bg)}
+.st-prep{color:var(--orange);background:var(--orange-bg)}
+.st-submitted{color:var(--purple);background:var(--purple-bg)}
+.st-won{color:var(--green);background:var(--green-bg)}
+.st-lost{color:var(--red);background:var(--red-bg)}
+.st-skipped{color:var(--gray);background:var(--gray-bg)}
+.c-green{color:var(--green)} .c-orange{color:var(--orange)} .c-red{color:var(--red)} .c-blue{color:var(--blue)}
+.bg-green{background:var(--green-bg)} .bg-orange{background:var(--orange-bg)} .bg-red{background:var(--red-bg)}
+
+/* Match ring */
+.ring{position:relative;display:inline-grid;place-items:center;flex:none}
+.ring svg{position:absolute;inset:0;width:100%;height:100%}
+.ring .rb{fill:none;stroke:var(--fill);stroke-width:4}
+.ring .rf{fill:none;stroke-width:4;stroke-linecap:round}
+.ring.hi .rf{stroke:var(--green)} .ring.mid .rf{stroke:var(--accent)} .ring.lo .rf{stroke:var(--ink-3)}
+.ring b{position:relative;font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.ring.big b{font-size:22px;font-family:var(--f-display)}
+
+/* Lists inside tiles */
+.rows{display:flex;flex-direction:column}
+.row{display:flex;align-items:center;gap:14px;padding:12px 0;border-top:1px solid var(--hair);min-width:0}
+.row:first-child{border-top:0;padding-top:0}
+.row.click{cursor:pointer}
+.row.click:hover .row-title{color:var(--accent-ink)}
+.row-main{flex:1;min-width:0}
+.row-title{font-size:15px;font-weight:600;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.row-meta{font-size:13px;color:var(--ink-2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row-end{text-align:right;flex:none;font-size:13px}
+.cd{font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.cd.urgent{color:var(--red)} .cd.soon{color:var(--orange)} .cd.over{color:var(--ink-3)}
+
+/* Funnel */
+.funnel{display:flex;flex-direction:column;gap:10px}
+.fbar{width:100%;display:grid;grid-template-columns:132px 1fr 28px;align-items:center;gap:10px;font-size:13px}
+.fbar .track{height:10px;border-radius:5px;background:var(--fill);overflow:hidden}
+.fbar .fill{height:100%;border-radius:5px;background:currentColor}
+.fbar b{text-align:right;font-variant-numeric:tabular-nums}
+
+/* Sources grid */
+.srcs{display:grid;grid-template-columns:1fr;gap:0}
+.src{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--hair);font-size:13px}
+.src:first-child{border-top:0;padding-top:0}
+.src .nm{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
+.src .ct{color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* Tenders page */
+.toolbar{display:flex;flex-direction:column;gap:14px;margin-bottom:22px}
+.search{position:relative}
+.search .ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--ink-2)}
+.search input{width:100%;height:46px;border-radius:14px;border:0;background:var(--tile);box-shadow:var(--shadow);padding:0 16px 0 42px;font-size:16px;outline:none;border:1px solid var(--hair)}
+.search input:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);font:12px var(--f-text);color:var(--ink-3);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{height:32px;padding:0 14px;border-radius:980px;background:var(--fill);font-size:13px;font-weight:500;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;flex:none}
+.chip:hover{background:var(--line)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.chip .n{opacity:.6;font-variant-numeric:tabular-nums}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.selw{position:relative;display:inline-flex;align-items:center}
+.selw select{appearance:none;-webkit-appearance:none;height:34px;border-radius:980px;border:0;background:var(--fill);padding:0 32px 0 14px;font-size:13px;font-weight:500;cursor:pointer;max-width:230px;text-overflow:ellipsis}
+.selw select.on{background:var(--accent-soft);color:var(--accent-ink)}
+.selw .ico{position:absolute;right:11px;pointer-events:none;color:var(--ink-2)}
+.tlist{display:flex;flex-direction:column;gap:10px}
+.trow{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:18px;align-items:center;background:var(--tile);border-radius:var(--r-card);padding:16px 20px;cursor:pointer;box-shadow:var(--shadow);border:1px solid transparent;transition:border-color .15s, transform .15s;text-align:left;width:100%}
+.trow:hover{border-color:var(--line)}
+.trow.fresh{border-color:var(--accent)}
+.trow .eb{font-size:12px;color:var(--ink-2);display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:3px}
+.trow .eb .sep{opacity:.5}
+.trow .ttl{font-size:16px;font-weight:600;line-height:1.32;letter-spacing:-.015em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.trow .who{font-size:13px;color:var(--ink-2);margin-top:4px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.trow .end{display:flex;flex-direction:column;align-items:flex-end;gap:6px;text-align:right}
+.price{font-family:var(--f-display);font-size:17px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.newtag{color:var(--orange);font-weight:600}
+.empty{background:var(--tile);border-radius:var(--r-tile);padding:56px 24px;text-align:center;color:var(--ink-2)}
+.empty h3{color:var(--ink);margin-bottom:6px}
+.empty .actions{justify-content:center;margin-top:18px}
+.kb{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(250px,1fr);gap:14px;overflow-x:auto;padding-bottom:10px}
+.kcol{background:var(--fill-2);border-radius:var(--r-card);padding:12px;display:flex;flex-direction:column;gap:10px;min-height:220px;border:2px solid transparent}
+.kcol.over{border-color:var(--accent)}
+.kcol-h{display:flex;align-items:center;justify-content:space-between;padding:2px 4px 4px}
+.kcard{background:var(--tile);border-radius:14px;padding:12px 14px;cursor:grab;box-shadow:var(--shadow);border:1px solid var(--hair);text-align:left;width:100%}
+.kcard:active{cursor:grabbing}
+.kcard .ttl{font-size:14px;font-weight:600;line-height:1.3;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.kcard .foot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px;font-size:12px;color:var(--ink-2)}
+.kcard.dragging{opacity:.4}
+
+/* Sheet */
+.scrim{position:fixed;inset:0;background:var(--scrim);z-index:60;opacity:0;pointer-events:none;transition:opacity .25s}
+.scrim.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;z-index:61;top:12px;right:12px;bottom:12px;width:min(580px,calc(100vw - 24px));background:var(--tile);border-radius:24px;box-shadow:var(--shadow-lg);overflow-y:auto;overscroll-behavior:contain;transform:translateX(calc(100% + 24px));transition:transform .32s cubic-bezier(.32,.72,0,1)}
+.sheet.on{transform:none}
+.sheet-h{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px 10px 24px;background:var(--tile)}
+.sheet-b{padding:0 24px 32px}
+.closeb{width:32px;height:32px;border-radius:50%;background:var(--fill);display:grid;place-items:center;color:var(--ink-2)}
+.closeb:hover{color:var(--ink)}
+.sh-title{font-family:var(--f-display);font-size:26px;line-height:1.18;font-weight:700;letter-spacing:-.022em;margin:6px 0 8px;text-wrap:balance}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--hair);border-radius:16px;overflow:hidden;margin:18px 0}
+.fact{background:var(--tile-2);padding:12px 14px;min-width:0}
+.fact .k{font-size:12px;color:var(--ink-2)}
+.fact .v{font-size:15px;font-weight:600;margin-top:2px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.fact.wide{grid-column:span 2}
+.blk{margin-top:26px}
+.blk-h{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.blk-h h3{font-size:17px}
+.stseg{display:flex;flex-wrap:wrap;gap:6px}
+.stseg button{height:30px;padding:0 12px;border-radius:980px;font-size:12px;font-weight:600;background:var(--fill);color:var(--ink-2);display:inline-flex;align-items:center;gap:6px}
+.stseg button i{width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.5}
+.stseg button[aria-pressed="true"]{box-shadow:inset 0 0 0 1.5px currentColor}
+.stseg button.st-new[aria-pressed="true"]{color:var(--blue);background:var(--blue-bg)}
+.stseg button.st-review[aria-pressed="true"]{color:var(--indigo);background:var(--indigo-bg)}
+.stseg button.st-prep[aria-pressed="true"]{color:var(--orange);background:var(--orange-bg)}
+.stseg button.st-submitted[aria-pressed="true"]{color:var(--purple);background:var(--purple-bg)}
+.stseg button.st-won[aria-pressed="true"]{color:var(--green);background:var(--green-bg)}
+.stseg button.st-lost[aria-pressed="true"]{color:var(--red);background:var(--red-bg)}
+.stseg button.st-skipped[aria-pressed="true"]{color:var(--gray);background:var(--gray-bg)}
+.stseg button[aria-pressed="true"] i{opacity:1}
+.checks{display:flex;flex-direction:column;border-radius:14px;background:var(--tile-2);border:1px solid var(--hair);overflow:hidden}
+.check{display:flex;gap:10px;align-items:flex-start;padding:10px 14px;border-top:1px solid var(--hair);font-size:14px}
+.check:first-child{border-top:0}
+.check .ico{margin-top:2px}
+.check small{display:block;color:var(--ink-2);font-size:12px;margin-top:1px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12px;padding:4px 10px;border-radius:980px;background:var(--fill);color:var(--ink)}
+.ai-card{border-radius:18px;padding:18px;background:linear-gradient(var(--tile-2),var(--tile-2)) padding-box;border:1px solid var(--hair)}
+.ai-top{display:flex;gap:16px;align-items:center;margin-bottom:12px}
+.ai-card ul{margin:6px 0 0;padding-left:18px}
+.ai-card li{margin:4px 0}
+.ai-sec{margin-top:14px}
+.ai-sec h4{margin:0;font-size:13px;font-weight:600;color:var(--ink-2)}
+.note{width:100%;min-height:90px;border-radius:12px;border:1px solid var(--line);background:var(--tile-2);padding:10px 12px;resize:vertical;outline:none}
+.note:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.timeline{display:flex;flex-direction:column;gap:8px;font-size:13px}
+.tl{display:flex;gap:10px;align-items:center}
+.tl time{color:var(--ink-2);font-variant-numeric:tabular-nums;margin-left:auto}
+.confirm{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:var(--red-bg);border-radius:14px;padding:10px 12px;font-size:13px}
+.dates{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.field{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--ink-2)}
+.input{height:36px;border-radius:10px;border:1px solid var(--line);background:var(--tile);padding:0 12px;font-size:14px;color:var(--ink);outline:none;min-width:0}
+.input:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+textarea.input{height:auto;padding:10px 12px;min-height:80px}
+
+/* AI chat */
+.chat{max-width:780px;margin:0 auto}
+.suggest{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:8px}
+.sg{background:var(--tile);border-radius:18px;padding:16px 18px;text-align:left;box-shadow:var(--shadow);border:1px solid transparent;font-size:15px;font-weight:500;line-height:1.35}
+.sg:hover{border-color:var(--line)}
+.sg small{display:block;color:var(--ink-2);font-weight:400;font-size:13px;margin-top:4px}
+.msgs{display:flex;flex-direction:column;gap:18px;margin:8px 0 24px}
+.msg{max-width:100%;font-size:16px;line-height:1.6;overflow-wrap:anywhere}
+.msg.user{align-self:flex-end;max-width:82%;background:var(--accent);color:var(--on-accent);padding:10px 16px;border-radius:20px 20px 6px 20px;white-space:pre-wrap}
+.msg.ai p{margin:0 0 10px}
+.msg.ai ul,.msg.ai ol{margin:0 0 10px;padding-left:22px}
+.msg.ai li{margin:3px 0}
+.msg.ai h4{font-size:16px;margin:14px 0 6px}
+.msg .err{color:var(--red);font-size:13px;margin-top:6px}
+.thinking{color:var(--ink-2);font-size:15px;display:flex;align-items:center;gap:8px}
+.thinking i{width:6px;height:6px;border-radius:50%;background:var(--ink-3);animation:blink 1.2s infinite}
+.thinking i:nth-child(2){animation-delay:.2s}.thinking i:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,100%{opacity:.25}50%{opacity:1}}
+.dock{position:sticky;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;align-items:flex-end;background:var(--tile);border-radius:26px;padding:8px 8px 8px 18px;box-shadow:0 8px 30px rgba(0,0,0,.12);border:1px solid var(--hair)}
+.dock textarea{flex:1;border:0;background:none;outline:none;resize:none;font-size:16px;line-height:1.45;padding:7px 0;max-height:160px;min-height:24px}
+.sendb{width:36px;height:36px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;flex:none}
+.sendb[disabled]{background:var(--fill);color:var(--ink-3)}
+.ctx{font-size:12px;color:var(--ink-3);text-align:center;margin-top:10px}
+.notice{background:var(--tile);border-radius:18px;padding:18px 20px;display:flex;gap:12px;align-items:flex-start;color:var(--ink-2);font-size:14px}
+.notice b{color:var(--ink)}
+
+/* Docs (grouped lists, Settings uslubi) */
+.group{margin-top:30px}
+.group-h{font-size:13px;font-weight:600;color:var(--ink-2);margin:0 0 8px 16px}
+.glist{background:var(--tile);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+.gitem{display:flex;align-items:center;gap:14px;padding:13px 16px;border-top:1px solid var(--hair);flex-wrap:wrap}
+.gitem:first-child{border-top:0}
+.gitem .main{flex:1;min-width:200px}
+.gitem .t{font-size:15px;font-weight:500}
+.gitem .d{font-size:13px;color:var(--ink-2);margin-top:1px}
+.mini-seg{display:inline-flex;background:var(--fill);border-radius:980px;padding:2px;gap:2px}
+.mini-seg button{height:26px;padding:0 10px;border-radius:980px;font-size:12px;font-weight:500;color:var(--ink-2)}
+.mini-seg button[aria-pressed="true"].s-ready{background:var(--green-bg);color:var(--green)}
+.mini-seg button[aria-pressed="true"].s-update{background:var(--orange-bg);color:var(--orange)}
+.mini-seg button[aria-pressed="true"].s-missing{background:var(--red-bg);color:var(--red)}
+.input.date{height:30px;font-size:13px;padding:0 8px;width:150px}
+
+/* News */
+.news-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.news{background:var(--tile);border-radius:var(--r-tile);padding:26px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px;min-width:0}
+.news.feat{grid-column:span 2;padding:34px}
+.news.feat h3{font-size:28px;line-height:1.16;letter-spacing:-.022em}
+.news .eb{font-size:13px;color:var(--ink-2);display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.kind{font-weight:600}
+.kind.law{color:var(--purple)} .kind.industry{color:var(--accent-ink)}
+.news p{margin:0;color:var(--ink-2);font-size:15px;text-wrap:pretty}
+.impact{background:var(--fill-2);border-radius:14px;padding:12px 14px;font-size:14px;display:flex;gap:10px;align-items:flex-start}
+.impact b{display:block;font-size:12px;color:var(--ink-2);font-weight:600;margin-bottom:2px}
+
+/* Finance */
+.chart-scroll{overflow-x:auto;margin:0 -6px}
+.chart{display:block;width:100%;min-width:520px;height:auto}
+.chart text{fill:var(--ink-2);font-size:12px;font-family:var(--f-text)}
+.chart .grid{stroke:var(--hair);stroke-width:1}
+.chart .goal{stroke:var(--ink-3);stroke-width:1.5;stroke-dasharray:5 5;fill:none}
+.chart .val{fill:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.chart .hit{fill:transparent}
+.chart .dim{opacity:.45}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px}
+.tbl-wrap{overflow-x:auto}
+table.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{text-align:left;font-size:12px;font-weight:600;color:var(--ink-2);padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl td{padding:11px 10px;border-bottom:1px solid var(--hair);vertical-align:top}
+.tbl td.r,.tbl th.r{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tbl tfoot td{font-weight:700;border-bottom:0}
+.month-sw{display:inline-flex;align-items:center;gap:4px;background:var(--fill);border-radius:980px;padding:3px}
+.month-sw button{width:30px;height:30px;border-radius:50%;display:grid;place-items:center}
+.month-sw button:hover{background:var(--tile)}
+.month-sw span{font-size:14px;font-weight:600;min-width:120px;text-align:center}
+.bar{height:8px;border-radius:4px;background:var(--fill);overflow:hidden}
+.bar > i{display:block;height:100%;border-radius:4px;background:var(--accent)}
+.breakdown{display:flex;flex-direction:column;gap:10px;margin-top:22px}
+.bd{display:flex;align-items:center;gap:10px;font-size:15px}
+.bd i{width:10px;height:10px;border-radius:3px;flex:none}
+.bd .x{color:var(--ink-2);font-size:13px}
+.bd b{margin-left:auto;font-variant-numeric:tabular-nums}
+.switch{position:relative;width:46px;height:28px;border-radius:14px;background:var(--fill);transition:background .2s;flex:none}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 2px 4px rgba(0,0,0,.2);transition:transform .2s}
+.switch[aria-checked="true"]{background:#34c759}
+.switch[aria-checked="true"]::after{transform:translateX(18px)}
+
+/* Settings */
+.kw{display:flex;flex-wrap:wrap;gap:6px;padding:12px 16px}
+.kw .tag{display:inline-flex;align-items:center;gap:4px;padding:4px 6px 4px 11px;font-size:13px}
+.kw .tag button{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;color:var(--ink-2)}
+.kw .tag button:hover{background:var(--line)}
+.kw-add{display:flex;gap:8px;padding:0 16px 14px}
+.dirs{display:flex;flex-wrap:wrap;gap:8px;padding:14px 16px}
+.steps{counter-reset:s;display:flex;flex-direction:column;gap:12px;padding:16px}
+.step{display:flex;gap:12px;font-size:14px;align-items:flex-start}
+.step::before{counter-increment:s;content:counter(s);width:24px;height:24px;border-radius:50%;background:var(--fill);display:grid;place-items:center;font-size:12px;font-weight:600;flex:none}
+.about{display:flex;gap:18px;align-items:center;padding:20px 16px}
+
+/* Modal */
+.modal{position:fixed;inset:0;z-index:70;display:grid;place-items:center;padding:16px;background:var(--scrim)}
+.dialog{background:var(--tile);border-radius:24px;width:min(620px,100%);max-height:calc(100vh - 32px);overflow:auto;box-shadow:var(--shadow-lg);padding:24px}
+.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+.form .wide{grid-column:span 2}
+.form .field .input{width:100%}
+
+/* Toast, tooltip, tab bar */
+.toast{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:11px 18px;border-radius:980px;font-size:14px;font-weight:500;z-index:90;opacity:0;pointer-events:none;transition:opacity .2s, transform .2s;max-width:calc(100vw - 32px);text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.tip{position:fixed;z-index:95;pointer-events:none;background:var(--tile);color:var(--ink);border:1px solid var(--hair);box-shadow:var(--shadow-lg);border-radius:12px;padding:10px 12px;font-size:12px;line-height:1.5;opacity:0;transition:opacity .12s;min-width:180px}
+.tip.on{opacity:1}
+.tip b{font-size:13px}
+.tip .tr{display:flex;align-items:center;gap:6px}
+.tip .tr i{width:8px;height:8px;border-radius:2px}
+.tip .tr span{margin-left:auto;padding-left:12px;font-variant-numeric:tabular-nums}
+.tabbar{display:none}
+.skel{background:var(--fill);border-radius:12px;height:16px;animation:blink 1.6s infinite}
+.fade{animation:fadeup .35s ease both}
+@keyframes fadeup{from{opacity:.0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+@media (max-width: 980px){
+  .gnav-links{display:none}
+  .gnav-in{justify-content:space-between}
+  .c-3{grid-column:span 6}.c-4,.c-5,.c-6,.c-7,.c-8{grid-column:span 12}
+  .r-2{grid-row:auto}
+  .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:45;background:var(--nav);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-top:1px solid var(--hair);padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+  .tabbar a,.tabbar button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10px;color:var(--ink-2);padding:4px 0;position:relative}
+  .tabbar a:hover{text-decoration:none}
+  .tabbar [aria-current="page"]{color:var(--accent-ink)}
+  .tabbar .badge{position:absolute;top:0;left:calc(50% + 6px);height:16px;min-width:16px;font-size:10px}
+  .toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  .dock{bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+}
+@media (max-width: 640px){
+  .wrap{padding-inline:16px;padding-block:24px 120px}
+  .gnav-in{padding-inline:16px}
+  h1{font-size:34px}
+  .sub{font-size:17px}
+  .c-3{grid-column:span 12}
+  .num-xl{font-size:44px} .num-l{font-size:36px}
+  .tile{padding:20px}
+  .trow{grid-template-columns:44px minmax(0,1fr);gap:12px;padding:14px 16px}
+  .trow .end{grid-column:2;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:10px;text-align:left}
+  .sheet{top:auto;left:0;right:0;bottom:0;width:100%;height:calc(100% - 36px);border-radius:22px 22px 0 0;transform:translateY(100%)}
+  .sheet-b{padding:0 18px 40px}
+  .sheet-h{padding:12px 14px 8px 18px}
+  .suggest{grid-template-columns:1fr}
+  .news-grid{grid-template-columns:1fr}
+  .news.feat{grid-column:auto;padding:24px}
+  .news.feat h3{font-size:22px}
+  .form{grid-template-columns:1fr}
+  .form .wide{grid-column:auto}
+  .fbar{grid-template-columns:110px 1fr 24px}
+  .live .lbl{display:none}
+}
+</style>
+
+<header class="gnav">
+  <div class="gnav-in">
+    <a class="brand" href="#panel" aria-label="Winder bosh sahifa" id="brandLink"></a>
+    <nav class="gnav-links" id="gnavLinks" aria-label="Bo‘limlar"></nav>
+    <div class="gnav-right" id="gnavRight"></div>
+  </div>
+</header>
+<div id="ribbon"></div>
+<main class="wrap" id="view" aria-live="polite"></main>
+<nav class="tabbar" id="tabbar" aria-label="Asosiy bo‘limlar"></nav>
+<div class="scrim" id="scrim"></div>
+<aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Tender tafsilotlari"></aside>
+<div id="modalRoot"></div>
+<div class="toast" id="toast" role="status"></div>
+<div class="tip" id="tip"></div>
+<input type="file" id="importFile" accept="application/json,.json" hidden>
+
+<script>
+(() => {
+'use strict';
+
+/* ---------- Doimiy ma'lumotlar ---------- */
+const SOURCES = {
+  xarid:  { name: 'UZEX Xarid',  host: 'xarid.uzex.uz',     url: 'https://xarid.uzex.uz/home',   desc: 'Davlat xaridlari: auksion, e-do‘kon, eng yaxshi taklif, elektron tender' },
+  etender:{ name: 'UZEX E-tender', host: 'etender.uzex.uz', url: 'https://etender.uzex.uz/home', desc: 'Tender, tanlov va autsorsing xizmatlari lotlari' },
+  xt:     { name: 'XT-Xarid',    host: 'xt-xarid.uz',       url: 'https://xt-xarid.uz/',         desc: 'Yirik korxonalar: tender, tanlash, takliflar so‘rovi' },
+  coop:   { name: 'Kooperatsiya portali', host: 'new.cooperation.uz', url: 'https://new.cooperation.uz/', desc: 'Elektron kooperatsiya: lot va ofertalar' },
+  mc:     { name: 'Qurilish vazirligi tenderlari', host: 'tender.mc.uz', url: 'https://tender.mc.uz/', desc: 'Qurilish-pudrat va loyiha-qidiruv lotlari' },
+  ebirja: { name: 'E-Birja',     host: 'ebirja.uz',         url: 'https://ebirja.uz/uz',         desc: 'Elektron birja savdolari' },
+};
+const STATUSES = [
+  { k: 'new', l: 'Yangi' },
+  { k: 'review', l: 'Ko‘rib chiqilmoqda' },
+  { k: 'prep', l: 'Tayyorlanmoqda' },
+  { k: 'submitted', l: 'Topshirildi' },
+  { k: 'won', l: 'Yutildi' },
+  { k: 'lost', l: 'Yutqazildi' },
+  { k: 'skipped', l: 'O‘tkazib yuborildi' },
+];
+const ST = Object.fromEntries(STATUSES.map(s => [s.k, s]));
+const ACTIVE = ['new', 'review', 'prep'];
+const STAGE = { new: 0, review: 1, prep: 2, skipped: 0, submitted: 3, won: 4, lost: 4 };
+const DIRECTIONS = ['Veb-sayt', 'Mobil ilova', 'Dasturiy ta’minot', 'Raqamli marketing', 'Video production', 'Dizayn va brending', 'IT xizmatlari'];
+const DIR_HINTS = {
+  'Veb-sayt': ['sayt', 'portal', 'veb', 'web', 'e-commerce', 'onlayn do‘kon'],
+  'Mobil ilova': ['mobil', 'ilova', 'ios', 'android'],
+  'Dasturiy ta’minot': ['axborot tizimi', 'dastur', 'crm', 'bot', 'lms', 'platforma', 'autsorsing', 'tizim'],
+  'Raqamli marketing': ['smm', 'seo', 'target', 'reklama', 'marketing', 'kontent'],
+  'Video production': ['video', 'rolik', 'film', 'foto', 'montaj'],
+  'Dizayn va brending': ['dizayn', 'logotip', 'brend', 'firma uslubi', 'broshyura', 'katalog'],
+};
+const DOC_STATE = { ready: { l: 'Tayyor', c: 'green' }, update: { l: 'Yangilash kerak', c: 'orange' }, missing: { l: 'Yo‘q', c: 'red' } };
+const DOC_CATS = ['Ro‘yxatdan o‘tish', 'Moliyaviy', 'Malaka va tajriba', 'Maxsus ruxsatnomalar', 'Tender shablonlari', 'Boshqa'];
+const TYPES_BY_SOURCE = {
+  xarid: ['Auksion', 'Mahalliy auksion', 'Elektron do‘kon', 'Milliy do‘kon', 'Eng yaxshi taklif', 'Elektron tender', 'Taklif so‘rovi', 'To‘g‘ridan-to‘g‘ri shartnoma'],
+  etender: ['Tender', 'Tanlov', 'Autsorsing xizmatlari'],
+  xt: ['Tender', 'Tanlash', 'Auksion', 'Mahalliy auksion', 'Do‘kon', 'Milliy do‘kon', 'Hadli kelishuv', 'Takliflar so‘rovi'],
+  coop: ['Kooperatsiya'],
+  mc: ['Qurilish-pudrat', 'Loyiha-qidiruv'],
+  ebirja: ['Birja savdosi'],
+};
+const DEFAULT_SETTINGS = {
+  name: '', company: 'SOS — Smart Outsourcing Solutions',
+  directions: DIRECTIONS.slice(0, 6), keywords: [], exclude: [],
+  sources: { xarid: true, etender: true, xt: true, coop: true, mc: true, ebirja: true },
+  scanTime: '09:00', minMatch: 55,
+  salary: 2000000, perSubmitted: 100000, perWon: 1000000, goal: 4000000, usdRate: 12650, paid: {},
+};
+const MONTHS = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avgust', 'sentabr', 'oktabr', 'noyabr', 'dekabr'];
+const MON3 = ['yan', 'fev', 'mar', 'apr', 'may', 'iyn', 'iyl', 'avg', 'sen', 'okt', 'noy', 'dek'];
+const WEEKDAYS = ['yakshanba', 'dushanba', 'seshanba', 'chorshanba', 'payshanba', 'juma', 'shanba'];
+const VIEWS = [
+  { k: 'panel', l: 'Umumiy', ico: 'grid' },
+  { k: 'tenderlar', l: 'Tenderlar', ico: 'list' },
+  { k: 'ai', l: 'AI yordamchi', ico: 'spark' },
+  { k: 'hujjatlar', l: 'Hujjatlar', ico: 'doc' },
+  { k: 'yangiliklar', l: 'Yangiliklar', ico: 'news' },
+  { k: 'moliya', l: 'Moliya', ico: 'wallet' },
+  { k: 'sozlamalar', l: 'Sozlamalar', ico: 'sliders' },
+];
+
+const ICONS = {
+  grid: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z',
+  list: 'M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01',
+  spark: 'M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM18.5 15.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z',
+  doc: 'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5M9 13h6M9 17h6',
+  news: 'M4 5h13v14a2 2 0 0 0 2 2H6a2 2 0 0 1-2-2zM17 9h3v10a2 2 0 0 1-2 2M8 9h5M8 13h5M8 17h3',
+  wallet: 'M3 7a2 2 0 0 1 2-2h12v4M3 7v10a2 2 0 0 0 2 2h15V9H5a2 2 0 0 1-2-2zM16 14h.01',
+  sliders: 'M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1M15 4v4M9 10v4M17 16v4',
+  search: 'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM20 20l-4-4',
+  plus: 'M12 5v14M5 12h14',
+  x: 'M6 6l12 12M18 6L6 18',
+  chevR: 'M9 6l6 6-6 6', chevL: 'M15 6l-6 6 6 6', chevD: 'M6 9l6 6 6-6',
+  ext: 'M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5',
+  clock: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7v5l3 2',
+  check: 'M5 12.5l4.5 4.5L19 7.5',
+  alert: 'M12 4l9 16H3zM12 10v4M12 17h.01',
+  xc: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM9 9l6 6M15 9l-6 6',
+  copy: 'M9 9h10v10H9zM5 15V5h10',
+  download: 'M12 4v11M7 10l5 5 5-5M5 20h14',
+  upload: 'M12 20V9M7 14l5-5 5 5M5 4h14',
+  trash: 'M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13',
+  cols: 'M4 4h4v16H4zM10 4h4v11h-4zM16 4h4v14h-4z',
+  radar: 'M12 3a9 9 0 1 0 9 9M12 7a5 5 0 1 0 5 5M12 12l6-6M12 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2z',
+  up: 'M12 19V5M6 11l6-6 6 6',
+  stop: 'M8 8h8v8H8z',
+  more: 'M5 12h.01M12 12h.01M19 12h.01',
+  cal: 'M4 6h16v14H4zM4 10h16M8 3v4M16 3v4',
+  refresh: 'M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7',
+  trophy: 'M8 4h8v5a4 4 0 0 1-8 0zM8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4M12 13v4M9 20h6M10 17h4',
+  pin: 'M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12zM12 6.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z',
+  bld: 'M4 21V5l8-2v18M12 7l8 2v12M8 8h.01M8 12h.01M8 16h.01M16 12h.01M16 16h.01M3 21h18',
+  send: 'M12 19V5M6 11l6-6 6 6',
+};
+const icon = (n, cls = '') => `<svg class="ico ${cls}" viewBox="0 0 24 24" aria-hidden="true"><path d="${ICONS[n] || ''}"/></svg>`;
+const logo = (size = 26) => `<svg width="${size}" height="${size}" viewBox="0 0 64 64" aria-hidden="true"><rect class="lg-bg" x="2" y="2" width="60" height="60" rx="16"/><path class="lg-w" d="M12 22 L21 48 L30 30 L39 48" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path class="lg-a" d="M39 48 L50 16 M42.7 21.3 L50 16 L52.5 24.7" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+/* ---------- Holat ---------- */
+const S = {
+  mode: 'loading', sample: undefined, downloads: null,
+  tenders: [], docs: [], news: [], scans: [], settings: { ...DEFAULT_SETTINGS },
+  loaded: { tenders: false, docs: false, news: false, scans: false, settings: false },
+  view: 'panel', sel: null, more: false, modal: null, confirm: null,
+  f: { q: '', status: 'active', source: '', dir: '', type: '', region: '', due: '', minMatch: '0', sort: 'match' },
+  listMode: 'list', newsKind: 'all', finMonth: null,
+  chat: [], chatBusy: false, chatCtl: null, aiBusy: {}, aiErr: {},
+  drafts: {}, known: null, fresh: new Set(), selfAdded: new Set(),
+};
+try {
+  const saved = JSON.parse(localStorage.getItem('winder:ui') || '{}');
+  if (saved.f) Object.assign(S.f, saved.f);
+  if (saved.listMode) S.listMode = saved.listMode;
+} catch (e) { /* brauzer xotirasi yopiq */ }
+const saveUI = () => { try { localStorage.setItem('winder:ui', JSON.stringify({ f: S.f, listMode: S.listMode })); } catch (e) {} };
+
+/* ---------- Saqlash qatlami: Claude ichida — db, lokal — brauzer xotirasi ---------- */
+const LS = 'winder:data:';
+const Store = {
+  mode: 'loading', db: null, local: {},
+  async init() {
+    let db = null;
+    if (window.claude && typeof window.claude.use === 'function') {
+      try { db = await window.claude.use('db'); } catch (e) { db = null; }
+    }
+    this.mode = db ? 'cloud' : 'local';
+    this.db = db;
+  },
+  watch(col, cb) {
+    if (this.mode === 'cloud') {
+      return this.db.collection(col).onSnapshot(
+        snap => cb(snap.docs.map(d => ({ ...d.data(), id: d.id }))),
+        err => { console.warn(col, err); if (err && err.code !== 'revoked') toast('Jonli ulanish uzildi. Sahifani yangilang.'); }
+      );
+    }
+    this.local[col] = () => cb(this.list(col));
+    this.local[col]();
+    return () => {};
+  },
+  read(col) { try { return JSON.parse(localStorage.getItem(LS + col) || '{}') || {}; } catch (e) { return {}; } },
+  write(col, obj) {
+    try { localStorage.setItem(LS + col, JSON.stringify(obj)); } catch (e) { toast('Brauzer xotirasiga yozib bo‘lmadi'); }
+    if (this.local[col]) this.local[col]();
+  },
+  list(col) { const o = this.read(col); return Object.keys(o).map(id => ({ ...o[id], id })); },
+  async set(col, id, data) {
+    const body = strip(data);
+    if (this.mode === 'cloud') return this.db.collection(col).doc(id).set(body);
+    const o = this.read(col); o[id] = body; this.write(col, o);
+  },
+  async update(col, id, patch) {
+    if (this.mode === 'cloud') return this.db.collection(col).doc(id).update(patch);
+    const o = this.read(col); o[id] = deepMerge(o[id] || {}, patch); this.write(col, o);
+  },
+  async remove(col, id) {
+    if (this.mode === 'cloud') return this.db.collection(col).doc(id).delete();
+    const o = this.read(col); delete o[id]; this.write(col, o);
+  },
+};
+window.addEventListener('storage', e => {
+  if (e.key && e.key.startsWith(LS)) { const c = e.key.slice(LS.length); if (Store.local[c]) Store.local[c](); }
+});
+function strip(d) { const o = { ...d }; delete o.id; return o; }
+function deepMerge(a, b) {
+  const out = { ...a };
+  for (const k of Object.keys(b)) {
+    const v = b[k];
+    if (v && typeof v === 'object' && !Array.isArray(v) && out[k] && typeof out[k] === 'object' && !Array.isArray(out[k])) out[k] = deepMerge(out[k], v);
+    else out[k] = v;
+  }
+  return out;
+}
+async function save(fn, okMsg) {
+  try { await fn(); if (okMsg) toast(okMsg); return true; }
+  catch (e) {
+    const code = e && e.code;
+    if (code === 'unavailable') {
+      await new Promise(r => setTimeout(r, 600 + Math.random() * 600));
+      try { await fn(); if (okMsg) toast(okMsg); return true; } catch (e2) {}
+    }
+    toast(code === 'quota_exceeded' ? 'Ma’lumotlar bazasi to‘ldi: eski yozuvlarni o‘chiring.'
+      : code === 'invalid_argument' ? 'Saqlanmadi: bu sahifani tahrirlash huquqingiz yo‘q.'
+      : 'Saqlanmadi. Bir ozdan so‘ng qayta urinib ko‘ring.');
+    return false;
+  }
+}
+
+/* ---------- Yordamchilar ---------- */
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const safeUrl = u => (/^https?:\/\//i.test(String(u || '')) ? String(u) : '#');
+const grp = n => String(Math.round(Math.abs(n))).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+const money = (n, cur = 'UZS') => (cur === 'USD' ? '$' + grp(n) : grp(n) + ' so‘m');
+function short(n) {
+  const a = Math.abs(n);
+  const f = (v, d) => v.toFixed(d).replace(/\.0+$/, '').replace(/(\.\d*?)0+$/, '$1').replace('.', ',');
+  if (a >= 1e9) return f(n / 1e9, 2) + ' mlrd';
+  if (a >= 1e6) return f(n / 1e6, 1) + ' mln';
+  if (a >= 1e3) return f(n / 1e3, 0) + ' ming';
+  return String(Math.round(n));
+}
+const priceShort = t => (t.currency === 'USD' ? '$' + grp(t.price) : short(t.price) + ' so‘m');
+const toUZS = t => (t.currency === 'USD' ? (Number(t.price) || 0) * (Number(S.settings.usdRate) || 12650) : Number(t.price) || 0);
+const D = iso => new Date(iso);
+const pad = n => String(n).padStart(2, '0');
+const mk = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}`;
+const mkIso = iso => (iso ? mk(new Date(iso)) : null);
+const cap = s => String(s).charAt(0).toUpperCase() + String(s).slice(1);
+const monthName = key => { const [y, m] = key.split('-').map(Number); return `${MONTHS[m - 1]} ${y}`; };
+const shiftMonth = (key, n) => { const [y, m] = key.split('-').map(Number); return mk(new Date(y, m - 1 + n, 1)); };
+function fmtDate(iso, time = false) {
+  if (!iso) return '—';
+  const d = D(iso); if (isNaN(d)) return '—';
+  return `${d.getDate()}-${MONTHS[d.getMonth()]}` + (d.getFullYear() !== new Date().getFullYear() ? ` ${d.getFullYear()}` : '') + (time ? `, ${pad(d.getHours())}:${pad(d.getMinutes())}` : '');
+}
+const sameDay = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+function relDay(iso) {
+  const d = D(iso), now = new Date();
+  const day = 864e5, t0 = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+  const diff = Math.round((new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime() - t0) / day);
+  const tm = `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  if (diff === 0) return `bugun, ${tm}`;
+  if (diff === -1) return `kecha, ${tm}`;
+  if (diff === 1) return `ertaga, ${tm}`;
+  return fmtDate(iso, true);
+}
+function countdown(iso) {
+  const ms = D(iso) - Date.now();
+  if (!(ms > 0)) return { t: 'Muddati tugagan', c: 'over' };
+  const d = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5), m = Math.floor(ms % 36e5 / 6e4);
+  const t = d > 0 ? `${d} kun ${h} soat` : h > 0 ? `${h} soat ${m} daq` : `${m} daqiqa`;
+  return { t, c: ms < 864e5 ? 'urgent' : ms < 3 * 864e5 ? 'soon' : '' };
+}
+const cdSpan = iso => { const c = countdown(iso); return `<span class="cd ${c.c}" data-cd="${esc(iso)}">${c.t}</span>`; };
+const pill = s => `<span class="pill st-${esc(s)}"><i></i>${esc((ST[s] || { l: s }).l)}</span>`;
+function ring(p, size = 44, big = false) {
+  p = Math.max(0, Math.min(100, Math.round(Number(p) || 0)));
+  const r = (size - 5) / 2, c = 2 * Math.PI * r, off = c * (1 - p / 100), h = size / 2;
+  const cls = p >= 85 ? 'hi' : p >= 70 ? 'mid' : 'lo';
+  return `<span class="ring ${cls}${big ? ' big' : ''}" style="width:${size}px;height:${size}px" title="Moslik ${p}%"><svg viewBox="0 0 ${size} ${size}" aria-hidden="true"><circle class="rb" cx="${h}" cy="${h}" r="${r}"/><circle class="rf" cx="${h}" cy="${h}" r="${r}" stroke-dasharray="${c.toFixed(2)}" stroke-dashoffset="${off.toFixed(2)}" transform="rotate(-90 ${h} ${h})"/></svg><b>${p}</b></span>`;
+}
+const srcName = k => (SOURCES[k] ? SOURCES[k].name : k || '—');
+const today0 = () => { const n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); };
+function effState(d) {
+  if (d.state === 'ready' && d.expires && D(d.expires + 'T23:59:59') < new Date()) return 'update';
+  return d.state || 'missing';
+}
+const val = (key, fallback) => (key in S.drafts ? S.drafts[key] : fallback ?? '');
+const hasSample = () => S.tenders.some(t => t.sample) || S.docs.some(d => d.sample) || S.scans.some(s => s.sample);
+
+function md(text) {
+  const lines = esc(text).split('\n');
+  let html = '', list = null;
+  const inline = s => s.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/`([^`]+)`/g, '<code>$1</code>');
+  const close = () => { if (list) { html += `</${list}>`; list = null; } };
+  for (const raw of lines) {
+    const l = raw.trim();
+    let m;
+    if (!l) { close(); continue; }
+    if ((m = l.match(/^#{1,4}\s+(.*)$/))) { close(); html += `<h4>${inline(m[1])}</h4>`; }
+    else if ((m = l.match(/^[-*•]\s+(.*)$/))) { if (list !== 'ul') { close(); html += '<ul>'; list = 'ul'; } html += `<li>${inline(m[1])}</li>`; }
+    else if ((m = l.match(/^\d+[.)]\s+(.*)$/))) { if (list !== 'ol') { close(); html += '<ol>'; list = 'ol'; } html += `<li>${inline(m[1])}</li>`; }
+    else { close(); html += `<p>${inline(l)}</p>`; }
+  }
+  close();
+  return html;
+}
+
+/* ---------- Moliya hisoblari ---------- */
+function finance(month) {
+  const s = S.settings;
+  const sub = S.tenders.filter(t => mkIso(t.submittedAt) === month);
+  const won = S.tenders.filter(t => mkIso(t.wonAt) === month);
+  const salary = Number(s.salary) || 0, ps = Number(s.perSubmitted) || 0, pw = Number(s.perWon) || 0;
+  return { month, salary, sub, won, subSum: sub.length * ps, wonSum: won.length * pw, total: salary + sub.length * ps + won.length * pw };
+}
+function winRate() {
+  const won = S.tenders.filter(t => t.status === 'won').length, lost = S.tenders.filter(t => t.status === 'lost').length;
+  return won + lost ? won / (won + lost) : null;
+}
+
+/* ---------- Tender moslik bahosi (qo‘lda qo‘shilganlar uchun) ---------- */
+function scoreMatch(text) {
+  const t = String(text || '').toLowerCase();
+  const kws = (S.settings.keywords || []).map(k => String(k).toLowerCase()).filter(Boolean);
+  const hits = kws.filter(k => t.includes(k));
+  const bad = (S.settings.exclude || []).some(k => k && t.includes(String(k).toLowerCase()));
+  let dir = 'IT xizmatlari', best = 0;
+  for (const [d, hs] of Object.entries(DIR_HINTS)) { const n = hs.filter(h => t.includes(h)).length; if (n > best) { best = n; dir = d; } }
+  const score = bad ? 25 : Math.min(97, 45 + hits.length * 14 + best * 6);
+  return { score, hits, dir };
+}
+
+/* ---------- Filtrlash ---------- */
+function filtered() {
+  const f = S.f, q = f.q.trim().toLowerCase(), now = Date.now();
+  let list = S.tenders.filter(t => {
+    if (f.status === 'active' && !ACTIVE.includes(t.status)) return false;
+    if (f.status !== 'active' && f.status !== 'all' && t.status !== f.status) return false;
+    if (f.source && t.source !== f.source) return false;
+    if (f.dir && t.direction !== f.dir) return false;
+    if (f.type && t.type !== f.type) return false;
+    if (f.region && !String(t.region || '').startsWith(f.region)) return false;
+    if (+f.minMatch && (Number(t.match) || 0) < +f.minMatch) return false;
+    if (f.due) {
+      const ms = D(t.deadline) - now;
+      if (f.due === 'over' ? ms > 0 : !(ms > 0 && ms <= Number(f.due) * 864e5)) return false;
+    }
+    if (q) {
+      const hay = [t.title, t.customer, t.region, t.lot, t.oferta, t.type, srcName(t.source), t.direction].join(' ').toLowerCase();
+      if (!q.split(/\s+/).every(w => hay.includes(w))) return false;
+    }
+    return true;
+  });
+  const by = {
+    match: (a, b) => (b.match || 0) - (a.match || 0),
+    deadline: (a, b) => dlKey(a) - dlKey(b),
+    price: (a, b) => toUZS(b) - toUZS(a),
+    found: (a, b) => D(b.foundAt) - D(a.foundAt),
+  }[f.sort] || (() => 0);
+  return list.sort(by);
+}
+function dlKey(t) { const v = D(t.deadline).getTime() - Date.now(); return v > 0 ? v : 1e15 - v; }
+const regionOf = t => String(t.region || '').split(',')[0].trim();
+
+/* ---------- Render ---------- */
+let rafId = 0;
+const schedule = () => { if (!rafId) rafId = requestAnimationFrame(() => { rafId = 0; render(); }); };
+const $ = id => document.getElementById(id);
+
+function render() {
+  const ae = document.activeElement, fid = ae && ae.id;
+  let s0 = null, s1 = null;
+  if (fid && ae.tagName && /INPUT|TEXTAREA/.test(ae.tagName)) { try { s0 = ae.selectionStart; s1 = ae.selectionEnd; } catch (e) {} }
+  renderChrome();
+  const fn = { panel: viewPanel, tenderlar: viewTenders, ai: viewAI, hujjatlar: viewDocs, yangiliklar: viewNews, moliya: viewFinance, sozlamalar: viewSettings }[S.view] || viewPanel;
+  $('view').innerHTML = fn();
+  renderSheet();
+  renderModal();
+  if (fid) {
+    const el = $(fid);
+    if (el && el !== document.activeElement) {
+      el.focus({ preventScroll: true });
+      if (s0 != null && el.setSelectionRange) { try { el.setSelectionRange(s0, s1); } catch (e) {} }
+    }
+  }
+}
+
+function renderChrome() {
+  $('brandLink').innerHTML = `${logo(26)}<span class="wm"><b>Win</b><span>der</span></span>`;
+  const newCount = S.tenders.filter(t => t.status === 'new').length;
+  $('gnavLinks').innerHTML = VIEWS.filter(v => v.k !== 'sozlamalar').map(v =>
+    `<a href="#${v.k}" ${S.view === v.k ? 'aria-current="page"' : ''}>${esc(v.l)}${v.k === 'tenderlar' && newCount ? ` <span class="badge">${newCount}</span>` : ''}</a>`).join('');
+  const last = latestScan();
+  const errs = last ? Object.values(last.sources || {}).filter(x => !x.ok).length : 0;
+  const total = last ? Object.keys(last.sources || {}).length : 0;
+  const dotCls = !last ? 'off' : errs && errs >= total ? 'err' : errs ? 'warn' : 'pulse';
+  const agentLbl = !last ? 'Agent kutilmoqda' : `Agent · ${relDay(last.at)}`;
+  $('gnavRight').innerHTML = `
+    ${S.mode === 'local' ? '<span class="tag" title="Ma’lumotlar shu brauzerda saqlanadi">Lokal</span>' : ''}
+    <a class="live" href="#sozlamalar" title="${esc(agentLbl)}"><span class="dot ${dotCls}"></span><span class="lbl">${esc(agentLbl)}</span></a>
+    <button class="iconbtn" data-act="goSearch" aria-label="Tender qidirish">${icon('search')}</button>
+    <a class="iconbtn" href="#sozlamalar" aria-label="Sozlamalar" ${S.view === 'sozlamalar' ? 'aria-current="page"' : ''}>${icon('sliders')}</a>`;
+  $('ribbon').innerHTML = hasSample()
+    ? `<div class="ribbon">Hozir <b>namuna ma’lumotlar</b> ko‘rsatilmoqda. Agent ulanganda haqiqiy tenderlar shu yerga real vaqtda tushadi. <a href="#sozlamalar">Batafsil ›</a></div>` : '';
+  const tabs = [VIEWS[0], VIEWS[1], VIEWS[2], VIEWS[5]];
+  $('tabbar').innerHTML = tabs.map(v => `<a href="#${v.k}" ${S.view === v.k ? 'aria-current="page"' : ''}>${icon(v.ico, 'lg')}<span>${v.k === 'ai' ? 'AI' : esc(v.l)}</span>${v.k === 'tenderlar' && newCount ? `<span class="badge">${newCount}</span>` : ''}</a>`).join('')
+    + `<button data-act="more" ${['hujjatlar', 'yangiliklar', 'sozlamalar'].includes(S.view) ? 'aria-current="page"' : ''}>${icon('more', 'lg')}<span>Yana</span></button>`;
+}
+const latestScan = () => S.scans.slice().sort((a, b) => D(b.at) - D(a.at))[0] || null;
+
+function loadingView() {
+  return `<div class="phead"><div style="width:100%"><div class="skel" style="width:180px;margin-bottom:14px"></div><div class="skel" style="height:44px;width:60%"></div></div></div>
+  <div class="bento">${[6, 3, 3, 3, 3].map(c => `<div class="tile c-${c}"><div class="skel" style="width:40%"></div><div class="skel" style="height:40px;width:70%;margin-top:18px"></div></div>`).join('')}</div>`;
+}
+const ready = () => S.loaded.tenders && S.loaded.settings;
+
+function emptyData() {
+  return `<div class="empty fade">${logo(56)}<h3 style="margin-top:16px">Hozircha tenderlar yo‘q</h3>
+    <p>Agent har kuni soat ${esc(S.settings.scanTime)} da 6 ta platformani tekshiradi va mos tenderlarni shu yerga qo‘shadi.<br>Tenderni o‘zingiz ham qo‘shishingiz mumkin.</p>
+    <div class="actions"><button class="btn btn-primary" data-act="openAdd">${icon('plus')}Tender qo‘shish</button>
+    ${S.mode === 'local' ? `<button class="btn btn-ghost" data-act="import">${icon('upload')}Namuna ma’lumotlarni yuklash</button>` : ''}</div></div>`;
+}
+
+/* ----- Umumiy panel ----- */
+function viewPanel() {
+  if (!ready()) return loadingView();
+  const now = new Date();
+  const h = now.getHours();
+  const greet = h < 5 ? 'Xayrli tun' : h < 11 ? 'Xayrli tong' : h < 18 ? 'Xayrli kun' : 'Xayrli kech';
+  const name = S.settings.name ? `, ${S.settings.name}` : '';
+  const last = latestScan();
+  const T = S.tenders;
+  const fresh = T.filter(t => t.status === 'new');
+  const todayFound = T.filter(t => t.foundAt && sameDay(D(t.foundAt), now));
+  const inWork = T.filter(t => t.status === 'review' || t.status === 'prep');
+  const fin = finance(mk(now));
+  const pending = T.filter(t => t.status === 'submitted');
+  const wr = winRate();
+  const upcoming = T.filter(t => ACTIVE.includes(t.status) && D(t.deadline) > now).sort((a, b) => D(a.deadline) - D(b.deadline)).slice(0, 5);
+  const top = fresh.slice().sort((a, b) => (b.match || 0) - (a.match || 0)).slice(0, 5);
+  let agentLine = 'Agent hali birorta tekshiruv o‘tkazmagan.';
+  if (last) {
+    const v = Object.values(last.sources || {});
+    const seen = v.reduce((a, x) => a + (x.seen || 0), 0), matched = v.reduce((a, x) => a + (x.matched || 0), 0), nw = v.reduce((a, x) => a + (x.fresh || 0), 0);
+    agentLine = `Agent ${relDay(last.at)} da ${v.length} ta platformadan ${grp(seen)} ta lotni ko‘rib chiqdi: ${matched} tasi sizga mos, ${nw} tasi yangi.`;
+  }
+  const goal = Number(S.settings.goal) || 0;
+  const pct = goal ? Math.min(100, Math.round(fin.total / goal * 100)) : 0;
+  const maxF = Math.max(1, ...STATUSES.map(s => T.filter(t => t.status === s.k).length));
+  const news = S.news.slice().sort((a, b) => D(b.date) - D(a.date)).slice(0, 3);
+  const colorOf = { new: 'blue', review: 'indigo', prep: 'orange', submitted: 'purple', won: 'green', lost: 'red', skipped: 'gray' };
+
+  if (!T.length) return `<div class="phead fade"><div><div class="eyebrow">${cap(WEEKDAYS[now.getDay()])}, ${now.getDate()}-${MONTHS[now.getMonth()]}</div><h1>${greet}${esc(name)}.</h1><p class="sub">${esc(agentLine)}</p></div></div>${emptyData()}`;
+
+  return `
+  <div class="phead fade"><div>
+    <div class="eyebrow">${cap(WEEKDAYS[now.getDay()])}, ${now.getDate()}-${MONTHS[now.getMonth()]}</div>
+    <h1>${greet}${esc(name)}.</h1>
+    <p class="sub">${esc(agentLine)}</p>
+  </div>
+  <div class="actions"><button class="btn btn-ghost" data-act="openAdd">${icon('plus')}Tender qo‘shish</button><a class="btn btn-primary" href="#tenderlar" style="text-decoration:none">Tenderlarni ko‘rish ${icon('chevR', 'sm')}</a></div></div>
+
+  <div class="bento fade">
+    <div class="tile c-6 r-2 click" data-act="go" data-v="moliya">
+      <div class="t-head"><span class="t-label">${icon('wallet', 'sm')}${esc(MONTHS[now.getMonth()][0].toUpperCase() + MONTHS[now.getMonth()].slice(1))} daromadi</span><span class="link">Moliya ${icon('chevR', 'sm')}</span></div>
+      <div class="num-xl">${grp(fin.total)}<span class="unit">so‘m</span></div>
+      <div class="stat-sub">${goal ? `Oylik maqsad ${short(goal)} so‘m · ${pct}% bajarildi` : 'Oylik maqsad belgilanmagan'}</div>
+      ${goal ? `<div class="bar" style="margin-top:10px"><i style="width:${pct}%"></i></div>` : ''}
+      <div class="breakdown">
+        <div class="bd"><i style="background:var(--s1)"></i>Fiks oylik<b>${money(fin.salary)}</b></div>
+        <div class="bd"><i style="background:var(--s2)"></i>Topshirilgan <span class="x">${fin.sub.length} × ${short(S.settings.perSubmitted)}</span><b>${money(fin.subSum)}</b></div>
+        <div class="bd"><i style="background:var(--s3)"></i>Yutilgan <span class="x">${fin.won.length} × ${short(S.settings.perWon)}</span><b>${money(fin.wonSum)}</b></div>
+      </div>
+    </div>
+    <div class="tile c-3 click" data-act="filterGo" data-status="new">
+      <span class="t-label">${icon('radar', 'sm')}Yangi tenderlar</span>
+      <div class="spacer"></div>
+      <div class="num-l" style="margin-top:18px">${fresh.length}</div>
+      <div class="stat-sub">${todayFound.length ? `bugun +${todayFound.length} ta topildi` : 'bugun yangi topilmadi'}</div>
+    </div>
+    <div class="tile c-3 click" data-act="filterGo" data-status="active">
+      <span class="t-label">${icon('clock', 'sm')}Jarayonda</span>
+      <div class="spacer"></div>
+      <div class="num-l" style="margin-top:18px">${inWork.length}</div>
+      <div class="stat-sub">${inWork.filter(t => t.status === 'prep').length} tasi hujjat tayyorlash bosqichida</div>
+    </div>
+    <div class="tile c-3 click" data-act="filterGo" data-status="submitted">
+      <span class="t-label">${icon('upload', 'sm')}Bu oy topshirildi</span>
+      <div class="spacer"></div>
+      <div class="num-l" style="margin-top:18px">${fin.sub.length}</div>
+      <div class="stat-sub">${pending.length} tasi natija kutmoqda</div>
+    </div>
+    <div class="tile c-3 click" data-act="filterGo" data-status="won">
+      <span class="t-label">${icon('trophy', 'sm')}Bu oy yutildi</span>
+      <div class="spacer"></div>
+      <div class="num-l" style="margin-top:18px">${fin.won.length}</div>
+      <div class="stat-sub">${wr == null ? 'G‘alaba ulushi hali yo‘q' : `Umumiy g‘alaba ulushi ${Math.round(wr * 100)}%`}</div>
+    </div>
+
+    <div class="tile c-7">
+      <div class="t-head"><h3>Yaqin muddatlar</h3><a class="link" href="#tenderlar" data-act="sortDeadline">Barchasi ${icon('chevR', 'sm')}</a></div>
+      ${upcoming.length ? `<div class="rows">${upcoming.map(t => `
+        <div class="row click" data-act="open" data-id="${esc(t.id)}">
+          <div class="row-main"><div class="row-title">${esc(t.title)}</div><div class="row-meta">${esc(srcName(t.source))} · ${esc(priceShort(t))} · ${fmtDate(t.deadline, true)}</div></div>
+          <div class="row-end">${cdSpan(t.deadline)}<div style="margin-top:4px">${pill(t.status)}</div></div>
+        </div>`).join('')}</div>` : '<p class="muted">Yaqin kunlarda tugaydigan faol tender yo‘q.</p>'}
+    </div>
+    <div class="tile c-5">
+      <div class="t-head"><h3>Agent</h3><a class="link" href="#sozlamalar">Manbalar ${icon('chevR', 'sm')}</a></div>
+      ${last ? `<div class="srcs">${Object.keys(SOURCES).map(k => {
+        const r = (last.sources || {})[k];
+        if (!r) return `<div class="src"><span class="dot off"></span><span class="nm">${esc(SOURCES[k].name)}</span><span class="ct">tekshirilmagan</span></div>`;
+        return `<div class="src" title="${esc(r.error || '')}"><span class="dot ${r.ok ? '' : 'err'}"></span><span class="nm">${esc(SOURCES[k].name)}</span><span class="ct">${r.ok ? `${grp(r.seen)} lot · <b style="color:var(--ink)">${r.matched}</b> mos` : 'xato: qayta urinadi'}</span></div>`;
+      }).join('')}</div><div class="stat-sub" style="margin-top:12px">Keyingi tekshiruv: ertaga, ${esc(S.settings.scanTime)}</div>` : '<p class="muted">Agent ulanganda har bir platforma holati shu yerda ko‘rinadi.</p>'}
+    </div>
+
+    <div class="tile c-7">
+      <div class="t-head"><h3>Eng mos yangi tenderlar</h3><a class="link" href="#tenderlar" data-act="filterGo" data-status="new">Barchasi ${icon('chevR', 'sm')}</a></div>
+      ${top.length ? `<div class="rows">${top.map(t => `
+        <div class="row click" data-act="open" data-id="${esc(t.id)}">${ring(t.match, 40)}
+          <div class="row-main"><div class="row-title">${esc(t.title)}</div><div class="row-meta">${esc(t.customer)} · ${esc(regionOf(t))}</div></div>
+          <div class="row-end"><div class="price" style="font-size:15px">${esc(priceShort(t))}</div>${cdSpan(t.deadline)}</div>
+        </div>`).join('')}</div>` : '<p class="muted">Yangi tenderlarning hammasi ko‘rib chiqilgan.</p>'}
+    </div>
+    <div class="tile c-5">
+      <div class="t-head"><h3>Voronka</h3><span class="muted" style="font-size:13px">jami ${T.length}</span></div>
+      <div class="funnel">${STATUSES.map(s => { const n = T.filter(t => t.status === s.k).length; return `
+        <button class="fbar" data-act="filterGo" data-status="${s.k}" style="color:var(--${colorOf[s.k]})"><span style="color:var(--ink);text-align:left">${esc(s.l)}</span><span class="track"><span class="fill" style="display:block;width:${n / maxF * 100}%"></span></span><b style="color:var(--ink)">${n}</b></button>`; }).join('')}</div>
+    </div>
+
+    <div class="tile c-12">
+      <div class="t-head"><h3>Qonunchilik va soha yangiliklari</h3><a class="link" href="#yangiliklar">Barchasi ${icon('chevR', 'sm')}</a></div>
+      ${news.length ? `<div class="bento" style="gap:24px">${news.map(n => `
+        <div class="c-4" style="min-width:0"><div class="row-meta"><span class="kind ${n.kind === 'law' ? 'law' : 'industry'}">${n.kind === 'law' ? 'Qonunchilik' : 'Soha'}</span> · ${fmtDate(n.date)}</div>
+        <a href="${esc(safeUrl(n.url))}" target="_blank" rel="noopener" style="color:var(--ink);display:block;margin-top:4px;font-weight:600;line-height:1.35">${esc(n.title)}</a>
+        <div class="row-meta">${esc(n.source)}</div></div>`).join('')}</div>` : '<p class="muted">Yangiliklar hali yuklanmagan.</p>'}
+    </div>
+  </div>`;
+}
+
+/* ----- Tenderlar ----- */
+function selectPill(id, key, label, opts) {
+  const v = S.f[key];
+  return `<label class="selw"><select id="${id}" data-f="${key}" class="${v && v !== '0' && !(key === 'sort') ? 'on' : ''}" aria-label="${esc(label)}">${opts.map(([k, l]) => `<option value="${esc(k)}" ${String(v) === String(k) ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select>${icon('chevD', 'sm')}</label>`;
+}
+function viewTenders() {
+  if (!ready()) return loadingView();
+  const T = S.tenders;
+  const list = filtered();
+  const cnt = k => T.filter(t => t.status === k).length;
+  const types = [...new Set(T.map(t => t.type).filter(Boolean))].sort();
+  const regions = [...new Set(T.map(regionOf).filter(Boolean))].sort();
+  const f = S.f;
+  const dirty = f.q || f.source || f.dir || f.type || f.region || f.due || +f.minMatch;
+  const head = `
+  <div class="phead"><div><h1>Tenderlar</h1><p class="sub">${T.length ? `${list.length} ta tender ko‘rsatilmoqda · ${T.filter(t => ACTIVE.includes(t.status)).length} tasi faol` : 'Agent topgan barcha tenderlar shu yerda.'}</p></div>
+  <div class="actions">
+    <div class="seg" role="group" aria-label="Ko‘rinish"><button data-act="mode" data-m="list" aria-pressed="${S.listMode === 'list'}">${icon('list', 'sm')}Ro‘yxat</button><button data-act="mode" data-m="kanban" aria-pressed="${S.listMode === 'kanban'}">${icon('cols', 'sm')}Kanban</button></div>
+    <button class="btn btn-ghost" data-act="exportCsv">${icon('download')}Eksport</button>
+    <button class="btn btn-primary" data-act="openAdd">${icon('plus')}Tender qo‘shish</button>
+  </div></div>`;
+  if (!T.length) return head + emptyData();
+  const chips = [['active', 'Faol', T.filter(t => ACTIVE.includes(t.status)).length], ['all', 'Hammasi', T.length], ...STATUSES.map(s => [s.k, s.l, cnt(s.k)])];
+  return head + `
+  <div class="toolbar">
+    <div class="search">${icon('search')}<input id="fq" data-f="q" type="search" placeholder="Nomi, buyurtmachi, lot raqami yoki hudud bo‘yicha qidirish" value="${esc(f.q)}" autocomplete="off"><kbd>/</kbd></div>
+    ${S.listMode === 'list' ? `<div class="chips" role="group" aria-label="Holat">${chips.map(([k, l, n]) => `<button class="chip" data-act="status" data-s="${k}" aria-pressed="${f.status === k}">${esc(l)} <span class="n">${n}</span></button>`).join('')}</div>` : ''}
+    <div class="filters">
+      ${selectPill('fsrc', 'source', 'Platforma', [['', 'Barcha platformalar'], ...Object.entries(SOURCES).map(([k, s]) => [k, s.name])])}
+      ${selectPill('fdir', 'dir', 'Yo‘nalish', [['', 'Barcha yo‘nalishlar'], ...DIRECTIONS.map(d => [d, d])])}
+      ${selectPill('ftype', 'type', 'Xarid turi', [['', 'Barcha turlar'], ...types.map(t => [t, t])])}
+      ${selectPill('freg', 'region', 'Hudud', [['', 'Barcha hududlar'], ...regions.map(r => [r, r])])}
+      ${selectPill('fdue', 'due', 'Muddat', [['', 'Istalgan muddat'], ['1', '24 soat ichida'], ['3', '3 kun ichida'], ['7', '7 kun ichida'], ['30', '30 kun ichida'], ['over', 'Muddati tugagan']])}
+      ${selectPill('fmatch', 'minMatch', 'Moslik', [['0', 'Har qanday moslik'], ['50', 'Moslik 50%+'], ['70', 'Moslik 70%+'], ['85', 'Moslik 85%+']])}
+      ${selectPill('fsort', 'sort', 'Saralash', [['match', 'Saralash: moslik'], ['deadline', 'Saralash: muddat'], ['price', 'Saralash: narx'], ['found', 'Saralash: yangilari']])}
+      ${dirty ? `<button class="link" data-act="clearF" style="margin-left:4px">Filtrlarni tozalash</button>` : ''}
+    </div>
+  </div>
+  ${S.listMode === 'kanban' ? kanban() : list.length ? `<div class="tlist">${list.map(trow).join('')}</div>`
+    : `<div class="empty"><h3>Hech narsa topilmadi</h3><p>Filtrlarni o‘zgartiring yoki qidiruv so‘zini qisqartiring.</p><div class="actions"><button class="btn btn-ghost" data-act="clearF">Filtrlarni tozalash</button></div></div>`}`;
+}
+function trow(t) {
+  const isNew = S.fresh.has(t.id);
+  return `<div class="trow${isNew ? ' fresh' : ''}" role="button" tabindex="0" data-act="open" data-id="${esc(t.id)}">
+    ${ring(t.match, 48)}
+    <div style="min-width:0">
+      <div class="eb">${isNew ? '<span class="newtag">Yangi topildi</span><span class="sep">·</span>' : ''}<span>${esc(srcName(t.source))}</span><span class="sep">·</span><span>${esc(t.type)}</span><span class="sep">·</span><span class="tnum">${esc(t.lot)}</span></div>
+      <div class="ttl">${esc(t.title)}</div>
+      <div class="who">${icon('bld', 'sm')}${esc(t.customer)} <span class="sep">·</span> ${esc(regionOf(t))}</div>
+    </div>
+    <div class="end"><div class="price">${esc(priceShort(t))}</div>${ACTIVE.includes(t.status) ? cdSpan(t.deadline) : `<span class="cd over">${fmtDate(t.deadline)}</span>`}${pill(t.status)}</div>
+  </div>`;
+}
+function kanban() {
+  const saved = S.f.status; S.f.status = 'all'; const items = filtered(); S.f.status = saved;
+  const cols = STATUSES.filter(s => s.k !== 'skipped' || items.some(t => t.status === 'skipped'));
+  return `<div class="kb">${cols.map(s => {
+    const its = items.filter(t => t.status === s.k);
+    return `<div class="kcol" data-drop="${s.k}"><div class="kcol-h">${pill(s.k)}<span class="muted tnum" style="font-size:13px">${its.length}</span></div>
+      ${its.map(t => `<div class="kcard" role="button" tabindex="0" draggable="true" data-drag="${esc(t.id)}" data-act="open" data-id="${esc(t.id)}">
+        <div class="eb muted" style="font-size:12px;margin-bottom:4px">${esc(srcName(t.source))} · ${esc(t.type)}</div>
+        <div class="ttl">${esc(t.title)}</div>
+        <div class="foot"><span class="price" style="font-size:14px">${esc(priceShort(t))}</span>${ACTIVE.includes(t.status) ? cdSpan(t.deadline) : `<span>${t.match}%</span>`}</div>
+      </div>`).join('')}
+      ${its.length ? '' : '<div class="muted" style="font-size:13px;text-align:center;padding:24px 8px">Kartani shu yerga torting</div>'}
+    </div>`;
+  }).join('')}</div>`;
+}
+
+/* ----- Tender varag‘i ----- */
+function renderSheet() {
+  const sh = $('sheet'), sc = $('scrim');
+  const t = S.sel && S.tenders.find(x => x.id === S.sel);
+  if (!t) { sh.classList.remove('on'); if (!S.more) sc.classList.remove('on'); return; }
+  const keepScroll = sh.scrollTop;
+  sh.innerHTML = sheetHTML(t);
+  sh.scrollTop = keepScroll;
+  sh.classList.add('on'); sc.classList.add('on');
+}
+function sheetHTML(t) {
+  const src = SOURCES[t.source] || { name: t.source, url: '#' };
+  const reqDocs = (t.req && t.req.docs || []).map(k => {
+    const d = S.docs.find(x => x.id === k);
+    return { k, name: d ? d.name : k, st: d ? effState(d) : 'missing', exp: d && d.expires };
+  });
+  const readyN = reqDocs.filter(d => d.st === 'ready').length;
+  const ai = t.ai;
+  const busy = S.aiBusy[t.id];
+  const canAI = !!S.sample;
+  const stIcon = { ready: ['check', 'c-green'], update: ['alert', 'c-orange'], missing: ['xc', 'c-red'] };
+  const confirmDel = S.confirm === 'del:' + t.id;
+  return `
+  <div class="sheet-h"><span class="muted" style="font-size:13px">${esc(src.name)} · ${esc(t.type)}</span>
+    <div style="display:flex;gap:8px"><a class="btn btn-ghost btn-sm" href="${esc(safeUrl(t.url || src.url))}" target="_blank" rel="noopener" style="text-decoration:none">Platformada ochish ${icon('ext', 'sm')}</a><button class="closeb" data-act="close" aria-label="Yopish">${icon('x', 'sm')}</button></div></div>
+  <div class="sheet-b">
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">${pill(t.status)}${t.sample ? '<span class="tag">Namuna</span>' : ''}</div>
+    <div class="sh-title">${esc(t.title)}</div>
+    <div class="muted" style="display:flex;gap:6px;align-items:center">${icon('bld', 'sm')}${esc(t.customer)}</div>
+
+    <div class="facts">
+      <div class="fact"><div class="k">Boshlang‘ich narx</div><div class="v">${esc(money(t.price, t.currency))}</div></div>
+      <div class="fact"><div class="k">Tugash sanasi</div><div class="v">${fmtDate(t.deadline, true)}<br>${cdSpan(t.deadline)}</div></div>
+      <div class="fact"><div class="k">Lot raqami</div><div class="v" style="display:flex;gap:6px;align-items:center"><span class="tnum">${esc(t.lot)}</span><button class="iconbtn" style="width:26px;height:26px" data-act="copy" data-text="${esc(t.lot)}" aria-label="Lot raqamini nusxalash">${icon('copy', 'sm')}</button></div>${t.oferta ? `<div class="k">Oferta: ${esc(t.oferta)}</div>` : ''}</div>
+      <div class="fact"><div class="k">Takliflar soni</div><div class="v">${t.offers != null ? esc(t.offers) : '—'}</div></div>
+      <div class="fact"><div class="k">Hudud</div><div class="v">${esc(t.region)}</div></div>
+      <div class="fact"><div class="k">Moliyalashtirish</div><div class="v">${esc(t.funding || '—')}</div></div>
+      <div class="fact"><div class="k">Hujjatlar tili</div><div class="v">${esc(t.lang || '—')}</div></div>
+      <div class="fact"><div class="k">Yo‘nalish</div><div class="v">${esc(t.direction)}</div></div>
+      <div class="fact wide"><div class="k">Joylangan · Agent topgan</div><div class="v">${fmtDate(t.publishedAt, true)} · ${relDay(t.foundAt)}</div></div>
+    </div>
+
+    ${t.description ? `<p style="margin:0 0 4px;font-size:15px">${esc(t.description)}</p>` : ''}
+
+    <div class="blk"><div class="blk-h"><h3>Holat</h3><span class="muted" style="font-size:12px">Moliya avtomatik yangilanadi</span></div>
+      <div class="stseg">${STATUSES.map(s => `<button class="st-${s.k}" data-act="setStatus" data-id="${esc(t.id)}" data-s="${s.k}" aria-pressed="${t.status === s.k}"><i></i>${esc(s.l)}</button>`).join('')}</div>
+      ${t.submittedAt || t.wonAt || t.lostAt ? `<div class="dates">
+        ${t.submittedAt ? `<label class="field">Topshirilgan sana<input class="input date" type="date" id="d-sub-${esc(t.id)}" data-date="submittedAt" data-id="${esc(t.id)}" value="${t.submittedAt.slice(0, 10)}"></label>` : ''}
+        ${t.wonAt ? `<label class="field">Yutilgan sana<input class="input date" type="date" id="d-won-${esc(t.id)}" data-date="wonAt" data-id="${esc(t.id)}" value="${t.wonAt.slice(0, 10)}"></label>` : ''}
+        ${t.lostAt ? `<label class="field">Natija sanasi<input class="input date" type="date" id="d-lost-${esc(t.id)}" data-date="lostAt" data-id="${esc(t.id)}" value="${t.lostAt.slice(0, 10)}"></label>` : ''}
+      </div>` : ''}
+    </div>
+
+    <div class="blk"><div class="blk-h"><h3>Moslik</h3></div>
+      <div style="display:flex;gap:14px;align-items:center">${ring(t.match, 56, true)}<div class="tags">${(t.reasons || []).map(r => `<span class="tag">${esc(r)}</span>`).join('') || '<span class="muted">Sabablar ko‘rsatilmagan</span>'}</div></div>
+    </div>
+
+    <div class="blk"><div class="blk-h"><h3>Zarur hujjatlar</h3><span class="muted" style="font-size:13px">${reqDocs.length ? `${readyN} / ${reqDocs.length} tayyor` : ''}</span></div>
+      ${reqDocs.length ? `<div class="checks">${reqDocs.map(d => `<div class="check">${icon(stIcon[d.st][0], stIcon[d.st][1])}<div>${esc(d.name)}<small>${esc(DOC_STATE[d.st].l)}${d.exp ? ` · amal qilish muddati ${fmtDate(d.exp)}` : ''}</small></div></div>`).join('')}</div>
+        <div style="margin-top:8px"><a class="link" href="#hujjatlar" data-act="closeTo" data-v="hujjatlar">Hujjatlarni boshqarish ${icon('chevR', 'sm')}</a></div>` : '<p class="muted">Hujjatlar ro‘yxati agent tomonidan hali aniqlanmagan. AI tahlil qiling.</p>'}
+    </div>
+
+    ${t.req && t.req.skills && t.req.skills.length ? `<div class="blk"><div class="blk-h"><h3>Talab qilinadigan ko‘nikmalar</h3></div><div class="tags">${t.req.skills.map(s => `<span class="tag">${esc(s)}</span>`).join('')}</div></div>` : ''}
+
+    <div class="blk"><div class="blk-h"><h3 style="display:flex;gap:8px;align-items:center">${icon('spark')}AI tahlil</h3>
+      ${ai && canAI ? `<button class="link" data-act="analyze" data-id="${esc(t.id)}" ${busy ? 'disabled' : ''}>${icon('refresh', 'sm')} Qayta tahlil</button>` : ''}</div>
+      ${busy ? `<div class="ai-card"><div class="thinking"><i></i><i></i><i></i> Claude tenderni tahlil qilmoqda…</div></div>`
+        : ai ? aiCard(ai)
+        : canAI ? `<div class="ai-card"><p style="margin:0 0 12px" class="muted">Claude talab qilinadigan hujjatlar, ko‘nikmalar, xavflar va yutish imkoniyatini oshirish bo‘yicha tavsiyalar beradi.</p><button class="btn btn-primary" data-act="analyze" data-id="${esc(t.id)}">${icon('spark')}AI bilan tahlil qilish</button></div>`
+        : `<div class="ai-card muted">${S.sample === undefined && S.mode === 'cloud' ? 'AI ulanmoqda…' : 'AI tahlil Claude ichida ochilganda ishlaydi. Lokal versiyada esa server orqali ulanadi.'}</div>`}
+      ${S.aiErr[t.id] ? `<p class="c-red" style="font-size:13px">${esc(S.aiErr[t.id])}</p>` : ''}
+    </div>
+
+    <div class="blk"><div class="blk-h"><h3>Izohlar</h3></div>
+      <textarea class="note" id="note-${esc(t.id)}" data-draft="note:${esc(t.id)}" data-note="${esc(t.id)}" placeholder="Masalan: buyurtmachi bilan gaplashildi, narx 8% past beriladi…">${esc(val('note:' + t.id, t.note || ''))}</textarea>
+    </div>
+
+    <div class="blk"><div class="blk-h"><h3>Tarix</h3></div>
+      <div class="timeline">${(t.history || []).slice().reverse().map(h => `<div class="tl">${pill(h.s)}<time>${fmtDate(h.at, true)}</time></div>`).join('')}</div>
+    </div>
+
+    <div class="blk">${confirmDel ? `<div class="confirm">Tender butunlay o‘chirilsinmi? <span class="spacer"></span><button class="btn btn-sm btn-ghost" data-act="cancelConfirm">Bekor qilish</button><button class="btn btn-sm btn-danger" data-act="delTender" data-id="${esc(t.id)}">O‘chirish</button></div>`
+      : `<button class="link" style="color:var(--red)" data-act="askDel" data-id="${esc(t.id)}">${icon('trash', 'sm')} Tenderni o‘chirish</button>`}</div>
+  </div>`;
+}
+function aiCard(ai) {
+  const li = a => (Array.isArray(a) && a.length ? `<ul>${a.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : '');
+  const docMark = { ready: 'c-green', update: 'c-orange', missing: 'c-red' };
+  return `<div class="ai-card">
+    <div class="ai-top">${ring(ai.chance, 64, true)}<div><div style="font-weight:600">Yutish ehtimoli</div><div class="muted" style="font-size:13px">AI bahosi · ${relDay(ai.at)}</div></div></div>
+    <p style="margin:0">${esc(ai.summary)}</p>
+    ${Array.isArray(ai.docs) && ai.docs.length ? `<div class="ai-sec"><h4>Hujjatlar bo‘yicha</h4><ul>${ai.docs.map(d => `<li><b class="${docMark[d.state] || ''}">${esc(d.name)}</b>${d.note ? ` — ${esc(d.note)}` : ''}</li>`).join('')}</ul></div>` : ''}
+    ${ai.skills && ai.skills.length ? `<div class="ai-sec"><h4>Kerakli mutaxassislar va ko‘nikmalar</h4>${li(ai.skills)}</div>` : ''}
+    ${ai.risks && ai.risks.length ? `<div class="ai-sec"><h4>Xavflar</h4>${li(ai.risks)}</div>` : ''}
+    ${ai.tips && ai.tips.length ? `<div class="ai-sec"><h4>Yutish imkoniyatini oshirish uchun</h4>${li(ai.tips)}</div>` : ''}
+    ${ai.price ? `<div class="ai-sec"><h4>Narx strategiyasi</h4><p style="margin:4px 0 0">${esc(ai.price)}</p></div>` : ''}
+    ${ai.next ? `<div class="ai-sec impact">${icon('chevR')}<div><b>Keyingi qadam</b>${esc(ai.next)}</div></div>` : ''}
+  </div>`;
+}
+
+/* ----- AI yordamchi ----- */
+const SUGGEST = [
+  ['Bugun qaysi tenderlarga e’tibor beray?', 'Moslik, muddat va narx bo‘yicha ustuvorlik'],
+  ['Hujjatlarimizda nimalar yetishmaydi?', 'Faol tenderlar talablari bilan solishtirish'],
+  ['Tijorat taklifi tuzilmasini tayyorlab ber', 'IT va marketing tenderlari uchun'],
+  ['Bu oy daromadim qancha bo‘ladi?', 'Topshirish va yutish prognozi bilan'],
+];
+function viewAI() {
+  const avail = !!S.sample;
+  const activeN = S.tenders.filter(t => ACTIVE.includes(t.status)).length;
+  return `<div class="chat">
+    <div class="phead" style="justify-content:center;text-align:center"><div><div class="eyebrow" style="text-transform:none">Claude asosida</div><h1>AI yordamchi</h1>
+      <p class="sub" style="margin-inline:auto">Tenderlar, hujjatlar va moliyangizni biladi. Savol bering yoki quyidagilardan birini tanlang.</p></div></div>
+    ${!avail ? `<div class="notice">${icon('spark', 'lg')}<div><b>${S.mode === 'cloud' && S.sample === undefined ? 'AI ulanmoqda…' : 'AI hozir mavjud emas'}</b><br>${S.mode === 'local' ? 'Bu sahifa brauzerda lokal ochilgan. AI yordamchi Claude ichida ishlaydi; lokal versiyada esa kompyuteringizdagi server orqali ulanadi.' : 'Claude bilan bog‘lanish uchun so‘rovga ruxsat bering. Birinchi savolda ruxsat so‘raladi.'}</div></div>` : ''}
+    ${S.chat.length ? `<div class="msgs" id="msgs">${S.chat.map((m, i) => m.role === 'user'
+      ? `<div class="msg user">${esc(m.content)}</div>`
+      : `<div class="msg ai"${i === S.chat.length - 1 ? ' id="msgLast"' : ''}>${m.pending && !m.content ? '<div class="thinking"><i></i><i></i><i></i> O‘ylamoqda…</div>' : md(m.content)}${m.error ? `<div class="err">${esc(m.error)}</div>` : ''}${m.note ? `<div class="faint" style="font-size:13px">${esc(m.note)}</div>` : ''}</div>`).join('')}</div>`
+      : `<div class="suggest">${SUGGEST.map(([q, d]) => `<button class="sg" data-act="ask" data-q="${esc(q)}" ${avail ? '' : 'disabled'}>${esc(q)}<small>${esc(d)}</small></button>`).join('')}</div><div style="height:28px"></div>`}
+    <form class="dock" data-form="chat">
+      <textarea id="chatInput" data-draft="chat" rows="1" placeholder="Savolingizni yozing…" aria-label="Savol" ${avail ? '' : 'disabled'}>${esc(val('chat', ''))}</textarea>
+      ${S.chatBusy ? `<button type="button" class="sendb" data-act="stopChat" aria-label="To‘xtatish">${icon('stop')}</button>`
+        : `<button type="submit" class="sendb" aria-label="Yuborish" ${avail ? '' : 'disabled'}>${icon('up')}</button>`}
+    </form>
+    <div class="ctx">Kontekst: ${activeN} ta faol tender · ${S.docs.length} ta hujjat · ${MONTHS[new Date().getMonth()]} moliyasi · ${S.news.length} ta yangilik${S.chat.length ? ` · <button class="link" style="font-size:12px" data-act="clearChat">Suhbatni tozalash</button>` : ''}</div>
+  </div>`;
+}
+function aiContext() {
+  const now = new Date();
+  const fin = finance(mk(now));
+  const tenders = S.tenders.filter(t => ACTIVE.includes(t.status) || t.status === 'submitted').sort((a, b) => (b.match || 0) - (a.match || 0)).slice(0, 25).map(t => ({
+    id: t.id, nomi: t.title, platforma: srcName(t.source), turi: t.type, buyurtmachi: t.customer, hudud: t.region,
+    narx: money(t.price, t.currency), muddat: t.deadline, qolgan: countdown(t.deadline).t, moslik: t.match, holat: (ST[t.status] || {}).l,
+    takliflar: t.offers, talab_hujjatlar: t.req && t.req.docs, ai_ehtimol: t.ai && t.ai.chance,
+  }));
+  return {
+    bugun: now.toISOString(), foydalanuvchi: S.settings.name || null, kompaniya: S.settings.company, yonalishlar: S.settings.directions,
+    stavkalar: { fiks: S.settings.salary, topshirilgan_uchun: S.settings.perSubmitted, yutilgan_uchun: S.settings.perWon, oylik_maqsad: S.settings.goal },
+    shu_oy: { topshirilgan: fin.sub.length, yutilgan: fin.won.length, jami_daromad: fin.total },
+    galaba_ulushi: winRate(),
+    tenderlar: tenders,
+    hujjatlar: S.docs.map(d => ({ id: d.id, nomi: d.name, holat: DOC_STATE[effState(d)].l, muddat: d.expires || null })),
+    yangiliklar: S.news.slice().sort((a, b) => D(b.date) - D(a.date)).slice(0, 8).map(n => ({ sana: n.date, sarlavha: n.title, tasir: n.impact })),
+  };
+}
+function chatRules() {
+  return `Sen "Winder" — ${S.settings.name || 'foydalanuvchi'}ning shaxsiy tender yordamchisisan. U ${S.settings.company} kompaniyasi uchun O‘zbekistondagi davlat va korporativ xarid platformalarida (xarid.uzex.uz, etender.uzex.uz, xt-xarid.uz, cooperation.uz, tender.mc.uz, ebirja.uz) tenderlarda qatnashadi.
+Qoidalar: faqat o‘zbek tilida (lotin yozuvi) javob ber. Qisqa, aniq va amaliy bo‘l. Kerak bo‘lsa ro‘yxat ishlat. Raqamlarni "1 000 000 so‘m" ko‘rinishida yoz. Faqat quyidagi ma’lumotlarga tayan; bilmagan narsangni o‘ylab topma, qonunchilik bo‘yicha aniq norma kerak bo‘lsa lex.uz da tekshirishni tavsiya qil. Daromad: fiks oylik + har bir topshirilgan tender uchun bonus + har bir yutilgan tender uchun bonus (alohida-alohida).
+Joriy ma’lumotlar (JSON):
+${JSON.stringify(aiContext())}`;
+}
+async function sendChat(text) {
+  text = String(text || '').trim();
+  if (!text || S.chatBusy || !S.sample) return;
+  delete S.drafts.chat;
+  S.chat.push({ role: 'user', content: text });
+  const reply = { role: 'assistant', content: '', pending: true };
+  S.chat.push(reply);
+  S.chatBusy = true;
+  const ctl = new AbortController(); S.chatCtl = ctl;
+  render(); scrollChat();
+  const turns = [{ role: 'user', content: chatRules() }];
+  for (const m of S.chat.slice(0, -1).slice(-12)) if (m.content) turns.push({ role: m.role, content: m.content });
+  try {
+    const res = await S.sample(turns, {
+      cache: false, signal: ctl.signal,
+      onText: ({ text: t }) => { reply.content = t; const el = $('msgLast'); if (el) el.innerHTML = md(t); scrollChat(); },
+    });
+    reply.content = res.text;
+    if (res.truncated) reply.note = 'Javob uzunlik chegarasida to‘xtadi — savolni qismlarga bo‘ling.';
+  } catch (e) {
+    reply.content = e && e.code === 'refused' ? '' : (e && e.text) || reply.content;
+    if (!(e && e.code === 'cancelled')) reply.error = sampleErr(e);
+    if (e && ['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'].includes(e.code)) S.sample = null;
+  }
+  reply.pending = false;
+  S.chatBusy = false; S.chatCtl = null;
+  render(); scrollChat();
+}
+function sampleErr(e) {
+  const c = e && e.code;
+  return {
+    not_granted: 'Claude’dan foydalanishga ruxsat berilmadi.',
+    rate_limited: 'So‘rovlar ko‘payib ketdi. Birozdan keyin qayta urinib ko‘ring.',
+    session_expired: 'Claude hisobingizga qayta kiring.',
+    refused: 'Claude bu so‘rovga javob bermadi. Savolni boshqacha yozing.',
+    prompt_too_large: 'Ma’lumot juda katta. Savolni qisqartiring.',
+    invalid_json: 'AI javobini o‘qib bo‘lmadi. Qayta urinib ko‘ring.',
+    empty_completion: 'Javob bo‘sh qaytdi. Qayta urinib ko‘ring.',
+  }[c] || 'Claude bilan aloqa uzildi. Qayta urinib ko‘ring.';
+}
+function scrollChat() { requestAnimationFrame(() => { const m = $('msgs'); if (m) window.scrollTo({ top: document.body.scrollHeight, behavior: 'auto' }); }); }
+
+async function analyze(id) {
+  const t = S.tenders.find(x => x.id === id);
+  if (!t || !S.sample || S.aiBusy[id]) return;
+  S.aiBusy[id] = true; delete S.aiErr[id]; render();
+  const lib = S.docs.map(d => ({ id: d.id, nomi: d.name, holat: effState(d), muddat: d.expires || null }));
+  const tender = { nomi: t.title, platforma: srcName(t.source), turi: t.type, lot: t.lot, buyurtmachi: t.customer, hudud: t.region, narx: money(t.price, t.currency),
+    moliyalashtirish: t.funding, hujjat_tili: t.lang, takliflar_soni: t.offers, muddat: t.deadline, yonalish: t.direction, tavsif: t.description, talab_hujjatlar: t.req && t.req.docs, talab_konikmalar: t.req && t.req.skills, izoh: t.note };
+  const prompt = `Sen O‘zbekiston davlat va korporativ xaridlari bo‘yicha tajribali tender maslahatchisisan. Kompaniya: ${S.settings.company}. Yo‘nalishlari: ${(S.settings.directions || []).join(', ')}. Bugun: ${new Date().toISOString().slice(0, 10)}.
+Kompaniyaning hujjatlar kutubxonasi (holat: ready=tayyor, update=yangilash kerak, missing=yo‘q): ${JSON.stringify(lib)}
+Tender: ${JSON.stringify(tender)}
+Vazifa: bu tenderda qatnashish uchun zarur hujjatlar va ko‘nikmalarni aniqlab, kutubxona bilan solishtir, xavflarni ayt va yutish imkoniyatini oshirish bo‘yicha amaliy tavsiyalar ber. Hammasi o‘zbek tilida (lotin), qisqa.
+Faqat bitta JSON obyekt qaytar, boshqa matn yozma:
+{"summary": "2-3 gapli xulosa", "chance": 0-100 butun son, "docs": [{"name": "hujjat nomi", "state": "ready|update|missing", "note": "qisqa izoh"}], "skills": ["..."], "risks": ["..."], "tips": ["..."], "price": "narx strategiyasi bir gapda", "next": "eng muhim keyingi qadam"}`;
+  try {
+    const r = await S.sample.json(prompt, { modelTier: 'default' });
+    if (!r || typeof r !== 'object' || typeof r.summary !== 'string') throw { code: 'invalid_json' };
+    const arr = (a, n = 8) => (Array.isArray(a) ? a.filter(x => typeof x === 'string').slice(0, n) : []);
+    const ai = {
+      summary: String(r.summary).slice(0, 1200), chance: Math.max(0, Math.min(100, Math.round(Number(r.chance) || 0))),
+      docs: Array.isArray(r.docs) ? r.docs.filter(d => d && d.name).slice(0, 14).map(d => ({ name: String(d.name), state: ['ready', 'update', 'missing'].includes(d.state) ? d.state : 'missing', note: String(d.note || '') })) : [],
+      skills: arr(r.skills), risks: arr(r.risks), tips: arr(r.tips), price: String(r.price || ''), next: String(r.next || ''), at: new Date().toISOString(),
+    };
+    await save(() => Store.update('tenders', id, { ai }), 'AI tahlil saqlandi');
+  } catch (e) {
+    S.aiErr[id] = sampleErr(e);
+    if (e && ['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'].includes(e.code)) S.sample = null;
+  }
+  delete S.aiBusy[id]; render();
+}
+
+/* ----- Hujjatlar ----- */
+function viewDocs() {
+  if (!S.loaded.docs) return loadingView();
+  const docs = S.docs;
+  const st = docs.map(effState);
+  const readyN = st.filter(s => s === 'ready').length;
+  const pct = docs.length ? Math.round(readyN / docs.length * 100) : 0;
+  const soon = docs.filter(d => d.expires && (D(d.expires) - today0()) / 864e5 <= 30 && D(d.expires + 'T23:59:59') > new Date());
+  const active = S.tenders.filter(t => ACTIVE.includes(t.status));
+  const usage = id => active.filter(t => t.req && t.req.docs && t.req.docs.includes(id)).length;
+  const cats = [...new Set([...DOC_CATS.filter(c => docs.some(d => d.category === c)), ...docs.map(d => d.category || 'Boshqa')])];
+  return `
+  <div class="phead"><div><h1>Hujjatlar</h1><p class="sub">Tenderlarda so‘raladigan hujjatlaringiz tayyorligi. AI har bir tender talablarini shu ro‘yxat bilan solishtiradi.</p></div></div>
+  <div class="bento">
+    <div class="tile c-4" style="flex-direction:row;align-items:center;gap:18px">${ring(pct, 84, true)}<div><div class="t-label">Umumiy tayyorlik</div><div class="stat-sub">${readyN} / ${docs.length} hujjat tayyor</div></div></div>
+    <div class="tile c-4"><span class="t-label">${icon('alert', 'sm c-orange')}Yangilash kerak</span><div class="num-m" style="margin-top:10px">${st.filter(s => s === 'update').length}</div><div class="stat-sub">${soon.length ? `${soon.length} tasining muddati 30 kun ichida tugaydi` : 'Yaqin muddatda tugaydigani yo‘q'}</div></div>
+    <div class="tile c-4"><span class="t-label">${icon('xc', 'sm c-red')}Mavjud emas</span><div class="num-m" style="margin-top:10px">${st.filter(s => s === 'missing').length}</div><div class="stat-sub">${docs.filter(d => effState(d) === 'missing').map(d => d.name).slice(0, 2).map(esc).join(', ') || 'Hammasi bor'}</div></div>
+  </div>
+  ${cats.map(c => `<div class="group"><div class="group-h">${esc(c)}</div><div class="glist">${docs.filter(d => (d.category || 'Boshqa') === c).sort((a, b) => a.name.localeCompare(b.name)).map(d => {
+    const es = effState(d), u = usage(d.id);
+    const expired = d.state === 'ready' && es === 'update';
+    return `<div class="gitem"><div class="main"><div class="t">${esc(d.name)}</div><div class="d">${expired ? '<span class="c-orange">Muddati o‘tgan · </span>' : ''}${d.note ? esc(d.note) + ' · ' : ''}${u ? `${u} ta faol tenderda so‘ralgan` : 'Faol tenderlarda so‘ralmagan'}</div></div>
+      <label class="field" style="flex-direction:row;align-items:center;gap:6px">Muddat<input class="input date" type="date" id="exp-${esc(d.id)}" data-exp="${esc(d.id)}" value="${esc(d.expires || '')}"></label>
+      <div class="mini-seg" role="group" aria-label="Holat">${Object.entries(DOC_STATE).map(([k, s]) => `<button class="s-${k}" data-act="docState" data-id="${esc(d.id)}" data-s="${k}" aria-pressed="${d.state === k}">${esc(s.l)}</button>`).join('')}</div>
+      ${S.confirm === 'doc:' + d.id ? `<button class="btn btn-sm btn-danger" data-act="delDoc" data-id="${esc(d.id)}">O‘chirish</button><button class="btn btn-sm btn-ghost" data-act="cancelConfirm">Yo‘q</button>` : `<button class="iconbtn" data-act="askDelDoc" data-id="${esc(d.id)}" aria-label="O‘chirish">${icon('trash', 'sm')}</button>`}
+    </div>`;
+  }).join('')}</div></div>`).join('')}
+  <div class="group"><div class="group-h">Yangi hujjat qo‘shish</div><form class="glist" data-form="addDoc"><div class="gitem">
+    <input class="input" style="flex:2;min-width:200px" id="newDocName" data-draft="newDocName" placeholder="Hujjat nomi, masalan: Litsenziya" value="${esc(val('newDocName'))}">
+    <label class="selw"><select id="newDocCat" data-draft="newDocCat" aria-label="Toifa">${DOC_CATS.map(c => `<option ${val('newDocCat', DOC_CATS[0]) === c ? 'selected' : ''}>${esc(c)}</option>`).join('')}</select>${icon('chevD', 'sm')}</label>
+    <button class="btn btn-primary btn-sm" type="submit">${icon('plus', 'sm')}Qo‘shish</button></div></form></div>`;
+}
+
+/* ----- Yangiliklar ----- */
+const NEWS_SOURCES = [
+  ['lex.uz', 'Qonunchilik ma’lumotlari milliy bazasi', 'https://lex.uz'],
+  ['norma.uz', 'Normativ hujjatlar sharhi', 'https://www.norma.uz'],
+  ['uzex.uz', 'Respublika tovar-xom ashyo birjasi', 'https://uzex.uz'],
+  ['it-park.uz', 'IT Park yangiliklari', 'https://it-park.uz'],
+  ['gazeta.uz', 'Iqtisodiyot va xaridlar tahlili', 'https://www.gazeta.uz'],
+  ['spot.uz', 'Biznes yangiliklari', 'https://www.spot.uz'],
+  ['kun.uz', 'Umumiy yangiliklar', 'https://kun.uz'],
+  ['daryo.uz', 'Umumiy yangiliklar', 'https://daryo.uz'],
+];
+function viewNews() {
+  if (!S.loaded.news) return loadingView();
+  const k = S.newsKind;
+  const list = S.news.filter(n => k === 'all' || n.kind === k).sort((a, b) => D(b.date) - D(a.date));
+  return `
+  <div class="phead"><div><h1>Yangiliklar</h1><p class="sub">Davlat xaridlari qonunchiligi va IT, marketing sohasidagi o‘zgarishlar — ishonchli manbalardan, sizga ta’siri bilan.</p></div>
+    <div class="actions"><div class="seg" role="group" aria-label="Toifa">${[['all', 'Hammasi'], ['law', 'Qonunchilik'], ['industry', 'Soha']].map(([v, l]) => `<button data-act="newsKind" data-k="${v}" aria-pressed="${k === v}">${l}</button>`).join('')}</div>
+    <button class="btn btn-ghost" data-act="ask" data-q="Oxirgi qonunchilik o‘zgarishlari bizning tenderlarga qanday ta’sir qiladi va nimaga tayyorlanishim kerak?" data-go="1">${icon('spark')}AI xulosa</button></div></div>
+  ${list.length ? `<div class="news-grid">${list.map((n, i) => `
+    <article class="news${i === 0 ? ' feat' : ''}">
+      <div class="eb"><span class="kind ${n.kind === 'law' ? 'law' : 'industry'}">${n.kind === 'law' ? 'Qonunchilik' : 'Soha'}</span><span>·</span><span>${fmtDate(n.date)}</span><span>·</span><span>${esc(n.source)}</span></div>
+      <h3>${esc(n.title)}</h3>
+      <p>${esc(n.summary)}</p>
+      ${n.impact ? `<div class="impact">${icon('spark')}<div><b>Sizga ta’siri</b>${esc(n.impact)}</div></div>` : ''}
+      <div><a class="link" href="${esc(safeUrl(n.url))}" target="_blank" rel="noopener">Manbani ochish ${icon('ext', 'sm')}</a></div>
+    </article>`).join('')}</div>` : '<div class="empty"><h3>Yangilik yo‘q</h3><p>Agent har kuni ishonchli manbalarni tekshiradi.</p></div>'}
+  <div class="group"><div class="group-h">Kuzatiladigan manbalar</div><div class="glist">${NEWS_SOURCES.map(([d, l, u]) => `<div class="gitem"><div class="main"><div class="t">${esc(d)}</div><div class="d">${esc(l)}</div></div><a class="link" href="${u}" target="_blank" rel="noopener">Ochish ${icon('ext', 'sm')}</a></div>`).join('')}</div></div>`;
+}
+
+/* ----- Moliya ----- */
+function niceStep(raw) { const p = Math.pow(10, Math.floor(Math.log10(raw || 1))), n = raw / p; return (n <= 1 ? 1 : n <= 2 ? 2 : n <= 2.5 ? 2.5 : n <= 5 ? 5 : 10) * p; }
+function topRound(x, y, w, h, r) {
+  r = Math.min(r, h, w / 2);
+  return `M${x},${y + h} V${y + r} Q${x},${y} ${x + r},${y} H${x + w - r} Q${x + w},${y} ${x + w},${y + r} V${y + h} Z`;
+}
+function chart(months, sel) {
+  const W = 680, H = 280, L = 56, R = 16, T = 26, B = 34;
+  const goal = Number(S.settings.goal) || 0;
+  const maxV = Math.max(goal, ...months.map(m => m.total), 1);
+  const step = niceStep(maxV / 4), top = Math.ceil(maxV / step) * step;
+  const y = v => T + (H - T - B) * (1 - v / top);
+  const n = months.length, slot = (W - L - R) / n, bw = Math.min(54, slot * .52);
+  let g = '';
+  for (let v = 0; v <= top + 1; v += step) g += `<line class="grid" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${v ? short(v) : '0'}</text>`;
+  const bars = months.map((m, i) => {
+    const cx = L + slot * (i + .5), x = cx - bw / 2;
+    const segs = [[m.salary, 'var(--s1)'], [m.subSum, 'var(--s2)'], [m.wonSum, 'var(--s3)']].filter(s => s[0] > 0);
+    let acc = 0, out = '';
+    segs.forEach(([v, c], j) => {
+      const y0 = y(acc), y1 = y(acc + v), last = j === segs.length - 1;
+      const hgt = Math.max(0, y0 - y1 - (j > 0 ? 2 : 0));
+      out += last ? `<path d="${topRound(x, y1, bw, hgt, 4)}" fill="${c}"/>` : `<rect x="${x}" y="${y1}" width="${bw}" height="${hgt}" fill="${c}"/>`;
+      acc += v;
+    });
+    const [yy, mm] = m.month.split('-').map(Number);
+    const tip = `<b>${MONTHS[mm - 1]} ${yy}</b>|s1|Fiks oylik|${grp(m.salary)}|s2|Topshirilgan (${m.sub.length})|${grp(m.subSum)}|s3|Yutilgan (${m.won.length})|${grp(m.wonSum)}|Jami|${grp(m.total)}`;
+    return `<g class="${m.month === sel ? '' : 'dim'}">${out}<text class="val" x="${cx}" y="${y(m.total) - 8}" text-anchor="middle">${short(m.total)}</text></g>
+      <text x="${cx}" y="${H - 10}" text-anchor="middle" style="${m.month === sel ? 'fill:var(--ink);font-weight:600' : ''}">${MON3[mm - 1]}</text>
+      <rect class="hit" x="${cx - slot / 2}" y="${T}" width="${slot}" height="${H - T - B}" data-tip="${esc(tip)}" data-act="finMonth" data-m="${m.month}"/>`;
+  }).join('');
+  const goalLine = goal ? `<line class="goal" x1="${L}" x2="${W - R}" y1="${y(goal)}" y2="${y(goal)}"/><text x="${W - R}" y="${y(goal) - 6}" text-anchor="end">Maqsad ${short(goal)}</text>` : '';
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Oxirgi ${n} oy daromadi">${g}${bars}${goalLine}</svg>`;
+}
+function viewFinance() {
+  if (!ready()) return loadingView();
+  const s = S.settings;
+  const cur = mk(new Date());
+  const m = S.finMonth || cur;
+  const fin = finance(m);
+  const months = Array.from({ length: 6 }, (_, i) => finance(shiftMonth(m, i - 5)));
+  const goal = Number(s.goal) || 0;
+  const pct = goal ? Math.min(100, Math.round(fin.total / goal * 100)) : 0;
+  const wr = winRate();
+  const prep = S.tenders.filter(t => t.status === 'prep').length;
+  const pending = S.tenders.filter(t => t.status === 'submitted').length;
+  const forecast = fin.total + prep * (Number(s.perSubmitted) || 0) + Math.round(pending * (wr == null ? 0.3 : wr)) * (Number(s.perWon) || 0);
+  const year = m.slice(0, 4);
+  const yearBonus = S.tenders.reduce((a, t) => a + ((t.submittedAt || '').startsWith(year) ? Number(s.perSubmitted) || 0 : 0) + ((t.wonAt || '').startsWith(year) ? Number(s.perWon) || 0 : 0), 0);
+  const avg6 = Math.round(months.reduce((a, x) => a + x.total, 0) / months.length);
+  const ops = [
+    ...fin.sub.map(t => ({ at: t.submittedAt, t, kind: 'Topshirildi', sum: Number(s.perSubmitted) || 0, c: 'var(--s2)' })),
+    ...fin.won.map(t => ({ at: t.wonAt, t, kind: 'Yutildi', sum: Number(s.perWon) || 0, c: 'var(--s3)' })),
+  ].sort((a, b) => D(a.at) - D(b.at));
+  const paid = !!(s.paid && s.paid[m]);
+  const isCur = m === cur;
+  return `
+  <div class="phead"><div><h1>Moliya</h1><p class="sub">Fiks oylik, topshirilgan va yutilgan tenderlar bonuslari — har biri alohida hisoblanadi.</p></div>
+    <div class="actions"><div class="month-sw"><button data-act="finShift" data-n="-1" aria-label="Oldingi oy">${icon('chevL', 'sm')}</button><span>${esc(cap(monthName(m)))}</span><button data-act="finShift" data-n="1" aria-label="Keyingi oy">${icon('chevR', 'sm')}</button></div></div></div>
+  <div class="bento">
+    <div class="tile c-12" style="flex-direction:row;flex-wrap:wrap;gap:24px;align-items:flex-end;justify-content:space-between">
+      <div><div class="t-label">${esc(cap(monthName(m)))} · jami daromad</div><div class="num-xl" style="margin-top:10px">${grp(fin.total)}<span class="unit">so‘m</span></div>
+        ${goal ? `<div class="stat-sub">Maqsad ${money(goal)} · ${pct}%</div><div class="bar" style="margin-top:8px;width:min(360px,70vw)"><i style="width:${pct}%"></i></div>` : ''}</div>
+      <div style="display:flex;align-items:center;gap:12px"><span class="muted" style="font-size:14px">Oylik maosh olindi</span><button class="switch" role="switch" aria-checked="${paid}" data-act="togglePaid" data-m="${m}" aria-label="Oylik maosh olindi"></button></div>
+    </div>
+    <div class="tile c-4"><span class="t-label"><i style="width:10px;height:10px;border-radius:3px;background:var(--s1)"></i>Fiks oylik</span><div class="num-m" style="margin-top:12px">${grp(fin.salary)}<span class="unit">so‘m</span></div><div class="stat-sub">Har oy belgilangan</div></div>
+    <div class="tile c-4"><span class="t-label"><i style="width:10px;height:10px;border-radius:3px;background:var(--s2)"></i>Topshirilgan tenderlar</span><div class="num-m" style="margin-top:12px">${grp(fin.subSum)}<span class="unit">so‘m</span></div><div class="stat-sub">${fin.sub.length} ta × ${money(s.perSubmitted)}</div></div>
+    <div class="tile c-4"><span class="t-label"><i style="width:10px;height:10px;border-radius:3px;background:var(--s3)"></i>Yutilgan tenderlar</span><div class="num-m" style="margin-top:12px">${grp(fin.wonSum)}<span class="unit">so‘m</span></div><div class="stat-sub">${fin.won.length} ta × ${money(s.perWon)}</div></div>
+
+    <div class="tile c-8">
+      <div class="t-head"><h3>Oxirgi 6 oy</h3><div class="legend"><span><i style="background:var(--s1)"></i>Fiks</span><span><i style="background:var(--s2)"></i>Topshirish</span><span><i style="background:var(--s3)"></i>Yutish</span></div></div>
+      <div class="chart-scroll">${chart(months, m)}</div>
+    </div>
+    <div class="tile c-4">
+      <h3>Ko‘rsatkichlar</h3>
+      <div class="rows" style="margin-top:14px">
+        ${isCur ? `<div class="row"><div class="row-main"><div class="row-title" style="font-weight:500">Oy oxirigacha prognoz</div><div class="row-meta">${prep} ta tayyorlanayotgan, ${pending} ta natija kutayotgan</div></div><div class="row-end num-m" style="font-size:19px">${short(forecast)}</div></div>` : ''}
+        <div class="row"><div class="row-main"><div class="row-title" style="font-weight:500">O‘rtacha oylik (6 oy)</div></div><div class="row-end num-m" style="font-size:19px">${short(avg6)}</div></div>
+        <div class="row"><div class="row-main"><div class="row-title" style="font-weight:500">${year}-yil bonuslari</div><div class="row-meta">Topshirish va yutish</div></div><div class="row-end num-m" style="font-size:19px">${short(yearBonus)}</div></div>
+        <div class="row"><div class="row-main"><div class="row-title" style="font-weight:500">G‘alaba ulushi</div><div class="row-meta">Yutilgan / natijasi ma’lum</div></div><div class="row-end num-m" style="font-size:19px">${wr == null ? '—' : Math.round(wr * 100) + '%'}</div></div>
+      </div>
+      <div class="spacer"></div>
+      <a class="link" href="#sozlamalar" style="margin-top:14px">Stavkalarni o‘zgartirish ${icon('chevR', 'sm')}</a>
+    </div>
+
+    <div class="tile c-12">
+      <div class="t-head"><h3>${esc(cap(monthName(m)))} hisob-kitobi</h3></div>
+      <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Sana</th><th>Turi</th><th>Tender</th><th class="r">Summa</th></tr></thead><tbody>
+        <tr><td class="tnum">${esc(monthName(m))}</td><td><span style="display:inline-flex;gap:6px;align-items:center"><i style="width:8px;height:8px;border-radius:2px;background:var(--s1)"></i>Fiks oylik</span></td><td class="muted">${paid ? 'Olindi' : 'Kutilmoqda'}</td><td class="r">${money(fin.salary)}</td></tr>
+        ${ops.map(o => `<tr><td class="tnum">${fmtDate(o.at)}</td><td><span style="display:inline-flex;gap:6px;align-items:center"><i style="width:8px;height:8px;border-radius:2px;background:${o.c}"></i>${o.kind}</span></td><td><button class="link" style="text-align:left;color:var(--ink)" data-act="open" data-id="${esc(o.t.id)}">${esc(o.t.title)}</button></td><td class="r">${money(o.sum)}</td></tr>`).join('')}
+      </tbody><tfoot><tr><td colspan="3">Jami</td><td class="r">${money(fin.total)}</td></tr></tfoot></table></div>
+      ${ops.length ? '' : '<p class="muted" style="margin:12px 0 0">Bu oyda topshirilgan yoki yutilgan tender yo‘q.</p>'}
+    </div>
+  </div>`;
+}
+
+/* ----- Sozlamalar ----- */
+function viewSettings() {
+  if (!ready()) return loadingView();
+  const s = S.settings, last = latestScan();
+  const numField = (k, l) => `<div class="gitem"><div class="main"><div class="t">${l}</div></div><input class="input tnum" style="width:170px;text-align:right" inputmode="numeric" id="set-${k}" data-draft="set-${k}" data-setnum="${k}" value="${esc(val('set-' + k, grp(s[k] || 0)))}"></div>`;
+  const kwBlock = (k, title, hint) => `<div class="group"><div class="group-h">${title}</div><div class="glist"><div class="kw">${(s[k] || []).map((w, i) => `<span class="tag">${esc(w)}<button data-act="kwDel" data-k="${k}" data-i="${i}" aria-label="O‘chirish">${icon('x', 'sm')}</button></span>`).join('') || `<span class="muted" style="font-size:13px">${hint}</span>`}</div>
+    <form class="kw-add" data-form="kw" data-k="${k}"><input class="input" style="flex:1" id="kw-${k}" data-draft="kw-${k}" placeholder="Yangi so‘z" value="${esc(val('kw-' + k))}"><button class="btn btn-ghost btn-sm" type="submit">Qo‘shish</button></form></div></div>`;
+  return `
+  <div class="phead"><div><h1>Sozlamalar</h1><p class="sub">Agent nimani qidirishi, qayerdan qidirishi va daromadingiz qanday hisoblanishi.</p></div></div>
+  <div style="max-width:760px">
+  <div class="group"><div class="group-h">Profil</div><div class="glist">
+    <div class="gitem"><div class="main"><div class="t">Ismingiz</div><div class="d">Bosh sahifadagi salomlashuv uchun</div></div><input class="input" style="width:220px" id="set-name" data-draft="set-name" data-settext="name" value="${esc(val('set-name', s.name))}"></div>
+    <div class="gitem"><div class="main"><div class="t">Kompaniya</div><div class="d">Tenderlar shu kompaniya faoliyatiga mosligi bo‘yicha saralanadi</div></div><input class="input" style="width:280px" id="set-company" data-draft="set-company" data-settext="company" value="${esc(val('set-company', s.company))}"></div>
+  </div></div>
+  <div class="group"><div class="group-h">Faoliyat yo‘nalishlari</div><div class="glist"><div class="dirs">${DIRECTIONS.map(d => `<button class="chip" data-act="dirToggle" data-d="${esc(d)}" aria-pressed="${(s.directions || []).includes(d)}">${esc(d)}</button>`).join('')}</div></div></div>
+  ${kwBlock('keywords', 'Kalit so‘zlar — shular uchraydigan lotlar moslik bahosini oshiradi', 'Kalit so‘z qo‘shing')}
+  ${kwBlock('exclude', 'Istisno so‘zlar — shular uchraydigan lotlar o‘tkazib yuboriladi', 'Istisno so‘z qo‘shing')}
+  <div class="group"><div class="group-h">Manbalar</div><div class="glist">${Object.entries(SOURCES).map(([k, src]) => {
+    const r = last && last.sources && last.sources[k];
+    const on = !s.sources || s.sources[k] !== false;
+    return `<div class="gitem"><span class="dot ${!on || !r ? 'off' : r.ok ? '' : 'err'}"></span><div class="main"><div class="t">${esc(src.name)} <a class="link" style="font-size:13px" href="${src.url}" target="_blank" rel="noopener">${esc(src.host)} ${icon('ext', 'sm')}</a></div><div class="d">${esc(src.desc)}${r ? ` · oxirgi tekshiruv: ${r.ok ? `${grp(r.seen)} lot, ${r.matched} mos` : esc(r.error || 'xato')}` : ''}</div></div>
+      <button class="switch" role="switch" aria-checked="${on}" data-act="srcToggle" data-k="${k}" aria-label="${esc(src.name)}"></button></div>`;
+  }).join('')}
+    <div class="gitem"><div class="main"><div class="t">Har kungi tekshiruv vaqti</div><div class="d">Agent shu vaqtda barcha yoqilgan manbalarni tekshiradi</div></div><input class="input" type="time" id="set-scanTime" data-settime="scanTime" value="${esc(s.scanTime)}" style="width:120px"></div>
+    <div class="gitem"><div class="main"><div class="t">Minimal moslik</div><div class="d">Bundan past baholangan lotlar platformaga qo‘shilmaydi</div></div><input class="input tnum" style="width:90px;text-align:right" id="set-minMatch" data-draft="set-minMatch" data-setnum="minMatch" value="${esc(val('set-minMatch', s.minMatch))}"></div>
+  </div></div>
+  <div class="group"><div class="group-h">Agent qanday ishlaydi</div><div class="glist"><div class="steps">
+    <div class="step"><div>Har kuni ${esc(s.scanTime)} da yoqilgan platformalardan yangi va faol lotlar yig‘iladi (lot raqami, narx, muddat, buyurtmachi, hudud, takliflar soni).</div></div>
+    <div class="step"><div>Har bir lot kalit so‘zlar va Claude yordamida kompaniya yo‘nalishlariga moslik bo‘yicha 0–100 ball bilan baholanadi.</div></div>
+    <div class="step"><div>Mos lotlar Winder’ga real vaqtda tushadi, siz darhol ko‘rasiz. Muddat yaqinlashsa eslatma beriladi.</div></div>
+    <div class="step"><div>Har bir tender uchun AI zarur hujjatlar, ko‘nikmalar va yutish imkoniyatini oshirish bo‘yicha tavsiya beradi.</div></div>
+  </div><div class="gitem"><div class="d">${S.mode === 'cloud' ? 'Hozir bu Claude ichidagi namuna. Platformalardan avtomatik yig‘ish kompyuteringizdagi lokal versiyada ishlaydi: tender saytlari O‘zbekistondan ochiladi.' : 'Ma’lumotlar shu brauzerda saqlanmoqda.'}</div></div></div></div>
+  <div class="group"><div class="group-h">Moliya stavkalari (so‘m)</div><div class="glist">
+    ${numField('salary', 'Fiks oylik')}${numField('perSubmitted', 'Har bir topshirilgan tender uchun')}${numField('perWon', 'Har bir yutilgan tender uchun')}${numField('goal', 'Oylik daromad maqsadi')}${numField('usdRate', 'Dollar kursi (USD lotlar uchun)')}
+  </div></div>
+  <div class="group"><div class="group-h">Ma’lumotlar</div><div class="glist">
+    <div class="gitem"><div class="main"><div class="t">Zaxira nusxa</div><div class="d">Barcha tenderlar, hujjatlar va sozlamalar JSON faylida</div></div><button class="btn btn-ghost btn-sm" data-act="exportJson">${icon('download', 'sm')}Yuklab olish</button><button class="btn btn-ghost btn-sm" data-act="import">${icon('upload', 'sm')}Tiklash</button></div>
+    <div class="gitem"><div class="main"><div class="t">Excel uchun jadval</div><div class="d">Tenderlar ro‘yxati CSV formatida</div></div><button class="btn btn-ghost btn-sm" data-act="exportCsv">${icon('download', 'sm')}CSV</button></div>
+    ${hasSample() ? `<div class="gitem"><div class="main"><div class="t">Namuna ma’lumotlar</div><div class="d">Ko‘rsatish uchun qo‘shilgan tender, hujjat va agent yozuvlari</div></div>${S.confirm === 'clearSamples' ? `<button class="btn btn-sm btn-ghost" data-act="cancelConfirm">Bekor qilish</button><button class="btn btn-sm btn-danger" data-act="clearSamples">Ha, o‘chirish</button>` : `<button class="btn btn-sm btn-danger" data-act="askClearSamples">${icon('trash', 'sm')}O‘chirish</button>`}</div>` : ''}
+  </div></div>
+  <div class="group"><div class="group-h">Winder haqida</div><div class="glist"><div class="about">${logo(64)}<div><div style="font-family:var(--f-display);font-size:24px;letter-spacing:-.02em"><b>Win</b><span class="muted" style="font-weight:500">der</span></div><div class="d muted">Win + (Ten)der. Shaxsiy tender platformasi · 0.1 namuna</div><div class="d muted">${S.mode === 'cloud' ? 'Claude ichida · ma’lumotlar Claude bazasida, real vaqtda' : 'Lokal rejim · ma’lumotlar shu brauzerda'}</div></div></div></div></div>
+  </div>`;
+}
+
+/* ----- Modal: tender qo‘shish ----- */
+function renderModal() {
+  const root = $('modalRoot');
+  if (S.modal !== 'add') { root.innerHTML = ''; return; }
+  const fld = (id, label, attrs = '', wide = false) => `<label class="field${wide ? ' wide' : ''}">${label}<input class="input" id="${id}" data-draft="${id}" value="${esc(val(id))}" ${attrs}></label>`;
+  const src = val('f-source', 'xarid');
+  root.innerHTML = `<div class="modal" data-act="modalBg"><form class="dialog" data-form="add" role="dialog" aria-modal="true" aria-label="Tender qo‘shish">
+    <div style="display:flex;justify-content:space-between;align-items:center"><h2>Tender qo‘shish</h2><button type="button" class="closeb" data-act="closeModal" aria-label="Yopish">${icon('x', 'sm')}</button></div>
+    <p class="muted" style="margin:6px 0 0">Telegram kanal yoki tanishlar orqali topgan tenderingizni qo‘shing. Moslik avtomatik hisoblanadi.</p>
+    <div class="form">
+      ${fld('f-title', 'Tender nomi *', 'required', true)}
+      <label class="field">Platforma<span class="selw" style="width:100%"><select id="f-source" data-draft="f-source" style="width:100%;max-width:none">${Object.entries(SOURCES).map(([k, s]) => `<option value="${k}" ${src === k ? 'selected' : ''}>${esc(s.name)}</option>`).join('')}</select>${icon('chevD', 'sm')}</span></label>
+      <label class="field">Xarid turi<span class="selw" style="width:100%"><select id="f-type" data-draft="f-type" style="width:100%;max-width:none">${(TYPES_BY_SOURCE[src] || []).map(t => `<option ${val('f-type') === t ? 'selected' : ''}>${esc(t)}</option>`).join('')}</select>${icon('chevD', 'sm')}</span></label>
+      ${fld('f-lot', 'Lot raqami')}
+      ${fld('f-price', 'Boshlang‘ich narx (so‘m)', 'inputmode="numeric"')}
+      ${fld('f-customer', 'Buyurtmachi')}
+      ${fld('f-region', 'Hudud')}
+      ${fld('f-deadline', 'Tugash sanasi va vaqti *', 'type="datetime-local" required')}
+      ${fld('f-url', 'Havola', 'type="url" placeholder="https://"')}
+      <label class="field wide">Qisqa tavsif<textarea class="input" id="f-desc" data-draft="f-desc">${esc(val('f-desc'))}</textarea></label>
+    </div>
+    <div class="actions" style="justify-content:flex-end;margin-top:18px"><button type="button" class="btn btn-ghost" data-act="closeModal">Bekor qilish</button><button type="submit" class="btn btn-primary">Qo‘shish</button></div>
+  </form></div>`;
+}
+async function submitAdd() {
+  const g = k => String(val(k) || '').trim();
+  const title = g('f-title'), dl = g('f-deadline');
+  if (!title || !dl) { toast('Tender nomi va tugash sanasini kiriting'); return; }
+  const source = g('f-source') || 'xarid';
+  const desc = g('f-desc');
+  const m = scoreMatch(title + ' ' + desc);
+  const now = new Date().toISOString();
+  const id = 'm' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+  const deadline = new Date(dl);
+  const t = {
+    title, source, type: g('f-type') || (TYPES_BY_SOURCE[source] || ['Tender'])[0], lot: g('f-lot') || '—', customer: g('f-customer') || '—', region: g('f-region') || '—',
+    price: Number(g('f-price').replace(/[^\d]/g, '')) || 0, currency: 'UZS', funding: '', lang: '', offers: null,
+    publishedAt: now, deadline: isNaN(deadline) ? now : deadline.toISOString(), direction: m.dir, match: m.score, reasons: m.hits.slice(0, 6),
+    description: desc, req: { docs: [], skills: [] }, url: /^https?:\/\//.test(g('f-url')) ? g('f-url') : (SOURCES[source] || {}).url || '',
+    status: 'new', history: [{ s: 'new', at: now }], submittedAt: null, wonAt: null, lostAt: null, note: '', ai: null, foundAt: now, sample: false, manual: true,
+  };
+  S.selfAdded.add(id);
+  const ok = await save(() => Store.set('tenders', id, t), 'Tender qo‘shildi');
+  if (ok) {
+    for (const k of Object.keys(S.drafts)) if (k.startsWith('f-')) delete S.drafts[k];
+    S.modal = null; S.sel = id; render();
+  }
+}
+
+/* ---------- Amallar ---------- */
+async function setStatus(id, s) {
+  const t = S.tenders.find(x => x.id === id);
+  if (!t || t.status === s) return;
+  const now = new Date().toISOString();
+  const patch = { status: s, history: [...(t.history || []), { s, at: now }] };
+  if (STAGE[s] < 3) Object.assign(patch, { submittedAt: null, wonAt: null, lostAt: null });
+  if (s === 'submitted') Object.assign(patch, { submittedAt: t.submittedAt || now, wonAt: null, lostAt: null });
+  if (s === 'won') Object.assign(patch, { submittedAt: t.submittedAt || now, wonAt: t.wonAt || now, lostAt: null });
+  if (s === 'lost') Object.assign(patch, { submittedAt: t.submittedAt || now, lostAt: t.lostAt || now, wonAt: null });
+  let msg = `Holat: ${ST[s].l}`;
+  const bonus = (!t.submittedAt && patch.submittedAt ? Number(S.settings.perSubmitted) || 0 : 0) + (!t.wonAt && patch.wonAt ? Number(S.settings.perWon) || 0 : 0);
+  if (bonus) msg = (s === 'won' ? 'Tabriklaymiz! ' : '') + `${ST[s].l} · +${money(bonus)}`;
+  await save(() => Store.update('tenders', id, patch), msg);
+}
+async function saveSettings(patch) {
+  const next = { ...S.settings, ...patch };
+  S.settings = next; render();
+  await save(() => Store.set('settings', 'main', next));
+}
+async function exportFile(name, data, mime) {
+  if (S.downloads) {
+    try { await S.downloads.save({ filename: name, data }); }
+    catch (e) { if (e && e.code !== 'declined') toast('Faylni saqlab bo‘lmadi'); }
+    return;
+  }
+  if (S.mode === 'local') {
+    const url = URL.createObjectURL(new Blob([data], { type: mime }));
+    const a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 2000);
+    return;
+  }
+  toast('Faylni yuklab olish bu ko‘rinishda mavjud emas');
+}
+function csv() {
+  const cols = ['Lot', 'Nomi', 'Platforma', 'Turi', 'Buyurtmachi', 'Hudud', 'Narx', 'Valyuta', 'Tugash sanasi', 'Moslik', 'Holat', 'Topshirilgan', 'Yutilgan', 'Havola'];
+  const q = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const rows = filtered().map(t => [t.lot, t.title, srcName(t.source), t.type, t.customer, t.region, t.price, t.currency, (t.deadline || '').slice(0, 16).replace('T', ' '), t.match, (ST[t.status] || {}).l, (t.submittedAt || '').slice(0, 10), (t.wonAt || '').slice(0, 10), t.url].map(q).join(';'));
+  return '﻿' + [cols.map(q).join(';'), ...rows].join('\r\n');
+}
+function backup() {
+  const pack = list => Object.fromEntries(list.map(x => [x.id, strip(x)]));
+  return JSON.stringify({ tenders: pack(S.tenders), docs: pack(S.docs), news: pack(S.news), scans: pack(S.scans), settings: { main: strip(S.settings) } }, null, 1);
+}
+async function importData(text) {
+  let data;
+  try { data = JSON.parse(text); } catch (e) { toast('Fayl JSON formatida emas'); return; }
+  const cols = ['tenders', 'docs', 'news', 'scans', 'settings'];
+  if (!data || typeof data !== 'object' || !cols.some(c => data[c] && typeof data[c] === 'object')) { toast('Faylda Winder ma’lumotlari topilmadi'); return; }
+  let n = 0;
+  toast('Yuklanmoqda…');
+  for (const c of cols) {
+    const items = data[c]; if (!items || typeof items !== 'object') continue;
+    for (const [id, body] of Object.entries(items)) {
+      if (!/^[A-Za-z0-9_\-.~:@+]{1,200}$/.test(id) || !body || typeof body !== 'object' || Array.isArray(body)) continue;
+      if (c === 'tenders') S.selfAdded.add(id);
+      const ok = await save(() => Store.set(c, id, body));
+      if (!ok) { toast(`${n} ta yozuv yuklandi, qolgani saqlanmadi`); return; }
+      n++;
+    }
+  }
+  toast(`${n} ta yozuv yuklandi`);
+}
+async function clearSamples() {
+  S.confirm = null;
+  const jobs = [];
+  for (const c of ['tenders', 'docs', 'news', 'scans']) for (const x of S[c]) if (x.sample) jobs.push([c, x.id]);
+  for (const [c, id] of jobs) { const ok = await save(() => Store.remove(c, id)); if (!ok) return; }
+  S.sel = null;
+  toast('Namuna ma’lumotlar o‘chirildi');
+}
+
+/* ---------- Hodisalar ---------- */
+document.addEventListener('click', async e => {
+  const a = e.target.closest('[data-act]');
+  if (!a) return;
+  const act = a.dataset.act, id = a.dataset.id;
+  if (a.tagName === 'A' && !['go', 'filterGo', 'sortDeadline', 'closeTo'].includes(act)) return;
+  switch (act) {
+    case 'go': e.preventDefault(); location.hash = a.dataset.v; break;
+    case 'filterGo': e.preventDefault(); Object.assign(S.f, { status: a.dataset.status, q: '', source: '', dir: '', type: '', region: '', due: '', minMatch: '0' }); S.listMode = 'list'; saveUI(); location.hash = 'tenderlar'; render(); break;
+    case 'sortDeadline': e.preventDefault(); Object.assign(S.f, { status: 'active', sort: 'deadline' }); S.listMode = 'list'; saveUI(); location.hash = 'tenderlar'; render(); break;
+    case 'goSearch': location.hash = 'tenderlar'; setTimeout(() => { const i = $('fq'); if (i) i.focus(); }, 30); break;
+    case 'open': if (a.closest('.kb') && dragMoved) return; S.sel = id; S.confirm = null; S.fresh.delete(id); render(); break;
+    case 'close': closeSheet(); break;
+    case 'closeTo': e.preventDefault(); closeSheet(); location.hash = a.dataset.v; break;
+    case 'more': S.more = !S.more; renderMore(); break;
+    case 'mode': S.listMode = a.dataset.m; saveUI(); render(); break;
+    case 'status': S.f.status = a.dataset.s; saveUI(); render(); break;
+    case 'clearF': Object.assign(S.f, { q: '', source: '', dir: '', type: '', region: '', due: '', minMatch: '0' }); saveUI(); render(); break;
+    case 'setStatus': await setStatus(id, a.dataset.s); break;
+    case 'analyze': analyze(id); break;
+    case 'copy': try { await navigator.clipboard.writeText(a.dataset.text); toast('Lot raqami nusxalandi'); } catch (err) { toast('Nusxalab bo‘lmadi — raqamni belgilab oling'); } break;
+    case 'askDel': S.confirm = 'del:' + id; render(); break;
+    case 'cancelConfirm': S.confirm = null; render(); break;
+    case 'delTender': S.confirm = null; if (await save(() => Store.remove('tenders', id), 'Tender o‘chirildi')) closeSheet(); break;
+    case 'ask': {
+      const q = a.dataset.q;
+      if (a.dataset.go) { location.hash = 'ai'; }
+      if (S.view !== 'ai') { S.view = 'ai'; render(); }
+      if (S.sample) sendChat(q); else { S.drafts.chat = q; render(); }
+      break;
+    }
+    case 'stopChat': if (S.chatCtl) S.chatCtl.abort(); break;
+    case 'clearChat': S.chat = []; render(); break;
+    case 'docState': await save(() => Store.update('docs', id, { state: a.dataset.s })); break;
+    case 'askDelDoc': S.confirm = 'doc:' + id; render(); break;
+    case 'delDoc': S.confirm = null; await save(() => Store.remove('docs', id), 'Hujjat o‘chirildi'); break;
+    case 'newsKind': S.newsKind = a.dataset.k; render(); break;
+    case 'finShift': S.finMonth = shiftMonth(S.finMonth || mk(new Date()), Number(a.dataset.n)); render(); break;
+    case 'finMonth': S.finMonth = a.dataset.m; render(); break;
+    case 'togglePaid': { const m = a.dataset.m; await saveSettings({ paid: { ...(S.settings.paid || {}), [m]: !(S.settings.paid && S.settings.paid[m]) } }); break; }
+    case 'dirToggle': { const d = a.dataset.d, cur = S.settings.directions || []; await saveSettings({ directions: cur.includes(d) ? cur.filter(x => x !== d) : [...cur, d] }); break; }
+    case 'kwDel': { const k = a.dataset.k, i = Number(a.dataset.i); await saveSettings({ [k]: (S.settings[k] || []).filter((_, j) => j !== i) }); break; }
+    case 'srcToggle': { const k = a.dataset.k, cur = { ...DEFAULT_SETTINGS.sources, ...(S.settings.sources || {}) }; cur[k] = cur[k] === false; await saveSettings({ sources: cur }); break; }
+    case 'exportCsv': exportFile(`winder-tenderlar-${new Date().toISOString().slice(0, 10)}.csv`, csv(), 'text/csv'); break;
+    case 'exportJson': exportFile(`winder-zaxira-${new Date().toISOString().slice(0, 10)}.json`, backup(), 'application/json'); break;
+    case 'import': $('importFile').click(); break;
+    case 'askClearSamples': S.confirm = 'clearSamples'; render(); break;
+    case 'clearSamples': clearSamples(); break;
+    case 'openAdd': S.modal = 'add'; render(); setTimeout(() => { const i = $('f-title'); if (i) i.focus(); }, 30); break;
+    case 'closeModal': S.modal = null; render(); break;
+    case 'modalBg': if (e.target === a) { S.modal = null; render(); } break;
+    case 'moreGo': S.more = false; renderMore(); location.hash = a.dataset.v; break;
+  }
+});
+function closeSheet() { S.sel = null; S.confirm = null; render(); }
+$('scrim').addEventListener('click', () => { if (S.more) { S.more = false; renderMore(); } else closeSheet(); });
+function renderMore() {
+  let el = $('moreSheet');
+  if (!S.more) { if (el) el.remove(); if (!S.sel) $('scrim').classList.remove('on'); return; }
+  if (!el) { el = document.createElement('div'); el.id = 'moreSheet'; document.body.appendChild(el); }
+  el.innerHTML = `<div class="sheet on" style="top:auto;height:auto;bottom:0;left:0;right:0;width:100%;border-radius:22px 22px 0 0;padding:12px 0 calc(24px + env(safe-area-inset-bottom,0px))"><div class="glist" style="margin:8px 16px;box-shadow:none;background:var(--tile-2)">${[VIEWS[3], VIEWS[4], VIEWS[6]].map(v => `<button class="gitem" style="width:100%;text-align:left" data-act="moreGo" data-v="${v.k}">${icon(v.ico)}<span class="main t">${esc(v.l)}</span>${icon('chevR', 'sm')}</button>`).join('')}</div></div>`;
+  $('scrim').classList.add('on');
+}
+document.addEventListener('input', e => {
+  const el = e.target;
+  if (el.dataset.draft) {
+    S.drafts[el.dataset.draft] = el.value;
+    if (el.id === 'chatInput') { el.style.height = 'auto'; el.style.height = Math.min(160, el.scrollHeight) + 'px'; }
+    if (el.id === 'f-source') render();
+  }
+  if (el.dataset.f === 'q') { S.f.q = el.value; saveUI(); render(); }
+});
+document.addEventListener('change', async e => {
+  const el = e.target;
+  if (el.dataset.f && el.dataset.f !== 'q') { S.f[el.dataset.f] = el.value; saveUI(); render(); return; }
+  if (el.dataset.note) {
+    const id = el.dataset.note, t = S.tenders.find(x => x.id === id);
+    if (t && el.value !== (t.note || '')) { await save(() => Store.update('tenders', id, { note: el.value }), 'Izoh saqlandi'); }
+    delete S.drafts['note:' + id];
+    return;
+  }
+  if (el.dataset.date) {
+    const id = el.dataset.id, f = el.dataset.date;
+    if (!el.value) return;
+    await save(() => Store.update('tenders', id, { [f]: new Date(el.value + 'T12:00:00').toISOString() }), 'Sana yangilandi');
+    return;
+  }
+  if (el.dataset.exp) { await save(() => Store.update('docs', el.dataset.exp, { expires: el.value || null })); return; }
+  if (el.dataset.setnum) {
+    const k = el.dataset.setnum, n = Number(String(el.value).replace(/[^\d]/g, ''));
+    delete S.drafts['set-' + k];
+    if (Number.isFinite(n)) await saveSettings({ [k]: n });
+    return;
+  }
+  if (el.dataset.settext) { const k = el.dataset.settext; delete S.drafts['set-' + k]; await saveSettings({ [k]: el.value.trim() }); return; }
+  if (el.dataset.settime) { await saveSettings({ [el.dataset.settime]: el.value || '09:00' }); return; }
+  if (el.id === 'importFile' && el.files && el.files[0]) {
+    const r = new FileReader();
+    r.onload = () => importData(String(r.result));
+    r.readAsText(el.files[0]);
+    el.value = '';
+  }
+});
+document.addEventListener('submit', async e => {
+  const form = e.target.closest('[data-form]');
+  if (!form) return;
+  e.preventDefault();
+  const kind = form.dataset.form;
+  if (kind === 'chat') sendChat(val('chat'));
+  if (kind === 'add') submitAdd();
+  if (kind === 'kw') {
+    const k = form.dataset.k, w = String(val('kw-' + k)).trim();
+    if (w && !(S.settings[k] || []).includes(w)) { delete S.drafts['kw-' + k]; await saveSettings({ [k]: [...(S.settings[k] || []), w] }); }
+  }
+  if (kind === 'addDoc') {
+    const name = String(val('newDocName')).trim();
+    if (!name) { toast('Hujjat nomini kiriting'); return; }
+    const id = 'd' + Date.now().toString(36);
+    const ok = await save(() => Store.set('docs', id, { name, category: val('newDocCat', DOC_CATS[0]), state: 'missing', expires: null, note: '', sample: false }), 'Hujjat qo‘shildi');
+    if (ok) { delete S.drafts.newDocName; render(); }
+  }
+});
+document.addEventListener('keydown', e => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[role="button"][data-act]')) { e.preventDefault(); e.target.click(); return; }
+  if (e.key === 'Escape') {
+    if (S.modal) { S.modal = null; render(); } else if (S.more) { S.more = false; renderMore(); } else if (S.sel) closeSheet();
+  }
+  if (e.key === 'Enter' && !e.shiftKey && e.target.id === 'chatInput') { e.preventDefault(); sendChat(e.target.value); }
+  if (e.key === '/' && S.view === 'tenderlar' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { e.preventDefault(); const i = $('fq'); if (i) i.focus(); }
+});
+
+/* Kanban: sudrab o‘tkazish */
+let dragId = null, dragMoved = false;
+document.addEventListener('dragstart', e => {
+  const c = e.target.closest && e.target.closest('[data-drag]');
+  if (!c) return;
+  dragId = c.dataset.drag; dragMoved = true; c.classList.add('dragging');
+  try { e.dataTransfer.setData('text/plain', dragId); e.dataTransfer.effectAllowed = 'move'; } catch (err) {}
+});
+document.addEventListener('dragend', e => { const c = e.target.closest && e.target.closest('[data-drag]'); if (c) c.classList.remove('dragging'); document.querySelectorAll('.kcol.over').forEach(x => x.classList.remove('over')); setTimeout(() => { dragMoved = false; }, 50); });
+document.addEventListener('dragover', e => { const col = e.target.closest && e.target.closest('[data-drop]'); if (col && dragId) { e.preventDefault(); document.querySelectorAll('.kcol.over').forEach(x => x !== col && x.classList.remove('over')); col.classList.add('over'); } });
+document.addEventListener('drop', e => { const col = e.target.closest && e.target.closest('[data-drop]'); if (col && dragId) { e.preventDefault(); col.classList.remove('over'); const id = dragId; dragId = null; setStatus(id, col.dataset.drop); } });
+
+/* Grafik maslahati */
+document.addEventListener('mousemove', e => {
+  const tipEl = $('tip');
+  const h = e.target.closest && e.target.closest('[data-tip]');
+  if (!h) { tipEl.classList.remove('on'); return; }
+  const p = h.getAttribute('data-tip').split('|');
+  if (tipEl.dataset.k !== h.getAttribute('data-tip')) {
+    let html = p[0];
+    for (let i = 1; i + 2 < p.length; i += 3) html += `<div class="tr"><i style="background:var(--${esc(p[i])})"></i>${esc(p[i + 1])}<span>${esc(p[i + 2])}</span></div>`;
+    html += `<div class="tr" style="margin-top:4px;font-weight:600">${esc(p[p.length - 2])}<span>${esc(p[p.length - 1])} so‘m</span></div>`;
+    tipEl.innerHTML = html; tipEl.dataset.k = h.getAttribute('data-tip');
+  }
+  const x = Math.min(e.clientX + 14, window.innerWidth - tipEl.offsetWidth - 8), y = Math.max(8, e.clientY - tipEl.offsetHeight - 12);
+  tipEl.style.left = x + 'px'; tipEl.style.top = y + 'px'; tipEl.classList.add('on');
+});
+
+/* Toast */
+let toastT = 0;
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('on'), 2600); }
+
+/* Taymerlar */
+setInterval(() => {
+  document.querySelectorAll('[data-cd]').forEach(el => { const c = countdown(el.dataset.cd); el.textContent = c.t; el.className = 'cd ' + c.c; });
+}, 30000);
+
+/* Marshrutlash */
+function applyHash() {
+  const h = (location.hash || '').replace('#', '');
+  S.view = VIEWS.some(v => v.k === h) ? h : 'panel';
+}
+window.addEventListener('hashchange', () => { applyHash(); S.more = false; renderMore(); render(); window.scrollTo(0, 0); });
+
+/* ---------- Ma'lumotlar oqimi ---------- */
+function onData(col, list) {
+  if (col === 'settings') {
+    const main = list.find(d => d.id === 'main');
+    S.settings = { ...DEFAULT_SETTINGS, ...(main ? strip(main) : {}) };
+  } else if (col === 'tenders') {
+    if (S.known) {
+      const added = list.filter(t => !S.known.has(t.id) && !S.selfAdded.has(t.id));
+      added.forEach(t => S.fresh.add(t.id));
+      if (added.length === 1) toast(`Yangi tender topildi: ${added[0].title}`);
+      else if (added.length > 1) toast(`${added.length} ta yangi tender topildi`);
+    }
+    S.known = new Set(list.map(t => t.id));
+    S.tenders = list;
+  } else {
+    S[col] = list;
+  }
+  S.loaded[col] = true;
+  schedule();
+}
+async function boot() {
+  applyHash();
+  render();
+  await Store.init();
+  S.mode = Store.mode;
+  if (S.mode === 'local') S.sample = null;
+  for (const c of ['tenders', 'docs', 'news', 'scans', 'settings']) Store.watch(c, list => onData(c, list));
+  if (window.claude && typeof window.claude.use === 'function') {
+    window.claude.use('sample').then(fn => { S.sample = fn || null; schedule(); }).catch(() => { S.sample = null; schedule(); });
+    window.claude.use('downloads').then(d => { S.downloads = d || null; }).catch(() => {});
+  }
+  schedule();
+}
+boot();
+})();
+</script>

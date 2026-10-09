@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 64 64" role="img" aria-label="Winder">
+  <title>Winder</title>
+  <!-- W harfi: oxirgi chizig'i yuqoriga ko'tariluvchi strelka — "Win" (yutish) + "(Ten)der" -->
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="#1d1d1f"/>
+  <path d="M12 22 L21 48 L30 30 L39 48" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M39 48 L50 16 M42.7 21.3 L50 16 L52.5 24.7" fill="none" stroke="#2997ff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

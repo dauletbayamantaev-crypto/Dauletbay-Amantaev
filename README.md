@@ -97,3 +97,7 @@ Firebase Hosting'ga joylash: `npm run build && npx firebase-tools deploy` (`fire
 ## Texnologiyalar
 
 React 19, TypeScript, Vite, Tailwind CSS 4, Firebase (Auth + Firestore), `@google/genai`, `@anthropic-ai/sdk`, lucide-react, motion.
+
+## Winder — tender platformasi
+
+Repoda alohida loyiha: [`winder/`](winder/README.md) — 6 ta xarid platformasidan mos tenderlarni kuzatish, holatlar, AI tahlil, hujjatlar, yangiliklar va moliya.

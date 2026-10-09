@@ -1,0 +1,1905 @@
+{
+ "tenders": {
+  "t01": {
+   "title": "Marketing 360 xizmatlari: avtomobil brendlari uchun bir yillik raqamli marketing (SMM, target, kontent, video)",
+   "source": "etender",
+   "type": "Tender",
+   "lot": "26120012517190",
+   "customer": "Avtomobil diler kompaniyasi AJ",
+   "region": "Toshkent shahri, Mirobod tumani",
+   "price": 1240000000,
+   "currency": "UZS",
+   "funding": "Korporativ mablag‘",
+   "lang": "O‘zbekcha (lotin)",
+   "offers": 2,
+   "publishedAt": "2026-10-08T10:20:00+05:00",
+   "deadline": "2026-10-14T17:00:00+05:00",
+   "direction": "Raqamli marketing",
+   "match": 96,
+   "reasons": [
+    "SMM",
+    "target reklama",
+    "video kontent",
+    "bir yillik ochiq shartnoma"
+   ],
+   "description": "Uch avtomobil brendi bo‘yicha ijtimoiy tarmoqlarni yuritish, target reklama, oyiga 40 ta post va 8 ta video, oylik hisobot. Shartnoma bir yillik, ochiq turdagi.",
+   "req": {
+    "docs": [
+     "guvohnoma",
+     "soliq",
+     "balans",
+     "eri",
+     "ishonchnoma",
+     "tajriba",
+     "portfolio",
+     "tavsiyanoma",
+     "rezyume",
+     "tijorat",
+     "texnik",
+     "kafolat"
+    ],
+    "skills": [
+     "SMM strategiya",
+     "Meta/Telegram target",
+     "Video production",
+     "Avto bozori tajribasi",
+     "Oylik analitika"
+    ]
+   },
+   "url": "https://etender.uzex.uz/home",
+   "status": "new",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-10-09T09:02:00+05:00"
+    }
+   ],
+   "submittedAt": null,
+   "wonAt": null,
+   "lostAt": null,
+   "note": "",
+   "ai": {
+    "summary": "Yo‘nalishimizga to‘liq mos, yirik va uzoq muddatli loyiha. Asosiy xavf — zakalat (bank kafolati) talabi va avto sohasidagi tajribani isbotlash. Hozircha 2 ta taklif bor, raqobat o‘rtacha.",
+    "chance": 62,
+    "docs": [
+     {
+      "name": "Bank kafolati (zakalat)",
+      "state": "missing",
+      "note": "Shartnoma qiymatining ~3% miqdorida, bank bilan 3–5 ish kuni oldin kelishing."
+     },
+     {
+      "name": "Soliq qarzi yo‘qligi ma’lumotnomasi",
+      "state": "update",
+      "note": "Muddati o‘tgan — my.soliq.uz orqali yangilang."
+     },
+     {
+      "name": "O‘xshash loyihalar tajribasi",
+      "state": "ready",
+      "note": "Kamida 2 ta avto/retail mijoz bilan shartnoma nusxasini qo‘shing."
+     },
+     {
+      "name": "Portfolio (video va kreativlar)",
+      "state": "ready",
+      "note": "Avto yo‘nalishidagi 5–6 eng yaxshi ishni birinchi sahifaga chiqaring."
+     }
+    ],
+    "skills": [
+     "SMM menejer (3 brend uchun 2 kishi)",
+     "Target mutaxassisi",
+     "Videograf va montajchi",
+     "Dizayner",
+     "Analitik"
+    ],
+    "risks": [
+     "Zakalat talabi aylanma mablag‘ni band qiladi",
+     "Oyiga 8 ta video — ishlab chiqarish quvvatini oldindan hisoblang",
+     "Diler tasdiqlash jarayoni sekin bo‘lishi mumkin"
+    ],
+    "tips": [
+     "Texnik taklifga 1 oylik kontent-reja namunasini ilova qiling",
+     "KPI'larni raqamda bering: qamrov, lid narxi, test-drayv so‘rovlari",
+     "Jamoa tarkibini ism va tajriba bilan ko‘rsating",
+     "Narxni oylik to‘lov ko‘rinishida ham taqdim eting"
+    ],
+    "price": "Boshlang‘ich narxdan 6–9% past taklif bering: raqobatchilar 2 ta, juda past narx ishonchsizlik uyg‘otadi.",
+    "next": "Bugun bank bilan zakalat bo‘yicha gaplashing va soliq ma’lumotnomasini yangilang.",
+    "at": "2026-10-09T09:15:00+05:00"
+   },
+   "foundAt": "2026-10-09T09:02:00+05:00",
+   "sample": true
+  },
+  "t02": {
+   "title": "Tuman hokimligi rasmiy veb-saytini qayta ishlab chiqish va 12 oy texnik qo‘llab-quvvatlash",
+   "source": "xarid",
+   "type": "Elektron tender",
+   "lot": "26110012515984",
+   "customer": "Tuman hokimligi",
+   "region": "Toshkent shahri, Shayxontohur tumani",
+   "price": 148500000,
+   "currency": "UZS",
+   "funding": "Davlat byudjeti",
+   "lang": "O‘zbekcha (lotin)",
+   "offers": 1,
+   "publishedAt": "2026-10-07T15:40:00+05:00",
+   "deadline": "2026-10-17T18:00:00+05:00",
+   "direction": "Veb-sayt",
+   "match": 93,
+   "reasons": [
+    "veb-sayt",
+    "UX/UI dizayn",
+    "texnik qo‘llab-quvvatlash"
+   ],
+   "description": "Saytni yangi dizayn bilan qayta ishlab chiqish (3 til), CMS, ochiq ma’lumotlar bo‘limi, mobil moslashuv, 12 oy texnik yordam. Kiberxavfsizlik ekspertizasidan o‘tkazish talab etiladi.",
+   "req": {
+    "docs": [
+     "guvohnoma",
+     "soliq",
+     "balans",
+     "eri",
+     "ishonchnoma",
+     "tajriba",
+     "portfolio",
+     "rezyume",
+     "itpark",
+     "kiber",
+     "tijorat",
+     "texnik"
+    ],
+    "skills": [
+     "Laravel yoki Node.js",
+     "UX/UI dizayn",
+     "Davlat saytlari standartlari",
+     "Kiberxavfsizlik talablari"
+    ]
+   },
+   "url": "https://xarid.uzex.uz/home",
+   "status": "review",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-10-08T09:01:00+05:00"
+    },
+    {
+     "s": "review",
+     "at": "2026-10-08T11:30:00+05:00"
+    }
+   ],
+   "submittedAt": null,
+   "wonAt": null,
+   "lostAt": null,
+   "note": "",
+   "ai": {
+    "summary": "Bizning asosiy yo‘nalish. Davlat saytlari tajribasi bo‘lsa yutish imkoniyati yuqori. Kiberxavfsizlik ekspertizasi xulosasi yo‘qligi — asosiy bo‘shliq.",
+    "chance": 71,
+    "docs": [
+     {
+      "name": "Kiberxavfsizlik ekspertizasi",
+      "state": "missing",
+      "note": "Odatda topshirishdan keyin, ishga tushirishdan oldin talab qilinadi — texnik taklifda bosqich sifatida ko‘rsating."
+     },
+     {
+      "name": "IT Park rezidentligi guvohnomasi",
+      "state": "ready",
+      "note": "Imtiyozli soliq rejimini narx asosida tushuntirish uchun foydali."
+     },
+     {
+      "name": "Soliq qarzi yo‘qligi ma’lumotnomasi",
+      "state": "update",
+      "note": "Yangilash kerak."
+     }
+    ],
+    "skills": [
+     "Frontend (React/Vue)",
+     "Backend (Laravel)",
+     "UX/UI dizayner",
+     "Kontent menejer",
+     "QA"
+    ],
+    "risks": [
+     "Muddat qisqa: 10 kun",
+     "3 tilli kontentni buyurtmachi bermasa kechikish"
+    ],
+    "tips": [
+     "2–3 ta davlat tashkiloti saytini portfolioda birinchi qo‘ying",
+     "Prototip (Figma) skrinshotlarini texnik taklifga qo‘shing",
+     "Texnik yordam SLA'sini aniq yozing: javob vaqti 4 soat"
+    ],
+    "price": "Boshlang‘ich narxning 92–95% oralig‘ida taklif bering.",
+    "next": "Prototip uchun 2 ta asosiy sahifa maketini tayyorlang.",
+    "at": "2026-10-08T12:05:00+05:00"
+   },
+   "foundAt": "2026-10-08T09:01:00+05:00",
+   "sample": true
+  },
+  "t03": {
+   "title": "Korporativ mobil ilova (iOS/Android) ishlab chiqish: xodimlar uchun HR-portal",
+   "source": "xt",
+   "type": "Tanlash",
+   "lot": "№8984935",
+   "customer": "Kon-metallurgiya kombinati AJ",
+   "region": "Navoiy viloyati",
+   "price": 2850000000,
+   "currency": "UZS",
+   "funding": "Korporativ mablag‘",
+   "lang": "O‘zbekcha (kirill)",
+   "offers": 0,
+   "publishedAt": "2026-10-02T09:00:00+05:00",
+   "deadline": "2026-10-24T18:00:00+05:00",
+   "direction": "Mobil ilova",
+   "match": 88,
+   "reasons": [
+    "mobil ilova",
+    "iOS/Android",
+    "HR tizimi"
+   ],
+   "description": "20 000+ xodim uchun ilova: ish vaqti, maosh varaqasi, ta’til so‘rovlari, ichki yangiliklar. 1C bilan integratsiya, SSO, 2 yillik qo‘llab-quvvatlash.",
+   "req": {
+    "docs": [
+     "guvohnoma",
+     "soliq",
+     "balans",
+     "eri",
+     "ishonchnoma",
+     "tajriba",
+     "portfolio",
+     "rezyume",
+     "iso",
+     "kafolat",
+     "tijorat",
+     "texnik",
+     "ustav"
+    ],
+    "skills": [
+     "Flutter yoki React Native",
+     "1C integratsiya",
+     "SSO/LDAP",
+     "Yuqori yuklama",
+     "Axborot xavfsizligi"
+    ]
+   },
+   "url": "https://xt-xarid.uz/",
+   "status": "prep",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-10-03T09:04:00+05:00"
+    },
+    {
+     "s": "review",
+     "at": "2026-10-03T14:00:00+05:00"
+    },
+    {
+     "s": "prep",
+     "at": "2026-10-06T10:00:00+05:00"
+    }
+   ],
+   "submittedAt": null,
+   "wonAt": null,
+   "lostAt": null,
+   "note": "",
+   "ai": {
+    "summary": "Katta byudjetli, ammo murakkab loyiha. Hujjatlar kirill alifbosida tayyorlanishi kerak. ISO 9001 talabi va 1C integratsiya tajribasi hal qiluvchi.",
+    "chance": 38,
+    "docs": [
+     {
+      "name": "ISO 9001 sertifikati",
+      "state": "missing",
+      "note": "Talab qilingan — yo‘q bo‘lsa, hamkor kompaniya bilan konsorsium ko‘rib chiqing."
+     },
+     {
+      "name": "Bank kafolati",
+      "state": "missing",
+      "note": "Katta summa — bank bilan oldindan kelishish shart."
+     },
+     {
+      "name": "Hujjatlar tili",
+      "state": "update",
+      "note": "Barcha hujjatlar o‘zbek kirill alifbosida bo‘lishi kerak."
+     }
+    ],
+    "skills": [
+     "Mobil dasturchilar (2–3)",
+     "Backend + 1C integrator",
+     "DevOps",
+     "Loyiha menejeri (PMP afzal)"
+    ],
+    "risks": [
+     "ISO sertifikati yo‘q",
+     "Yirik korporativ buyurtmachi — uzoq tasdiqlash",
+     "Integratsiya ko‘lami noaniq"
+    ],
+    "tips": [
+     "Konsorsium yoki subpudratchi sifatida ISO sertifikatli hamkor qo‘shing",
+     "Bosqichma-bosqich MVP rejasini taklif qiling",
+     "Xavfsizlik arxitekturasini alohida bo‘limda yozing"
+    ],
+    "price": "Bosqichlarga bo‘lingan narx; umumiy summani boshlang‘ichdan 10–12% past bering.",
+    "next": "ISO sertifikatli hamkor bilan bugun-ertaga uchrashuv belgilang.",
+    "at": "2026-10-06T10:30:00+05:00"
+   },
+   "foundAt": "2026-10-03T09:04:00+05:00",
+   "sample": true
+  },
+  "t04": {
+   "title": "Kasb-hunar maktabi uchun veb-sayt va Telegram-bot yaratish",
+   "source": "xarid",
+   "type": "Eng yaxshi taklif",
+   "lot": "26110012516402",
+   "customer": "Kasb-hunar maktabi",
+   "region": "Samarqand viloyati, Paxtachi tumani",
+   "price": 38600000,
+   "currency": "UZS",
+   "funding": "Davlat byudjeti",
+   "lang": "O‘zbekcha (lotin)",
+   "offers": 3,
+   "publishedAt": "2026-10-08T16:10:00+05:00",
+   "deadline": "2026-10-11T12:00:00+05:00",
+   "direction": "Veb-sayt",
+   "match": 90,
+   "reasons": [
+    "veb-sayt",
+    "Telegram-bot"
+   ],
+   "description": "Ta’lim muassasasi sayti (qabul, yangiliklar, jadval) va qabul uchun Telegram-bot.",
+   "req": {
+    "docs": [
+     "guvohnoma",
+     "soliq",
+     "balans",
+     "eri",
+     "ishonchnoma",
+     "portfolio",
+     "tijorat"
+    ],
+    "skills": [
+     "WordPress/Laravel",
+     "Telegram Bot API"
+    ]
+   },
+   "url": "https://xarid.uzex.uz/home",
+   "status": "new",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-10-09T09:01:00+05:00"
+    }
+   ],
+   "submittedAt": null,
+   "wonAt": null,
+   "lostAt": null,
+   "note": "",
+   "ai": null,
+   "foundAt": "2026-10-09T09:01:00+05:00",
+   "sample": true
+  },
+  "t05": {
+   "title": "IT autsorsing: axborot tizimlarini qo‘llab-quvvatlash va administratorlik xizmatlari (2027-yil)",
+   "source": "etender",
+   "type": "Tanlov",
+   "lot": "26120012518044",
+   "customer": "Viloyat sog‘liqni saqlash boshqarmasi",
+   "region": "Farg‘ona viloyati",
+   "price": 420000000,
+   "currency": "UZS",
+   "funding": "Davlat byudjeti",
+   "lang": "O‘zbekcha (lotin)",
+   "offers": 0,
+   "publishedAt": "2026-10-06T11:00:00+05:00",
+   "deadline": "2026-10-28T18:00:00+05:00",
+   "direction": "Dasturiy ta’minot",
+   "match": 81,
+   "reasons": [
+    "IT autsorsing",
+    "qo‘llab-quvvatlash"
+   ],
+   "description": "12 oy davomida 3 ta axborot tizimi va 40 ta ish o‘rnini qo‘llab-quvvatlash, 24/7 navbatchilik.",
+   "req": {
+    "docs": [
+     "guvohnoma",
+     "soliq",
+     "balans",
+     "eri",
+     "ishonchnoma",
+     "tajriba",
+     "rezyume",
+     "itpark",
+     "tijorat",
+     "texnik"
+    ],
+    "skills": [
+     "Tizim administratori",
+     "Helpdesk",
+     "SLA boshqaruvi"
+    ]
+   },
+   "url": "https://etender.uzex.uz/home",
+   "status": "new",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-10-07T09:03:00+05:00"
+    }
+   ],
+   "submittedAt": null,
+   "wonAt": null,
+   "lostAt": null,
+   "note": "",
+   "ai": null,
+   "foundAt": "2026-10-07T09:03:00+05:00",
+   "sample": true
+  },
+  "t06": {
+   "title": "Promo-video rolik tayyorlash (60 soniya, o‘zbek va ingliz tillarida)",
+   "source": "xarid",
+   "type": "Elektron do‘kon",
+   "lot": "26110012516877",
+   "customer": "Viloyat turizm boshqarmasi",
+   "region": "Buxoro viloyati",
+   "price": 24900000,
+   "currency": "UZS",
+   "funding": "Davlat byudjeti",
+   "lang": "O‘zbekcha (lotin)",
+   "offers": 4,
+   "publishedAt": "2026-10-07T09:30:00+05:00",
+   "deadline": "2026-10-10T18:00:00+05:00",
+   "direction": "Video production",
+   "match": 86,
+   "reasons": [
+    "video rolik",
+    "dron tasvir"
+   ],
+   "description": "",
+   "req": {
+    "docs": [
+     "guvohnoma",
+     "eri",
+     "portfolio"
+    ],
+    "skills": [
+     "Ssenariy",
+     "Dron operatori",
+     "Montaj va color"
+    ]
+   },
+   "url": "https://xarid.uzex.uz/home",
+   "status": "prep",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-10-07T09:31:00+05:00"
+    },
+    {
+     "s": "review",
+     "at": "2026-10-07T12:00:00+05:00"
+    },
+    {
+     "s": "prep",
+     "at": "2026-10-08T10:00:00+05:00"
+    }
+   ],
+   "submittedAt": null,
+   "wonAt": null,
+   "lostAt": null,
+   "note": "",
+   "ai": null,
+   "foundAt": "2026-10-07T09:31:00+05:00",
+   "sample": true
+  },
+  "t07": {
+   "title": "Yagona axborot tizimi moduli: CRM va fuqarolar murojaatlari bilan ishlash",
+   "source": "etender",
+   "type": "Tender",
+   "lot": "26120012518311",
+   "customer": "Vazirlik huzuridagi raqamlashtirish markazi",
+   "region": "Toshkent shahri",
+   "price": 1780000000,
+   "currency": "UZS",
+   "funding": "Davlat byudjeti",
+   "lang": "O‘zbekcha (lotin)",
+   "offers": 0,
+   "publishedAt": "2026-10-09T10:00:00+05:00",
+   "deadline": "2026-11-05T18:00:00+05:00",
+   "direction": "Dasturiy ta’minot",
+   "match": 84,
+   "reasons": [
+    "axborot tizimi",
+    "CRM",
+    "integratsiya"
+   ],
+   "description": "Murojaatlarni qabul qilish, yo‘naltirish, SLA nazorati moduli. ID.egov.uz va OneID integratsiyasi.",
+   "req": {
+    "docs": [
+     "guvohnoma",
+     "soliq",
+     "balans",
+     "eri",
+     "ishonchnoma",
+     "tajriba",
+     "rezyume",
+     "itpark",
+     "kiber",
+     "iso",
+     "kafolat",
+     "tijorat",
+     "texnik"
+    ],
+    "skills": [
+     "Mikroservis arxitektura",
+     "OneID integratsiya",
+     "PostgreSQL",
+     "Kiberxavfsizlik"
+    ]
+   },
+   "url": "https://etender.uzex.uz/home",
+   "status": "new",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-10-09T10:02:00+05:00"
+    }
+   ],
+   "submittedAt": null,
+   "wonAt": null,
+   "lostAt": null,
+   "note": "",
+   "ai": null,
+   "foundAt": "2026-10-09T10:02:00+05:00",
+   "sample": true
+  },
+  "t08": {
+   "title": "Korporativ brendbuk va firma uslubini yangilash",
+   "source": "xt",
+   "type": "Takliflar so‘rovi",
+   "lot": "№8991204",
+   "customer": "Hududiy elektr tarmoqlari AJ",
+   "region": "Toshkent shahri, Chilonzor tumani",
+   "price": 18500,
+   "currency": "USD",
+   "funding": "Korporativ mablag‘",
+   "lang": "O‘zbekcha (kirill)",
+   "offers": 1,
+   "publishedAt": "2026-10-05T14:00:00+05:00",
+   "deadline": "2026-10-20T18:00:00+05:00",
+   "direction": "Dizayn va brending",
+   "match": 79,
+   "reasons": [
+    "brendbuk",
+    "firma uslubi"
+   ],
+   "description": "",
+   "req": {
+    "docs": [
+     "guvohnoma",
+     "soliq",
+     "balans",
+     "eri",
+     "ishonchnoma",
+     "portfolio",
+     "tijorat"
+    ],
+    "skills": [
+     "Brend strategiya",
+     "Grafik dizayn"
+    ]
+   },
+   "url": "https://xt-xarid.uz/",
+   "status": "review",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-10-06T09:02:00+05:00"
+    },
+    {
+     "s": "review",
+     "at": "2026-10-06T15:00:00+05:00"
+    }
+   ],
+   "submittedAt": null,
+   "wonAt": null,
+   "lostAt": null,
+   "note": "",
+   "ai": null,
+   "foundAt": "2026-10-06T09:02:00+05:00",
+   "sample": true
+  },
+  "t09": {
+   "title": "Broshyura va katalog dizayni, chop etishga tayyorlash (80 dona)",
+   "source": "coop",
+   "type": "Kooperatsiya",
+   "lot": "SL1607512",
+   "customer": "Ishlab chiqarish korxonasi MChJ",
+   "region": "Andijon viloyati",
+   "price": 12400000,
+   "currency": "UZS",
+   "funding": "Korporativ mablag‘",
+   "lang": "O‘zbekcha (kirill)",
+   "offers": 0,
+   "publishedAt": "2026-10-08T17:18:00+05:00",
+   "deadline": "2026-10-12T17:18:00+05:00",
+   "direction": "Dizayn va brending",
+   "match": 62,
+   "reasons": [
+    "dizayn",
+    "broshyura"
+   ],
+   "description": "",
+   "req": {
+    "docs": [
+     "guvohnoma",
+     "eri"
+    ],
+    "skills": [
+     "Poligrafiya dizayni"
+    ]
+   },
+   "url": "https://new.cooperation.uz/",
+   "status": "new",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-10-09T09:05:00+05:00"
+    }
+   ],
+   "submittedAt": null,
+   "wonAt": null,
+   "lostAt": null,
+   "note": "",
+   "ai": null,
+   "foundAt": "2026-10-09T09:05:00+05:00",
+   "sample": true,
+   "oferta": "O3712044"
+  },
+  "t10": {
+   "title": "SEO optimallashtirish va kontekst reklama xizmati (6 oy)",
+   "source": "xarid",
+   "type": "Auksion",
+   "lot": "26110012516120",
+   "customer": "Davlat unitar korxonasi",
+   "region": "Toshkent viloyati",
+   "price": 54000000,
+   "currency": "UZS",
+   "funding": "Davlat byudjeti",
+   "lang": "O‘zbekcha (lotin)",
+   "offers": 2,
+   "publishedAt": "2026-10-06T10:00:00+05:00",
+   "deadline": "2026-10-15T18:00:00+05:00",
+   "direction": "Raqamli marketing",
+   "match": 87,
+   "reasons": [
+    "SEO",
+    "kontekst reklama"
+   ],
+   "description": "",
+   "req": {
+    "docs": [
+     "guvohnoma",
+     "soliq",
+     "balans",
+     "eri",
+     "ishonchnoma",
+     "tajriba",
+     "tijorat"
+    ],
+    "skills": [
+     "Texnik SEO",
+     "Google Ads / Yandex Direct"
+    ]
+   },
+   "url": "https://xarid.uzex.uz/home",
+   "status": "review",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-10-07T09:01:00+05:00"
+    },
+    {
+     "s": "review",
+     "at": "2026-10-07T16:00:00+05:00"
+    }
+   ],
+   "submittedAt": null,
+   "wonAt": null,
+   "lostAt": null,
+   "note": "",
+   "ai": null,
+   "foundAt": "2026-10-07T09:01:00+05:00",
+   "sample": true
+  },
+  "t11": {
+   "title": "Interaktiv sensorli panellar (65 dyuym) yetkazib berish — 4 dona",
+   "source": "ebirja",
+   "type": "Birja savdosi",
+   "lot": "EB-2026-118342",
+   "customer": "Umumta’lim maktabi",
+   "region": "Jizzax viloyati",
+   "price": 96000000,
+   "currency": "UZS",
+   "funding": "Davlat byudjeti",
+   "lang": "O‘zbekcha (lotin)",
+   "offers": 0,
+   "publishedAt": "2026-10-07T12:00:00+05:00",
+   "deadline": "2026-10-13T12:00:00+05:00",
+   "direction": "IT xizmatlari",
+   "match": 41,
+   "reasons": [
+    "IT uskuna"
+   ],
+   "description": "",
+   "req": {
+    "docs": [
+     "guvohnoma",
+     "eri"
+    ],
+    "skills": [
+     "Uskuna ta’minoti"
+    ]
+   },
+   "url": "https://ebirja.uz/uz",
+   "status": "skipped",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-10-08T09:06:00+05:00"
+    },
+    {
+     "s": "skipped",
+     "at": "2026-10-08T10:00:00+05:00"
+    }
+   ],
+   "submittedAt": null,
+   "wonAt": null,
+   "lostAt": null,
+   "note": "Uskuna yetkazib berish — bizning yo‘nalishga kirmaydi.",
+   "ai": null,
+   "foundAt": "2026-10-08T09:06:00+05:00",
+   "sample": true
+  },
+  "t12": {
+   "title": "Qurilish obyekti uchun 3D vizualizatsiya va taqdimot videosi",
+   "source": "mc",
+   "type": "Loyiha-qidiruv",
+   "lot": "26411012294902",
+   "customer": "Viloyat qurilish buyurtmachi xizmati",
+   "region": "Buxoro viloyati",
+   "price": 65000000,
+   "currency": "UZS",
+   "funding": "Davlat byudjeti",
+   "lang": "O‘zbekcha (lotin)",
+   "offers": 0,
+   "publishedAt": "2026-10-08T17:31:00+05:00",
+   "deadline": "2026-10-16T23:59:00+05:00",
+   "direction": "Video production",
+   "match": 58,
+   "reasons": [
+    "3D vizualizatsiya",
+    "taqdimot videosi"
+   ],
+   "description": "",
+   "req": {
+    "docs": [
+     "guvohnoma",
+     "soliq",
+     "balans",
+     "eri",
+     "ishonchnoma",
+     "portfolio",
+     "tijorat"
+    ],
+    "skills": [
+     "3D (Blender/3ds Max)",
+     "Motion dizayn"
+    ]
+   },
+   "url": "https://tender.mc.uz/",
+   "status": "new",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-10-09T09:06:00+05:00"
+    }
+   ],
+   "submittedAt": null,
+   "wonAt": null,
+   "lostAt": null,
+   "note": "",
+   "ai": null,
+   "foundAt": "2026-10-09T09:06:00+05:00",
+   "sample": true
+  },
+  "t13": {
+   "title": "Onlayn ta’lim platformasi (LMS) ishlab chiqish va 500 ta video dars montaji",
+   "source": "etender",
+   "type": "Tender",
+   "lot": "26120012517733",
+   "customer": "Oliy ta’lim muassasasi",
+   "region": "Toshkent shahri, Olmazor tumani",
+   "price": 960000000,
+   "currency": "UZS",
+   "funding": "Davlat byudjeti",
+   "lang": "O‘zbekcha (lotin)",
+   "offers": 1,
+   "publishedAt": "2026-10-03T11:00:00+05:00",
+   "deadline": "2026-10-30T18:00:00+05:00",
+   "direction": "Dasturiy ta’minot",
+   "match": 91,
+   "reasons": [
+    "LMS",
+    "video montaj",
+    "veb-platforma"
+   ],
+   "description": "",
+   "req": {
+    "docs": [
+     "guvohnoma",
+     "soliq",
+     "balans",
+     "eri",
+     "ishonchnoma",
+     "tajriba",
+     "portfolio",
+     "rezyume",
+     "itpark",
+     "kafolat",
+     "tijorat",
+     "texnik"
+    ],
+    "skills": [
+     "LMS (Moodle yoki maxsus)",
+     "Video montaj oqimi",
+     "Yuqori yuklama"
+    ]
+   },
+   "url": "https://etender.uzex.uz/home",
+   "status": "prep",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-10-04T09:02:00+05:00"
+    },
+    {
+     "s": "review",
+     "at": "2026-10-04T12:00:00+05:00"
+    },
+    {
+     "s": "prep",
+     "at": "2026-10-07T09:30:00+05:00"
+    }
+   ],
+   "submittedAt": null,
+   "wonAt": null,
+   "lostAt": null,
+   "note": "",
+   "ai": null,
+   "foundAt": "2026-10-04T09:02:00+05:00",
+   "sample": true
+  },
+  "t14": {
+   "title": "Ijtimoiy tarmoqlarni yuritish (SMM) — 12 oy",
+   "source": "xarid",
+   "type": "Taklif so‘rovi",
+   "lot": "26110012516955",
+   "customer": "Viloyat madaniyat boshqarmasi",
+   "region": "Qashqadaryo viloyati",
+   "price": 72000000,
+   "currency": "UZS",
+   "funding": "Davlat byudjeti",
+   "lang": "O‘zbekcha (lotin)",
+   "offers": 0,
+   "publishedAt": "2026-10-09T08:40:00+05:00",
+   "deadline": "2026-10-13T18:00:00+05:00",
+   "direction": "Raqamli marketing",
+   "match": 89,
+   "reasons": [
+    "SMM",
+    "kontent"
+   ],
+   "description": "",
+   "req": {
+    "docs": [
+     "guvohnoma",
+     "soliq",
+     "balans",
+     "eri",
+     "ishonchnoma",
+     "portfolio",
+     "tijorat"
+    ],
+    "skills": [
+     "SMM",
+     "Mobilografiya"
+    ]
+   },
+   "url": "https://xarid.uzex.uz/home",
+   "status": "new",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-10-09T09:01:00+05:00"
+    }
+   ],
+   "submittedAt": null,
+   "wonAt": null,
+   "lostAt": null,
+   "note": "",
+   "ai": null,
+   "foundAt": "2026-10-09T09:01:00+05:00",
+   "sample": true
+  },
+  "t15": {
+   "title": "Onlayn do‘kon (e-commerce) veb-sayti va to‘lov tizimlari integratsiyasi",
+   "source": "xarid",
+   "type": "Elektron tender",
+   "lot": "26110012489012",
+   "customer": "Savdo kompaniyasi MChJ",
+   "region": "Toshkent shahri",
+   "price": 186000000,
+   "currency": "UZS",
+   "funding": "Korporativ mablag‘",
+   "lang": "O‘zbekcha (lotin)",
+   "offers": 0,
+   "publishedAt": "2026-08-05T10:00:00+05:00",
+   "deadline": "2026-08-15T18:00:00+05:00",
+   "direction": "Veb-sayt",
+   "match": 92,
+   "reasons": [
+    "e-commerce",
+    "Click/Payme"
+   ],
+   "description": "",
+   "req": {
+    "docs": [],
+    "skills": []
+   },
+   "url": "https://xarid.uzex.uz/home",
+   "status": "won",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-08-05T10:00:00+05:00"
+    },
+    {
+     "s": "review",
+     "at": "2026-08-06T10:00:00+05:00"
+    },
+    {
+     "s": "prep",
+     "at": "2026-08-08T10:00:00+05:00"
+    },
+    {
+     "s": "submitted",
+     "at": "2026-08-14T16:20:00+05:00"
+    },
+    {
+     "s": "won",
+     "at": "2026-09-02T11:00:00+05:00"
+    }
+   ],
+   "submittedAt": "2026-08-14T16:20:00+05:00",
+   "wonAt": "2026-09-02T11:00:00+05:00",
+   "lostAt": null,
+   "note": "",
+   "ai": null,
+   "foundAt": "2026-08-05T10:00:00+05:00",
+   "sample": true
+  },
+  "t16": {
+   "title": "Mobil ilova: shahar jamoat transporti chiptalari",
+   "source": "etender",
+   "type": "Tender",
+   "lot": "26120012490551",
+   "customer": "Transport agentligi",
+   "region": "Toshkent shahri",
+   "price": 640000000,
+   "currency": "UZS",
+   "funding": "Davlat byudjeti",
+   "lang": "O‘zbekcha (lotin)",
+   "offers": 0,
+   "publishedAt": "2026-08-10T10:00:00+05:00",
+   "deadline": "2026-08-22T18:00:00+05:00",
+   "direction": "Mobil ilova",
+   "match": 85,
+   "reasons": [
+    "mobil ilova",
+    "to‘lov"
+   ],
+   "description": "",
+   "req": {
+    "docs": [],
+    "skills": []
+   },
+   "url": "https://etender.uzex.uz/home",
+   "status": "lost",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-08-10T10:00:00+05:00"
+    },
+    {
+     "s": "review",
+     "at": "2026-08-11T10:00:00+05:00"
+    },
+    {
+     "s": "prep",
+     "at": "2026-08-14T10:00:00+05:00"
+    },
+    {
+     "s": "submitted",
+     "at": "2026-08-21T15:00:00+05:00"
+    },
+    {
+     "s": "lost",
+     "at": "2026-09-10T12:00:00+05:00"
+    }
+   ],
+   "submittedAt": "2026-08-21T15:00:00+05:00",
+   "wonAt": null,
+   "lostAt": "2026-09-10T12:00:00+05:00",
+   "note": "G‘olib narxi bizdan 18% past bo‘ldi.",
+   "ai": null,
+   "foundAt": "2026-08-10T10:00:00+05:00",
+   "sample": true
+  },
+  "t17": {
+   "title": "Bank uchun SMM va video kontent ishlab chiqarish (6 oy)",
+   "source": "xt",
+   "type": "Tender",
+   "lot": "№8812799",
+   "customer": "Tijorat banki AJ",
+   "region": "Toshkent shahri",
+   "price": 310000000,
+   "currency": "UZS",
+   "funding": "Korporativ mablag‘",
+   "lang": "O‘zbekcha (lotin)",
+   "offers": 0,
+   "publishedAt": "2026-09-01T10:00:00+05:00",
+   "deadline": "2026-09-13T18:00:00+05:00",
+   "direction": "Raqamli marketing",
+   "match": 94,
+   "reasons": [
+    "SMM",
+    "video"
+   ],
+   "description": "",
+   "req": {
+    "docs": [],
+    "skills": []
+   },
+   "url": "https://xt-xarid.uz/",
+   "status": "won",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-09-01T10:00:00+05:00"
+    },
+    {
+     "s": "review",
+     "at": "2026-09-02T10:00:00+05:00"
+    },
+    {
+     "s": "prep",
+     "at": "2026-09-05T10:00:00+05:00"
+    },
+    {
+     "s": "submitted",
+     "at": "2026-09-12T14:00:00+05:00"
+    },
+    {
+     "s": "won",
+     "at": "2026-10-03T10:30:00+05:00"
+    }
+   ],
+   "submittedAt": "2026-09-12T14:00:00+05:00",
+   "wonAt": "2026-10-03T10:30:00+05:00",
+   "lostAt": null,
+   "note": "",
+   "ai": null,
+   "foundAt": "2026-09-01T10:00:00+05:00",
+   "sample": true
+  },
+  "t18": {
+   "title": "Veb-portal: viloyat investitsiya imkoniyatlari (3 til)",
+   "source": "xarid",
+   "type": "Elektron tender",
+   "lot": "26110012505532",
+   "customer": "Viloyat investitsiyalar boshqarmasi",
+   "region": "Namangan viloyati",
+   "price": 132000000,
+   "currency": "UZS",
+   "funding": "Davlat byudjeti",
+   "lang": "O‘zbekcha (lotin)",
+   "offers": 0,
+   "publishedAt": "2026-09-15T10:00:00+05:00",
+   "deadline": "2026-09-26T18:00:00+05:00",
+   "direction": "Veb-sayt",
+   "match": 90,
+   "reasons": [
+    "veb-portal",
+    "3 til"
+   ],
+   "description": "",
+   "req": {
+    "docs": [],
+    "skills": []
+   },
+   "url": "https://xarid.uzex.uz/home",
+   "status": "submitted",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-09-15T10:00:00+05:00"
+    },
+    {
+     "s": "review",
+     "at": "2026-09-16T10:00:00+05:00"
+    },
+    {
+     "s": "prep",
+     "at": "2026-09-19T10:00:00+05:00"
+    },
+    {
+     "s": "submitted",
+     "at": "2026-09-25T17:00:00+05:00"
+    }
+   ],
+   "submittedAt": "2026-09-25T17:00:00+05:00",
+   "wonAt": null,
+   "lostAt": null,
+   "note": "",
+   "ai": null,
+   "foundAt": "2026-09-15T10:00:00+05:00",
+   "sample": true
+  },
+  "t19": {
+   "title": "Telegram-bot va chatbot: fuqarolar murojaatlarini qabul qilish",
+   "source": "etender",
+   "type": "Tanlov",
+   "lot": "26120012511870",
+   "customer": "Tuman hokimligi",
+   "region": "Andijon viloyati",
+   "price": 58000000,
+   "currency": "UZS",
+   "funding": "Davlat byudjeti",
+   "lang": "O‘zbekcha (lotin)",
+   "offers": 0,
+   "publishedAt": "2026-09-24T10:00:00+05:00",
+   "deadline": "2026-10-03T18:00:00+05:00",
+   "direction": "Dasturiy ta’minot",
+   "match": 88,
+   "reasons": [
+    "Telegram-bot",
+    "chatbot"
+   ],
+   "description": "",
+   "req": {
+    "docs": [],
+    "skills": []
+   },
+   "url": "https://etender.uzex.uz/home",
+   "status": "submitted",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-09-24T10:00:00+05:00"
+    },
+    {
+     "s": "review",
+     "at": "2026-09-25T10:00:00+05:00"
+    },
+    {
+     "s": "prep",
+     "at": "2026-09-29T10:00:00+05:00"
+    },
+    {
+     "s": "submitted",
+     "at": "2026-10-02T12:00:00+05:00"
+    }
+   ],
+   "submittedAt": "2026-10-02T12:00:00+05:00",
+   "wonAt": null,
+   "lostAt": null,
+   "note": "",
+   "ai": null,
+   "foundAt": "2026-09-24T10:00:00+05:00",
+   "sample": true
+  },
+  "t20": {
+   "title": "Imidj video va korporativ fotosessiya",
+   "source": "xarid",
+   "type": "Elektron do‘kon",
+   "lot": "26110012513307",
+   "customer": "Davlat unitar korxonasi",
+   "region": "Samarqand viloyati",
+   "price": 31500000,
+   "currency": "UZS",
+   "funding": "Davlat byudjeti",
+   "lang": "O‘zbekcha (lotin)",
+   "offers": 0,
+   "publishedAt": "2026-10-01T10:00:00+05:00",
+   "deadline": "2026-10-07T18:00:00+05:00",
+   "direction": "Video production",
+   "match": 83,
+   "reasons": [
+    "imidj video",
+    "fotosessiya"
+   ],
+   "description": "",
+   "req": {
+    "docs": [],
+    "skills": []
+   },
+   "url": "https://xarid.uzex.uz/home",
+   "status": "submitted",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-10-01T10:00:00+05:00"
+    },
+    {
+     "s": "review",
+     "at": "2026-10-02T10:00:00+05:00"
+    },
+    {
+     "s": "prep",
+     "at": "2026-10-03T10:00:00+05:00"
+    },
+    {
+     "s": "submitted",
+     "at": "2026-10-06T11:00:00+05:00"
+    }
+   ],
+   "submittedAt": "2026-10-06T11:00:00+05:00",
+   "wonAt": null,
+   "lostAt": null,
+   "note": "",
+   "ai": null,
+   "foundAt": "2026-10-01T10:00:00+05:00",
+   "sample": true
+  },
+  "t21": {
+   "title": "Brending: yangi logotip va firma uslubi",
+   "source": "xt",
+   "type": "Takliflar so‘rovi",
+   "lot": "№8599610",
+   "customer": "Sanoat korxonasi AJ",
+   "region": "Toshkent viloyati",
+   "price": 9800,
+   "currency": "USD",
+   "funding": "Korporativ mablag‘",
+   "lang": "O‘zbekcha (lotin)",
+   "offers": 0,
+   "publishedAt": "2026-07-08T10:00:00+05:00",
+   "deadline": "2026-07-19T18:00:00+05:00",
+   "direction": "Dizayn va brending",
+   "match": 80,
+   "reasons": [
+    "logotip",
+    "brending"
+   ],
+   "description": "",
+   "req": {
+    "docs": [],
+    "skills": []
+   },
+   "url": "https://xt-xarid.uz/",
+   "status": "lost",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-07-08T10:00:00+05:00"
+    },
+    {
+     "s": "review",
+     "at": "2026-07-09T10:00:00+05:00"
+    },
+    {
+     "s": "prep",
+     "at": "2026-07-12T10:00:00+05:00"
+    },
+    {
+     "s": "submitted",
+     "at": "2026-07-18T13:00:00+05:00"
+    },
+    {
+     "s": "lost",
+     "at": "2026-08-05T10:00:00+05:00"
+    }
+   ],
+   "submittedAt": "2026-07-18T13:00:00+05:00",
+   "wonAt": null,
+   "lostAt": "2026-08-05T10:00:00+05:00",
+   "note": "",
+   "ai": null,
+   "foundAt": "2026-07-08T10:00:00+05:00",
+   "sample": true
+  },
+  "t22": {
+   "title": "Korxona haqida hujjatli film (10 daqiqa)",
+   "source": "etender",
+   "type": "Tender",
+   "lot": "26120012470233",
+   "customer": "Kimyo zavodi AJ",
+   "region": "Navoiy viloyati",
+   "price": 145000000,
+   "currency": "UZS",
+   "funding": "Korporativ mablag‘",
+   "lang": "O‘zbekcha (lotin)",
+   "offers": 0,
+   "publishedAt": "2026-06-28T10:00:00+05:00",
+   "deadline": "2026-07-09T18:00:00+05:00",
+   "direction": "Video production",
+   "match": 87,
+   "reasons": [
+    "hujjatli film",
+    "video"
+   ],
+   "description": "",
+   "req": {
+    "docs": [],
+    "skills": []
+   },
+   "url": "https://etender.uzex.uz/home",
+   "status": "won",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-06-28T10:00:00+05:00"
+    },
+    {
+     "s": "review",
+     "at": "2026-06-29T10:00:00+05:00"
+    },
+    {
+     "s": "prep",
+     "at": "2026-07-02T10:00:00+05:00"
+    },
+    {
+     "s": "submitted",
+     "at": "2026-07-08T15:00:00+05:00"
+    },
+    {
+     "s": "won",
+     "at": "2026-07-29T10:00:00+05:00"
+    }
+   ],
+   "submittedAt": "2026-07-08T15:00:00+05:00",
+   "wonAt": "2026-07-29T10:00:00+05:00",
+   "lostAt": null,
+   "note": "",
+   "ai": null,
+   "foundAt": "2026-06-28T10:00:00+05:00",
+   "sample": true
+  },
+  "t23": {
+   "title": "Veb-saytni qayta dizayn qilish va xavfsizlik auditi",
+   "source": "xarid",
+   "type": "Eng yaxshi taklif",
+   "lot": "26110012509914",
+   "customer": "Oliy ta’lim muassasasi",
+   "region": "Xorazm viloyati",
+   "price": 46000000,
+   "currency": "UZS",
+   "funding": "Davlat byudjeti",
+   "lang": "O‘zbekcha (lotin)",
+   "offers": 0,
+   "publishedAt": "2026-09-22T10:00:00+05:00",
+   "deadline": "2026-10-01T18:00:00+05:00",
+   "direction": "Veb-sayt",
+   "match": 86,
+   "reasons": [
+    "qayta dizayn",
+    "xavfsizlik"
+   ],
+   "description": "",
+   "req": {
+    "docs": [],
+    "skills": []
+   },
+   "url": "https://xarid.uzex.uz/home",
+   "status": "submitted",
+   "history": [
+    {
+     "s": "new",
+     "at": "2026-09-22T10:00:00+05:00"
+    },
+    {
+     "s": "review",
+     "at": "2026-09-23T10:00:00+05:00"
+    },
+    {
+     "s": "prep",
+     "at": "2026-09-26T10:00:00+05:00"
+    },
+    {
+     "s": "submitted",
+     "at": "2026-09-30T16:00:00+05:00"
+    }
+   ],
+   "submittedAt": "2026-09-30T16:00:00+05:00",
+   "wonAt": null,
+   "lostAt": null,
+   "note": "",
+   "ai": null,
+   "foundAt": "2026-09-22T10:00:00+05:00",
+   "sample": true
+  }
+ },
+ "docs": {
+  "guvohnoma": {
+   "name": "Davlat ro‘yxatidan o‘tganlik guvohnomasi",
+   "category": "Ro‘yxatdan o‘tish",
+   "state": "ready",
+   "expires": null,
+   "note": "",
+   "sample": true
+  },
+  "ustav": {
+   "name": "Ustav (nizom)",
+   "category": "Ro‘yxatdan o‘tish",
+   "state": "ready",
+   "expires": null,
+   "note": "",
+   "sample": true
+  },
+  "ishonchnoma": {
+   "name": "Imzolovchi uchun ishonchnoma",
+   "category": "Ro‘yxatdan o‘tish",
+   "state": "ready",
+   "expires": "2026-12-31",
+   "note": "",
+   "sample": true
+  },
+  "eri": {
+   "name": "ERI kaliti (elektron raqamli imzo)",
+   "category": "Ro‘yxatdan o‘tish",
+   "state": "ready",
+   "expires": "2026-11-20",
+   "note": "Platformalarga kirish va taklif imzolash uchun",
+   "sample": true
+  },
+  "soliq": {
+   "name": "Soliq qarzi yo‘qligi to‘g‘risida ma’lumotnoma",
+   "category": "Moliyaviy",
+   "state": "update",
+   "expires": "2026-10-01",
+   "note": "Har oy yangilanadi",
+   "sample": true
+  },
+  "balans": {
+   "name": "Moliyaviy hisobot (balans, 2025-yil)",
+   "category": "Moliyaviy",
+   "state": "ready",
+   "expires": null,
+   "note": "",
+   "sample": true
+  },
+  "bank": {
+   "name": "Bank rekvizitlari va bank ma’lumotnomasi",
+   "category": "Moliyaviy",
+   "state": "ready",
+   "expires": null,
+   "note": "",
+   "sample": true
+  },
+  "kafolat": {
+   "name": "Bank kafolati / zakalat",
+   "category": "Moliyaviy",
+   "state": "missing",
+   "expires": null,
+   "note": "Har bir tender uchun alohida olinadi",
+   "sample": true
+  },
+  "tajriba": {
+   "name": "O‘xshash loyihalar tajribasi (shartnoma nusxalari)",
+   "category": "Malaka va tajriba",
+   "state": "ready",
+   "expires": null,
+   "note": "",
+   "sample": true
+  },
+  "portfolio": {
+   "name": "Portfolio (sayt, ilova, video, dizayn)",
+   "category": "Malaka va tajriba",
+   "state": "ready",
+   "expires": null,
+   "note": "",
+   "sample": true
+  },
+  "tavsiyanoma": {
+   "name": "Mijozlardan tavsiyanomalar",
+   "category": "Malaka va tajriba",
+   "state": "update",
+   "expires": null,
+   "note": "Kamida 3 ta yangi tavsiyanoma kerak",
+   "sample": true
+  },
+  "rezyume": {
+   "name": "Mutaxassislar rezyumesi va diplomlari",
+   "category": "Malaka va tajriba",
+   "state": "ready",
+   "expires": null,
+   "note": "",
+   "sample": true
+  },
+  "itpark": {
+   "name": "IT Park rezidentligi guvohnomasi",
+   "category": "Maxsus ruxsatnomalar",
+   "state": "ready",
+   "expires": "2028-03-15",
+   "note": "",
+   "sample": true
+  },
+  "iso": {
+   "name": "ISO 9001 sifat menejmenti sertifikati",
+   "category": "Maxsus ruxsatnomalar",
+   "state": "missing",
+   "expires": null,
+   "note": "",
+   "sample": true
+  },
+  "kiber": {
+   "name": "Kiberxavfsizlik ekspertizasi xulosasi",
+   "category": "Maxsus ruxsatnomalar",
+   "state": "missing",
+   "expires": null,
+   "note": "Davlat axborot tizimlari uchun",
+   "sample": true
+  },
+  "tijorat": {
+   "name": "Tijorat taklifi shabloni",
+   "category": "Tender shablonlari",
+   "state": "ready",
+   "expires": null,
+   "note": "",
+   "sample": true
+  },
+  "texnik": {
+   "name": "Texnik taklif shabloni",
+   "category": "Tender shablonlari",
+   "state": "ready",
+   "expires": null,
+   "note": "",
+   "sample": true
+  }
+ },
+ "news": {
+  "n01": {
+   "kind": "law",
+   "date": "2025-12-30",
+   "source": "Everyday.uz",
+   "url": "https://everyday.uz/business/17871-post.html",
+   "title": "2026-yildan davlat xaridlari qoidalari o‘zgaradi: raqobat va shaffoflik bo‘yicha Prezident farmoni",
+   "summary": "26-dekabrdagi farmon bosqichma-bosqich o‘zgarishlarni belgilaydi: 1-yanvardan xarid rejalari mahalliy ishlab chiqaruvchilarga onlayn yuboriladi, 1-martdan o‘rtacha bozor narxini hisoblash moduli ishga tushadi, 1-iyuldan takliflar faqat elektron baholanadi va to‘g‘ridan-to‘g‘ri xarid kamida 3 ish kuni oldin e’lon qilinadi.",
+   "impact": "To‘g‘ridan-to‘g‘ri shartnomalar kamayib, ochiq tanlovlar ko‘payadi. Barcha hujjatlarni elektron ko‘rinishda doim tayyor saqlang."
+  },
+  "n02": {
+   "kind": "law",
+   "date": "2026-02-26",
+   "source": "Spot.uz",
+   "url": "https://www.spot.uz/oz/2026/02/26/march-changes",
+   "title": "1-martdan: davlat xaridlarida sun’iy intellekt asosida o‘rtacha bozor narxini hisoblash moduli",
+   "summary": "Buyurtmachilar xarid narxini maxsus elektron modul orqali belgilaydi. Shuningdek, buyurtmachilarga «sirli mijoz» yuborish huquqi berilishi rejalashtirilgan.",
+   "impact": "Narx taklifini tayyorlashdan oldin modul ko‘rsatadigan bozor narxi bilan solishtiring — juda past narx ham shubha uyg‘otadi."
+  },
+  "n03": {
+   "kind": "law",
+   "date": "2026-04-21",
+   "source": "Lex.uz",
+   "url": "https://lex.uz/docs/5382983",
+   "title": "«Davlat xaridlari to‘g‘risida»gi qonunning 27-moddasi yangi tahrirda (O‘RQ-1141)",
+   "summary": "Xarid narxi va o‘rtacha bozor narxi o‘rtasidagi ruxsat etilgan maksimal farq tartibini Vazirlar Mahkamasi belgilaydi. Norma 2026-yil 24-iyuldan kuchga kirgan.",
+   "impact": "Bozor narxidan keskin farq qiladigan takliflar rad etilishi mumkin. Narx asoslash hujjatini tayyor saqlang."
+  },
+  "n04": {
+   "kind": "law",
+   "date": "2026-06-22",
+   "source": "Lex.uz",
+   "url": "https://lex.uz/docs/5382983",
+   "title": "Davlat xaridlari to‘g‘risidagi qonunning 33-moddasi yangi qismlar bilan to‘ldirildi (O‘RQ-1155)",
+   "summary": "33-moddaga uchinchi va to‘rtinchi qismlar qo‘shildi. To‘liq matn Qonunchilik milliy bazasida.",
+   "impact": "Matnni o‘qib, shartnoma tuzish bosqichiga ta’sirini tekshiring."
+  },
+  "n05": {
+   "kind": "law",
+   "date": "2026-02-07",
+   "source": "Yuz.uz",
+   "url": "https://yuz.uz/ru/news/v-uzbekistane-promshlennaya-kooperatsiya-i-goszakupki-obedinyayutsya-pod-edinm-upravleniem",
+   "title": "Sanoat kooperatsiyasi va davlat xaridlari yagona boshqaruvga birlashtirilmoqda",
+   "summary": "Sanoat kooperatsiyasi va davlat xaridlari tizimlari bitta boshqaruv ostiga o‘tkazilmoqda.",
+   "impact": "Kooperatsiya portali va xarid platformalari bir-biriga yaqinlashadi — agent ikkalasini ham kuzatib boradi."
+  },
+  "n06": {
+   "kind": "industry",
+   "date": "2026-02-24",
+   "source": "Gazeta.uz",
+   "url": "https://www.gazeta.uz/ru/2026/02/24/gov-procurement-uzb/",
+   "title": "Raqobatsiz davlat xaridlari: qonun bor, cheklov yo‘q — tahlil",
+   "summary": "2025–2027-yillar strategiyasi to‘g‘ridan-to‘g‘ri shartnomalarning yuqori ulushini muammo deb tan oladi, biroq narxni asoslash usullari hali aniq emas.",
+   "impact": "Buyurtmachilar bilan oldindan tanishish va xarid rejalarini kuzatish muhimligicha qoladi."
+  },
+  "n07": {
+   "kind": "industry",
+   "date": "2026-09-23",
+   "source": "Trend.az",
+   "url": "https://www.trend.az/casia/uzbekistan/4227059.html",
+   "title": "IT Parkdagi yapon rezident kompaniyalar soni ikki yilda 2 tadan 25 taga yetdi",
+   "summary": "O‘zbekiston–Yaponiya raqamli hamjamiyat forumida IT Parkka yapon kompaniyalari qiziqishi ortgani aytildi.",
+   "impact": "Xorijiy rezidentlar mahalliy IT va marketing hamkorlarini qidiradi — korporativ tenderlar uchun yangi buyurtmachilar."
+  },
+  "n08": {
+   "kind": "industry",
+   "date": "2025-07-02",
+   "source": "Daryo.uz",
+   "url": "https://daryo.uz/en/2025/07/02/uzbekistan-to-digitize-70-of-public-services-boost-it-sector-to-nearly-8bn-by-2026/",
+   "title": "Davlat xizmatlarining 70% raqamlashtiriladi, IT sektori hajmi 2026-yilda qariyb 8 mlrd dollarga yetadi",
+   "summary": "Hukumat davlat xizmatlarini raqamlashtirish va IT sektorini kengaytirish bo‘yicha maqsadlarni belgiladi.",
+   "impact": "Davlat axborot tizimlari va veb-portallar bo‘yicha tenderlar soni ortib boradi."
+  }
+ },
+ "scans": {
+  "2026-10-09": {
+   "at": "2026-10-09T09:06:40+05:00",
+   "sources": {
+    "xarid": {
+     "seen": 142,
+     "matched": 4,
+     "fresh": 3,
+     "ok": true
+    },
+    "etender": {
+     "seen": 61,
+     "matched": 3,
+     "fresh": 2,
+     "ok": true
+    },
+    "xt": {
+     "seen": 38,
+     "matched": 1,
+     "fresh": 0,
+     "ok": true
+    },
+    "coop": {
+     "seen": 214,
+     "matched": 1,
+     "fresh": 1,
+     "ok": true
+    },
+    "mc": {
+     "seen": 30,
+     "matched": 1,
+     "fresh": 1,
+     "ok": true
+    },
+    "ebirja": {
+     "seen": 0,
+     "matched": 0,
+     "fresh": 0,
+     "ok": false,
+     "error": "Sayt 30 soniyada javob bermadi"
+    }
+   },
+   "sample": true
+  },
+  "2026-10-08": {
+   "at": "2026-10-08T09:06:12+05:00",
+   "sources": {
+    "xarid": {
+     "seen": 136,
+     "matched": 3,
+     "fresh": 1,
+     "ok": true
+    },
+    "etender": {
+     "seen": 58,
+     "matched": 2,
+     "fresh": 0,
+     "ok": true
+    },
+    "xt": {
+     "seen": 35,
+     "matched": 1,
+     "fresh": 0,
+     "ok": true
+    },
+    "coop": {
+     "seen": 198,
+     "matched": 0,
+     "fresh": 0,
+     "ok": true
+    },
+    "mc": {
+     "seen": 27,
+     "matched": 0,
+     "fresh": 0,
+     "ok": true
+    },
+    "ebirja": {
+     "seen": 22,
+     "matched": 1,
+     "fresh": 1,
+     "ok": true
+    }
+   },
+   "sample": true
+  },
+  "2026-10-07": {
+   "at": "2026-10-07T09:05:51+05:00",
+   "sources": {
+    "xarid": {
+     "seen": 129,
+     "matched": 3,
+     "fresh": 3,
+     "ok": true
+    },
+    "etender": {
+     "seen": 55,
+     "matched": 2,
+     "fresh": 1,
+     "ok": true
+    },
+    "xt": {
+     "seen": 33,
+     "matched": 0,
+     "fresh": 0,
+     "ok": true
+    },
+    "coop": {
+     "seen": 205,
+     "matched": 0,
+     "fresh": 0,
+     "ok": true
+    },
+    "mc": {
+     "seen": 29,
+     "matched": 0,
+     "fresh": 0,
+     "ok": true
+    },
+    "ebirja": {
+     "seen": 19,
+     "matched": 0,
+     "fresh": 0,
+     "ok": true
+    }
+   },
+   "sample": true
+  },
+  "2026-10-06": {
+   "at": "2026-10-06T09:05:30+05:00",
+   "sources": {
+    "xarid": {
+     "seen": 118,
+     "matched": 2,
+     "fresh": 1,
+     "ok": true
+    },
+    "etender": {
+     "seen": 51,
+     "matched": 1,
+     "fresh": 0,
+     "ok": true
+    },
+    "xt": {
+     "seen": 31,
+     "matched": 1,
+     "fresh": 1,
+     "ok": true
+    },
+    "coop": {
+     "seen": 188,
+     "matched": 0,
+     "fresh": 0,
+     "ok": true
+    },
+    "mc": {
+     "seen": 25,
+     "matched": 0,
+     "fresh": 0,
+     "ok": true
+    },
+    "ebirja": {
+     "seen": 17,
+     "matched": 0,
+     "fresh": 0,
+     "ok": true
+    }
+   },
+   "sample": true
+  },
+  "2026-10-05": {
+   "at": "2026-10-05T09:05:02+05:00",
+   "sources": {
+    "xarid": {
+     "seen": 64,
+     "matched": 0,
+     "fresh": 0,
+     "ok": true
+    },
+    "etender": {
+     "seen": 22,
+     "matched": 0,
+     "fresh": 0,
+     "ok": true
+    },
+    "xt": {
+     "seen": 12,
+     "matched": 0,
+     "fresh": 0,
+     "ok": true
+    },
+    "coop": {
+     "seen": 90,
+     "matched": 0,
+     "fresh": 0,
+     "ok": true
+    },
+    "mc": {
+     "seen": 11,
+     "matched": 0,
+     "fresh": 0,
+     "ok": true
+    },
+    "ebirja": {
+     "seen": 8,
+     "matched": 0,
+     "fresh": 0,
+     "ok": true
+    }
+   },
+   "sample": true
+  }
+ },
+ "settings": {
+  "main": {
+   "name": "Dauletbay",
+   "company": "SOS — Smart Outsourcing Solutions",
+   "directions": [
+    "Veb-sayt",
+    "Mobil ilova",
+    "Dasturiy ta’minot",
+    "Raqamli marketing",
+    "Video production",
+    "Dizayn va brending"
+   ],
+   "keywords": [
+    "veb-sayt",
+    "portal",
+    "mobil ilova",
+    "axborot tizimi",
+    "Telegram-bot",
+    "CRM",
+    "SMM",
+    "target",
+    "SEO",
+    "reklama",
+    "video",
+    "rolik",
+    "brending",
+    "logotip",
+    "dizayn",
+    "IT autsorsing",
+    "LMS"
+   ],
+   "exclude": [
+    "uskuna",
+    "kompyuter",
+    "qurilish-montaj",
+    "mebel",
+    "oziq-ovqat"
+   ],
+   "sources": {
+    "xarid": true,
+    "etender": true,
+    "xt": true,
+    "coop": true,
+    "mc": true,
+    "ebirja": true
+   },
+   "scanTime": "09:00",
+   "minMatch": 55,
+   "salary": 2000000,
+   "perSubmitted": 100000,
+   "perWon": 1000000,
+   "goal": 4000000
+  }
+ }
+}
