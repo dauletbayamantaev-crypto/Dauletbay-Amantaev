@@ -685,8 +685,6 @@ const TYPES_BY_SOURCE = {
 const DEFAULT_SETTINGS = {
   name: '', company: 'SOS — Smart Outsourcing Solutions',
   directions: DIRECTIONS.slice(0, 6), keywords: [], exclude: [],
-  sources: { xarid: true, etender: true, xt: true, coop: true, mc: true, ebirja: true },
-  scanTime: '09:00', minMatch: 55,
   salary: 2000000, perSubmitted: 100000, perWon: 1000000, goal: 4000000, usdRate: 12650, paid: {},
 };
 const MONTHS = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avgust', 'sentabr', 'oktabr', 'noyabr', 'dekabr'];
@@ -741,8 +739,8 @@ const logo = (size = 26) => `<svg width="${size}" height="${size}" viewBox="0 0 
 /* ---------- Holat ---------- */
 const S = {
   mode: 'loading', sample: undefined, downloads: null,
-  tenders: [], docs: [], news: [], scans: [], settings: { ...DEFAULT_SETTINGS },
-  loaded: { tenders: false, docs: false, news: false, scans: false, settings: false },
+  tenders: [], docs: [], news: [], settings: { ...DEFAULT_SETTINGS },
+  loaded: { tenders: false, docs: false, news: false, settings: false },
   view: 'panel', sel: null, more: false, modal: null, confirm: null,
   f: { q: '', status: 'active', source: '', dir: '', type: '', region: '', due: '', minMatch: '0', sort: 'match' },
   listMode: 'list', newsKind: 'all', finMonth: null,
@@ -887,7 +885,7 @@ function effState(d) {
   return d.state || 'missing';
 }
 const val = (key, fallback) => (key in S.drafts ? S.drafts[key] : fallback ?? '');
-const hasSample = () => S.tenders.some(t => t.sample) || S.docs.some(d => d.sample) || S.scans.some(s => s.sample);
+const hasSample = () => S.tenders.some(t => t.sample) || S.docs.some(d => d.sample);
 
 function md(text) {
   const lines = esc(text).split('\n');
@@ -992,23 +990,16 @@ function renderChrome() {
   const newCount = S.tenders.filter(t => t.status === 'new').length;
   $('gnavLinks').innerHTML = VIEWS.filter(v => v.k !== 'sozlamalar').map(v =>
     `<a href="#${v.k}" ${S.view === v.k ? 'aria-current="page"' : ''}>${esc(v.l)}${v.k === 'tenderlar' && newCount ? ` <span class="badge">${newCount}</span>` : ''}</a>`).join('');
-  const last = latestScan();
-  const errs = last ? Object.values(last.sources || {}).filter(x => !x.ok).length : 0;
-  const total = last ? Object.keys(last.sources || {}).length : 0;
-  const dotCls = !last ? 'off' : errs && errs >= total ? 'err' : errs ? 'warn' : 'pulse';
-  const agentLbl = !last ? 'Agent kutilmoqda' : `Agent · ${relDay(last.at)}`;
   $('gnavRight').innerHTML = `
     ${S.mode === 'local' ? '<span class="tag" title="Ma’lumotlar shu brauzerda saqlanadi">Lokal</span>' : ''}
-    <a class="live" href="#sozlamalar" title="${esc(agentLbl)}"><span class="dot ${dotCls}"></span><span class="lbl">${esc(agentLbl)}</span></a>
     <button class="iconbtn" data-act="goSearch" aria-label="Tender qidirish">${icon('search')}</button>
     <a class="iconbtn" href="#sozlamalar" aria-label="Sozlamalar" ${S.view === 'sozlamalar' ? 'aria-current="page"' : ''}>${icon('sliders')}</a>`;
   $('ribbon').innerHTML = hasSample()
-    ? `<div class="ribbon">Hozir <b>namuna ma’lumotlar</b> ko‘rsatilmoqda. Agent ulanganda haqiqiy tenderlar shu yerga real vaqtda tushadi. <a href="#sozlamalar">Batafsil ›</a></div>` : '';
+    ? `<div class="ribbon">Hozir <b>namuna ma’lumotlar</b> ko‘rsatilmoqda. Ularni Sozlamalar → Ma’lumotlar bo‘limida o‘chirishingiz mumkin. <a href="#sozlamalar">Sozlamalar ›</a></div>` : '';
   const tabs = [VIEWS[0], VIEWS[1], VIEWS[2], VIEWS[5]];
   $('tabbar').innerHTML = tabs.map(v => `<a href="#${v.k}" ${S.view === v.k ? 'aria-current="page"' : ''}>${icon(v.ico, 'lg')}<span>${v.k === 'ai' ? 'AI' : esc(v.l)}</span>${v.k === 'tenderlar' && newCount ? `<span class="badge">${newCount}</span>` : ''}</a>`).join('')
     + `<button data-act="more" ${['hujjatlar', 'yangiliklar', 'sozlamalar'].includes(S.view) ? 'aria-current="page"' : ''}>${icon('more', 'lg')}<span>Yana</span></button>`;
 }
-const latestScan = () => S.scans.slice().sort((a, b) => D(b.at) - D(a.at))[0] || null;
 
 function loadingView() {
   return `<div class="phead"><div style="width:100%"><div class="skel" style="width:180px;margin-bottom:14px"></div><div class="skel" style="height:44px;width:60%"></div></div></div>
@@ -1018,7 +1009,7 @@ const ready = () => S.loaded.tenders && S.loaded.settings;
 
 function emptyData() {
   return `<div class="empty fade">${logo(56)}<h3 style="margin-top:16px">Hozircha tenderlar yo‘q</h3>
-    <p>Agent har kuni soat ${esc(S.settings.scanTime)} da 6 ta platformani tekshiradi va mos tenderlarni shu yerga qo‘shadi.<br>Tenderni o‘zingiz ham qo‘shishingiz mumkin.</p>
+    <p>Platformalarda topgan tenderingizni qo‘shing yoki zaxira nusxadan tiklang.</p>
     <div class="actions"><button class="btn btn-primary" data-act="openAdd">${icon('plus')}Tender qo‘shish</button>
     ${S.mode === 'local' ? `<button class="btn btn-ghost" data-act="import">${icon('upload')}Namuna ma’lumotlarni yuklash</button>` : ''}</div></div>`;
 }
@@ -1030,7 +1021,6 @@ function viewPanel() {
   const h = now.getHours();
   const greet = h < 5 ? 'Xayrli tun' : h < 11 ? 'Xayrli tong' : h < 18 ? 'Xayrli kun' : 'Xayrli kech';
   const name = S.settings.name ? `, ${S.settings.name}` : '';
-  const last = latestScan();
   const T = S.tenders;
   const fresh = T.filter(t => t.status === 'new');
   const todayFound = T.filter(t => t.foundAt && sameDay(D(t.foundAt), now));
@@ -1040,25 +1030,21 @@ function viewPanel() {
   const wr = winRate();
   const upcoming = T.filter(t => ACTIVE.includes(t.status) && D(t.deadline) > now).sort((a, b) => D(a.deadline) - D(b.deadline)).slice(0, 5);
   const top = fresh.slice().sort((a, b) => (b.match || 0) - (a.match || 0)).slice(0, 5);
-  let agentLine = 'Agent hali birorta tekshiruv o‘tkazmagan.';
-  if (last) {
-    const v = Object.values(last.sources || {});
-    const seen = v.reduce((a, x) => a + (x.seen || 0), 0), matched = v.reduce((a, x) => a + (x.matched || 0), 0), nw = v.reduce((a, x) => a + (x.fresh || 0), 0);
-    agentLine = `Agent ${relDay(last.at)} da ${v.length} ta platformadan ${grp(seen)} ta lotni ko‘rib chiqdi: ${matched} tasi sizga mos, ${nw} tasi yangi.`;
-  }
+  const soon3 = T.filter(t => ACTIVE.includes(t.status) && D(t.deadline) > now && D(t.deadline) - now <= 3 * 864e5).length;
+  const summaryLine = T.length ? `${fresh.length} ta yangi tender ko‘rib chiqishni kutmoqda, ${soon3} tasining muddati 3 kun ichida tugaydi.` : 'Hozircha tenderlar yo‘q.';
   const goal = Number(S.settings.goal) || 0;
   const pct = goal ? Math.min(100, Math.round(fin.total / goal * 100)) : 0;
   const maxF = Math.max(1, ...STATUSES.map(s => T.filter(t => t.status === s.k).length));
   const news = S.news.slice().sort((a, b) => D(b.date) - D(a.date)).slice(0, 3);
   const colorOf = { new: 'blue', review: 'indigo', prep: 'orange', submitted: 'purple', won: 'green', lost: 'red', skipped: 'gray' };
 
-  if (!T.length) return `<div class="phead fade"><div><div class="eyebrow">${cap(WEEKDAYS[now.getDay()])}, ${now.getDate()}-${MONTHS[now.getMonth()]}</div><h1>${greet}${esc(name)}.</h1><p class="sub">${esc(agentLine)}</p></div></div>${emptyData()}`;
+  if (!T.length) return `<div class="phead fade"><div><div class="eyebrow">${cap(WEEKDAYS[now.getDay()])}, ${now.getDate()}-${MONTHS[now.getMonth()]}</div><h1>${greet}${esc(name)}.</h1><p class="sub">${esc(summaryLine)}</p></div></div>${emptyData()}`;
 
   return `
   <div class="phead fade"><div>
     <div class="eyebrow">${cap(WEEKDAYS[now.getDay()])}, ${now.getDate()}-${MONTHS[now.getMonth()]}</div>
     <h1>${greet}${esc(name)}.</h1>
-    <p class="sub">${esc(agentLine)}</p>
+    <p class="sub">${esc(summaryLine)}</p>
   </div>
   <div class="actions"><button class="btn btn-ghost" data-act="openAdd">${icon('plus')}Tender qo‘shish</button><a class="btn btn-primary" href="#tenderlar" style="text-decoration:none">Tenderlarni ko‘rish ${icon('chevR', 'sm')}</a></div></div>
 
@@ -1108,12 +1094,11 @@ function viewPanel() {
         </div>`).join('')}</div>` : '<p class="muted">Yaqin kunlarda tugaydigan faol tender yo‘q.</p>'}
     </div>
     <div class="tile c-5">
-      <div class="t-head"><h3>Agent</h3><a class="link" href="#sozlamalar">Manbalar ${icon('chevR', 'sm')}</a></div>
-      ${last ? `<div class="srcs">${Object.keys(SOURCES).map(k => {
-        const r = (last.sources || {})[k];
-        if (!r) return `<div class="src"><span class="dot off"></span><span class="nm">${esc(SOURCES[k].name)}</span><span class="ct">tekshirilmagan</span></div>`;
-        return `<div class="src" title="${esc(r.error || '')}"><span class="dot ${r.ok ? '' : 'err'}"></span><span class="nm">${esc(SOURCES[k].name)}</span><span class="ct">${r.ok ? `${grp(r.seen)} lot · <b style="color:var(--ink)">${r.matched}</b> mos` : 'xato: qayta urinadi'}</span></div>`;
-      }).join('')}</div><div class="stat-sub" style="margin-top:12px">Keyingi tekshiruv: ertaga, ${esc(S.settings.scanTime)}</div>` : '<p class="muted">Agent ulanganda har bir platforma holati shu yerda ko‘rinadi.</p>'}
+      <div class="t-head"><h3>Platformalar</h3><span class="muted" style="font-size:13px">faol tenderlar</span></div>
+      <div class="srcs">${Object.entries(SOURCES).map(([k, src]) => {
+        const n = T.filter(t => t.source === k && ACTIVE.includes(t.status)).length;
+        return `<div class="src"><span class="nm"><a href="${src.url}" target="_blank" rel="noopener" style="color:var(--ink)">${esc(src.name)}</a></span><button class="link ct" data-act="srcFilter" data-k="${k}">${n} ta ${icon('chevR', 'sm')}</button></div>`;
+      }).join('')}</div>
     </div>
 
     <div class="tile c-7">
@@ -1155,7 +1140,7 @@ function viewTenders() {
   const f = S.f;
   const dirty = f.q || f.source || f.dir || f.type || f.region || f.due || +f.minMatch;
   const head = `
-  <div class="phead"><div><h1>Tenderlar</h1><p class="sub">${T.length ? `${list.length} ta tender ko‘rsatilmoqda · ${T.filter(t => ACTIVE.includes(t.status)).length} tasi faol` : 'Agent topgan barcha tenderlar shu yerda.'}</p></div>
+  <div class="phead"><div><h1>Tenderlar</h1><p class="sub">${T.length ? `${list.length} ta tender ko‘rsatilmoqda · ${T.filter(t => ACTIVE.includes(t.status)).length} tasi faol` : 'Barcha tenderlaringiz shu yerda.'}</p></div>
   <div class="actions">
     <div class="seg" role="group" aria-label="Ko‘rinish"><button data-act="mode" data-m="list" aria-pressed="${S.listMode === 'list'}">${icon('list', 'sm')}Ro‘yxat</button><button data-act="mode" data-m="kanban" aria-pressed="${S.listMode === 'kanban'}">${icon('cols', 'sm')}Kanban</button></div>
     <button class="btn btn-ghost" data-act="exportCsv">${icon('download')}Eksport</button>
@@ -1233,7 +1218,7 @@ function sheetHTML(t) {
   const confirmDel = S.confirm === 'del:' + t.id;
   return `
   <div class="sheet-h"><span class="muted" style="font-size:13px">${esc(src.name)} · ${esc(t.type)}</span>
-    <div style="display:flex;gap:8px"><a class="btn btn-ghost btn-sm" href="${esc(safeUrl(t.url || src.url))}" target="_blank" rel="noopener" style="text-decoration:none">Platformada ochish ${icon('ext', 'sm')}</a><button class="closeb" data-act="close" aria-label="Yopish">${icon('x', 'sm')}</button></div></div>
+    <div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" data-act="openEdit" data-id="${esc(t.id)}">Tahrirlash</button><a class="btn btn-ghost btn-sm" href="${esc(safeUrl(t.url || src.url))}" target="_blank" rel="noopener" style="text-decoration:none">Platformada ochish ${icon('ext', 'sm')}</a><button class="closeb" data-act="close" aria-label="Yopish">${icon('x', 'sm')}</button></div></div>
   <div class="sheet-b">
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">${pill(t.status)}${t.sample ? '<span class="tag">Namuna</span>' : ''}</div>
     <div class="sh-title">${esc(t.title)}</div>
@@ -1248,7 +1233,7 @@ function sheetHTML(t) {
       <div class="fact"><div class="k">Moliyalashtirish</div><div class="v">${esc(t.funding || '—')}</div></div>
       <div class="fact"><div class="k">Hujjatlar tili</div><div class="v">${esc(t.lang || '—')}</div></div>
       <div class="fact"><div class="k">Yo‘nalish</div><div class="v">${esc(t.direction)}</div></div>
-      <div class="fact wide"><div class="k">Joylangan · Agent topgan</div><div class="v">${fmtDate(t.publishedAt, true)} · ${relDay(t.foundAt)}</div></div>
+      <div class="fact wide"><div class="k">Joylangan · Qo‘shilgan</div><div class="v">${fmtDate(t.publishedAt, true)} · ${relDay(t.foundAt)}</div></div>
     </div>
 
     ${t.description ? `<p style="margin:0 0 4px;font-size:15px">${esc(t.description)}</p>` : ''}
@@ -1268,7 +1253,7 @@ function sheetHTML(t) {
 
     <div class="blk"><div class="blk-h"><h3>Zarur hujjatlar</h3><span class="muted" style="font-size:13px">${reqDocs.length ? `${readyN} / ${reqDocs.length} tayyor` : ''}</span></div>
       ${reqDocs.length ? `<div class="checks">${reqDocs.map(d => `<div class="check">${icon(stIcon[d.st][0], stIcon[d.st][1])}<div>${esc(d.name)}<small>${esc(DOC_STATE[d.st].l)}${d.exp ? ` · amal qilish muddati ${fmtDate(d.exp)}` : ''}</small></div></div>`).join('')}</div>
-        <div style="margin-top:8px"><a class="link" href="#hujjatlar" data-act="closeTo" data-v="hujjatlar">Hujjatlarni boshqarish ${icon('chevR', 'sm')}</a></div>` : '<p class="muted">Hujjatlar ro‘yxati agent tomonidan hali aniqlanmagan. AI tahlil qiling.</p>'}
+        <div style="margin-top:8px"><a class="link" href="#hujjatlar" data-act="closeTo" data-v="hujjatlar">Hujjatlarni boshqarish ${icon('chevR', 'sm')}</a></div>` : '<p class="muted">Zarur hujjatlar hali belgilanmagan. AI tahlil qiling.</p>'}
     </div>
 
     ${t.req && t.req.skills && t.req.skills.length ? `<div class="blk"><div class="blk-h"><h3>Talab qilinadigan ko‘nikmalar</h3></div><div class="tags">${t.req.skills.map(s => `<span class="tag">${esc(s)}</span>`).join('')}</div></div>` : ''}
@@ -1278,7 +1263,7 @@ function sheetHTML(t) {
       ${busy ? `<div class="ai-card"><div class="thinking"><i></i><i></i><i></i> Claude tenderni tahlil qilmoqda…</div></div>`
         : ai ? aiCard(ai)
         : canAI ? `<div class="ai-card"><p style="margin:0 0 12px" class="muted">Claude talab qilinadigan hujjatlar, ko‘nikmalar, xavflar va yutish imkoniyatini oshirish bo‘yicha tavsiyalar beradi.</p><button class="btn btn-primary" data-act="analyze" data-id="${esc(t.id)}">${icon('spark')}AI bilan tahlil qilish</button></div>`
-        : `<div class="ai-card muted">${S.sample === undefined && S.mode === 'cloud' ? 'AI ulanmoqda…' : 'AI tahlil Claude ichida ochilganda ishlaydi. Lokal versiyada esa server orqali ulanadi.'}</div>`}
+        : `<div class="ai-card muted">${S.sample === undefined && S.mode === 'cloud' ? 'AI ulanmoqda…' : 'AI tahlil Winder Claude ichida ochilganda ishlaydi.'}</div>`}
       ${S.aiErr[t.id] ? `<p class="c-red" style="font-size:13px">${esc(S.aiErr[t.id])}</p>` : ''}
     </div>
 
@@ -1322,7 +1307,7 @@ function viewAI() {
   return `<div class="chat">
     <div class="phead" style="justify-content:center;text-align:center"><div><div class="eyebrow" style="text-transform:none">Claude asosida</div><h1>AI yordamchi</h1>
       <p class="sub" style="margin-inline:auto">Tenderlar, hujjatlar va moliyangizni biladi. Savol bering yoki quyidagilardan birini tanlang.</p></div></div>
-    ${!avail ? `<div class="notice">${icon('spark', 'lg')}<div><b>${S.mode === 'cloud' && S.sample === undefined ? 'AI ulanmoqda…' : 'AI hozir mavjud emas'}</b><br>${S.mode === 'local' ? 'Bu sahifa brauzerda lokal ochilgan. AI yordamchi Claude ichida ishlaydi; lokal versiyada esa kompyuteringizdagi server orqali ulanadi.' : 'Claude bilan bog‘lanish uchun so‘rovga ruxsat bering. Birinchi savolda ruxsat so‘raladi.'}</div></div>` : ''}
+    ${!avail ? `<div class="notice">${icon('spark', 'lg')}<div><b>${S.mode === 'cloud' && S.sample === undefined ? 'AI ulanmoqda…' : 'AI hozir mavjud emas'}</b><br>${S.mode === 'local' ? 'Bu sahifa brauzerda lokal ochilgan. AI yordamchi Winder Claude ichida ochilganda ishlaydi.' : 'Claude bilan bog‘lanish uchun so‘rovga ruxsat bering. Birinchi savolda ruxsat so‘raladi.'}</div></div>` : ''}
     ${S.chat.length ? `<div class="msgs" id="msgs">${S.chat.map((m, i) => m.role === 'user'
       ? `<div class="msg user">${esc(m.content)}</div>`
       : `<div class="msg ai"${i === S.chat.length - 1 ? ' id="msgLast"' : ''}>${m.pending && !m.content ? '<div class="thinking"><i></i><i></i><i></i> O‘ylamoqda…</div>' : md(m.content)}${m.error ? `<div class="err">${esc(m.error)}</div>` : ''}${m.note ? `<div class="faint" style="font-size:13px">${esc(m.note)}</div>` : ''}</div>`).join('')}</div>`
@@ -1490,7 +1475,7 @@ function viewNews() {
       <p>${esc(n.summary)}</p>
       ${n.impact ? `<div class="impact">${icon('spark')}<div><b>Sizga ta’siri</b>${esc(n.impact)}</div></div>` : ''}
       <div><a class="link" href="${esc(safeUrl(n.url))}" target="_blank" rel="noopener">Manbani ochish ${icon('ext', 'sm')}</a></div>
-    </article>`).join('')}</div>` : '<div class="empty"><h3>Yangilik yo‘q</h3><p>Agent har kuni ishonchli manbalarni tekshiradi.</p></div>'}
+    </article>`).join('')}</div>` : '<div class="empty"><h3>Yangilik yo‘q</h3><p>Yangiliklar qo‘shilganda shu yerda ko‘rinadi.</p></div>'}
   <div class="group"><div class="group-h">Kuzatiladigan manbalar</div><div class="glist">${NEWS_SOURCES.map(([d, l, u]) => `<div class="gitem"><div class="main"><div class="t">${esc(d)}</div><div class="d">${esc(l)}</div></div><a class="link" href="${u}" target="_blank" rel="noopener">Ochish ${icon('ext', 'sm')}</a></div>`).join('')}</div></div>`;
 }
 
@@ -1593,94 +1578,124 @@ function viewFinance() {
 /* ----- Sozlamalar ----- */
 function viewSettings() {
   if (!ready()) return loadingView();
-  const s = S.settings, last = latestScan();
+  const s = S.settings;
   const numField = (k, l) => `<div class="gitem"><div class="main"><div class="t">${l}</div></div><input class="input tnum" style="width:170px;text-align:right" inputmode="numeric" id="set-${k}" data-draft="set-${k}" data-setnum="${k}" value="${esc(val('set-' + k, grp(s[k] || 0)))}"></div>`;
   const kwBlock = (k, title, hint) => `<div class="group"><div class="group-h">${title}</div><div class="glist"><div class="kw">${(s[k] || []).map((w, i) => `<span class="tag">${esc(w)}<button data-act="kwDel" data-k="${k}" data-i="${i}" aria-label="O‘chirish">${icon('x', 'sm')}</button></span>`).join('') || `<span class="muted" style="font-size:13px">${hint}</span>`}</div>
     <form class="kw-add" data-form="kw" data-k="${k}"><input class="input" style="flex:1" id="kw-${k}" data-draft="kw-${k}" placeholder="Yangi so‘z" value="${esc(val('kw-' + k))}"><button class="btn btn-ghost btn-sm" type="submit">Qo‘shish</button></form></div></div>`;
   return `
-  <div class="phead"><div><h1>Sozlamalar</h1><p class="sub">Agent nimani qidirishi, qayerdan qidirishi va daromadingiz qanday hisoblanishi.</p></div></div>
+  <div class="phead"><div><h1>Sozlamalar</h1><p class="sub">Profil, tenderlar mosligi va daromadingiz qanday hisoblanishi.</p></div></div>
   <div style="max-width:760px">
   <div class="group"><div class="group-h">Profil</div><div class="glist">
     <div class="gitem"><div class="main"><div class="t">Ismingiz</div><div class="d">Bosh sahifadagi salomlashuv uchun</div></div><input class="input" style="width:220px" id="set-name" data-draft="set-name" data-settext="name" value="${esc(val('set-name', s.name))}"></div>
     <div class="gitem"><div class="main"><div class="t">Kompaniya</div><div class="d">Tenderlar shu kompaniya faoliyatiga mosligi bo‘yicha saralanadi</div></div><input class="input" style="width:280px" id="set-company" data-draft="set-company" data-settext="company" value="${esc(val('set-company', s.company))}"></div>
   </div></div>
   <div class="group"><div class="group-h">Faoliyat yo‘nalishlari</div><div class="glist"><div class="dirs">${DIRECTIONS.map(d => `<button class="chip" data-act="dirToggle" data-d="${esc(d)}" aria-pressed="${(s.directions || []).includes(d)}">${esc(d)}</button>`).join('')}</div></div></div>
-  ${kwBlock('keywords', 'Kalit so‘zlar — shular uchraydigan lotlar moslik bahosini oshiradi', 'Kalit so‘z qo‘shing')}
-  ${kwBlock('exclude', 'Istisno so‘zlar — shular uchraydigan lotlar o‘tkazib yuboriladi', 'Istisno so‘z qo‘shing')}
-  <div class="group"><div class="group-h">Manbalar</div><div class="glist">${Object.entries(SOURCES).map(([k, src]) => {
-    const r = last && last.sources && last.sources[k];
-    const on = !s.sources || s.sources[k] !== false;
-    return `<div class="gitem"><span class="dot ${!on || !r ? 'off' : r.ok ? '' : 'err'}"></span><div class="main"><div class="t">${esc(src.name)} <a class="link" style="font-size:13px" href="${src.url}" target="_blank" rel="noopener">${esc(src.host)} ${icon('ext', 'sm')}</a></div><div class="d">${esc(src.desc)}${r ? ` · oxirgi tekshiruv: ${r.ok ? `${grp(r.seen)} lot, ${r.matched} mos` : esc(r.error || 'xato')}` : ''}</div></div>
-      <button class="switch" role="switch" aria-checked="${on}" data-act="srcToggle" data-k="${k}" aria-label="${esc(src.name)}"></button></div>`;
-  }).join('')}
-    <div class="gitem"><div class="main"><div class="t">Har kungi tekshiruv vaqti</div><div class="d">Agent shu vaqtda barcha yoqilgan manbalarni tekshiradi</div></div><input class="input" type="time" id="set-scanTime" data-settime="scanTime" value="${esc(s.scanTime)}" style="width:120px"></div>
-    <div class="gitem"><div class="main"><div class="t">Minimal moslik</div><div class="d">Bundan past baholangan lotlar platformaga qo‘shilmaydi</div></div><input class="input tnum" style="width:90px;text-align:right" id="set-minMatch" data-draft="set-minMatch" data-setnum="minMatch" value="${esc(val('set-minMatch', s.minMatch))}"></div>
-  </div></div>
-  <div class="group"><div class="group-h">Agent qanday ishlaydi</div><div class="glist"><div class="steps">
-    <div class="step"><div>Har kuni ${esc(s.scanTime)} da yoqilgan platformalardan yangi va faol lotlar yig‘iladi (lot raqami, narx, muddat, buyurtmachi, hudud, takliflar soni).</div></div>
-    <div class="step"><div>Har bir lot kalit so‘zlar va Claude yordamida kompaniya yo‘nalishlariga moslik bo‘yicha 0–100 ball bilan baholanadi.</div></div>
-    <div class="step"><div>Mos lotlar Winder’ga real vaqtda tushadi, siz darhol ko‘rasiz. Muddat yaqinlashsa eslatma beriladi.</div></div>
-    <div class="step"><div>Har bir tender uchun AI zarur hujjatlar, ko‘nikmalar va yutish imkoniyatini oshirish bo‘yicha tavsiya beradi.</div></div>
-  </div><div class="gitem"><div class="d">${S.mode === 'cloud' ? 'Hozir bu Claude ichidagi namuna. Platformalardan avtomatik yig‘ish kompyuteringizdagi lokal versiyada ishlaydi: tender saytlari O‘zbekistondan ochiladi.' : 'Ma’lumotlar shu brauzerda saqlanmoqda.'}</div></div></div></div>
+  ${kwBlock('keywords', 'Kalit so‘zlar — qo‘lda qo‘shilgan tenderning moslik bahosini oshiradi', 'Kalit so‘z qo‘shing')}
+  ${kwBlock('exclude', 'Istisno so‘zlar — shular uchrasa moslik bahosi past bo‘ladi', 'Istisno so‘z qo‘shing')}
+  <div class="group"><div class="group-h">Platformalar</div><div class="glist">${Object.entries(SOURCES).map(([k, src]) => `<div class="gitem"><div class="main"><div class="t">${esc(src.name)}</div><div class="d">${esc(src.desc)}</div></div><a class="link" href="${src.url}" target="_blank" rel="noopener">${esc(src.host)} ${icon('ext', 'sm')}</a></div>`).join('')}</div></div>
   <div class="group"><div class="group-h">Moliya stavkalari (so‘m)</div><div class="glist">
     ${numField('salary', 'Fiks oylik')}${numField('perSubmitted', 'Har bir topshirilgan tender uchun')}${numField('perWon', 'Har bir yutilgan tender uchun')}${numField('goal', 'Oylik daromad maqsadi')}${numField('usdRate', 'Dollar kursi (USD lotlar uchun)')}
   </div></div>
   <div class="group"><div class="group-h">Ma’lumotlar</div><div class="glist">
     <div class="gitem"><div class="main"><div class="t">Zaxira nusxa</div><div class="d">Barcha tenderlar, hujjatlar va sozlamalar JSON faylida</div></div><button class="btn btn-ghost btn-sm" data-act="exportJson">${icon('download', 'sm')}Yuklab olish</button><button class="btn btn-ghost btn-sm" data-act="import">${icon('upload', 'sm')}Tiklash</button></div>
     <div class="gitem"><div class="main"><div class="t">Excel uchun jadval</div><div class="d">Tenderlar ro‘yxati CSV formatida</div></div><button class="btn btn-ghost btn-sm" data-act="exportCsv">${icon('download', 'sm')}CSV</button></div>
-    ${hasSample() ? `<div class="gitem"><div class="main"><div class="t">Namuna ma’lumotlar</div><div class="d">Ko‘rsatish uchun qo‘shilgan tender, hujjat va agent yozuvlari</div></div>${S.confirm === 'clearSamples' ? `<button class="btn btn-sm btn-ghost" data-act="cancelConfirm">Bekor qilish</button><button class="btn btn-sm btn-danger" data-act="clearSamples">Ha, o‘chirish</button>` : `<button class="btn btn-sm btn-danger" data-act="askClearSamples">${icon('trash', 'sm')}O‘chirish</button>`}</div>` : ''}
+    ${hasSample() ? `<div class="gitem"><div class="main"><div class="t">Namuna ma’lumotlar</div><div class="d">Ko‘rsatish uchun qo‘shilgan tender va hujjat yozuvlari</div></div>${S.confirm === 'clearSamples' ? `<button class="btn btn-sm btn-ghost" data-act="cancelConfirm">Bekor qilish</button><button class="btn btn-sm btn-danger" data-act="clearSamples">Ha, o‘chirish</button>` : `<button class="btn btn-sm btn-danger" data-act="askClearSamples">${icon('trash', 'sm')}O‘chirish</button>`}</div>` : ''}
   </div></div>
   <div class="group"><div class="group-h">Winder haqida</div><div class="glist"><div class="about">${logo(64)}<div><div style="font-family:var(--f-display);font-size:24px;letter-spacing:-.02em"><b>Win</b><span class="muted" style="font-weight:500">der</span></div><div class="d muted">Win + (Ten)der. Shaxsiy tender platformasi · 0.1 namuna</div><div class="d muted">${S.mode === 'cloud' ? 'Claude ichida · ma’lumotlar Claude bazasida, real vaqtda' : 'Lokal rejim · ma’lumotlar shu brauzerda'}</div></div></div></div></div>
   </div>`;
 }
 
 /* ----- Modal: tender qo‘shish ----- */
+const LANGS = ['O‘zbekcha (lotin)', 'O‘zbekcha (kirill)', 'Ruscha'];
+const FUNDINGS = ['Davlat byudjeti', 'Korporativ mablag‘'];
+function toLocalInput(iso) {
+  const d = new Date(iso); if (isNaN(d)) return '';
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+const clearFormDrafts = () => { for (const k of Object.keys(S.drafts)) if (k.startsWith('f-')) delete S.drafts[k]; };
+function openEdit(id) {
+  const t = S.tenders.find(x => x.id === id); if (!t) return;
+  clearFormDrafts();
+  Object.assign(S.drafts, {
+    'f-title': t.title || '', 'f-source': t.source || 'xarid', 'f-type': t.type || '', 'f-lot': t.lot && t.lot !== '—' ? t.lot : '', 'f-oferta': t.oferta || '',
+    'f-price': t.price ? grp(t.price) : '', 'f-currency': t.currency || 'UZS', 'f-customer': t.customer && t.customer !== '—' ? t.customer : '',
+    'f-region': t.region && t.region !== '—' ? t.region : '', 'f-deadline': toLocalInput(t.deadline), 'f-url': t.url || '', 'f-desc': t.description || '',
+    'f-direction': t.direction || '', 'f-offers': t.offers != null ? String(t.offers) : '', 'f-funding': t.funding || '', 'f-lang': t.lang || '', 'f-match': t.match != null ? String(t.match) : '',
+  });
+  S.modal = 'edit:' + id; render();
+}
 function renderModal() {
   const root = $('modalRoot');
-  if (S.modal !== 'add') { root.innerHTML = ''; return; }
+  const editId = S.modal && S.modal.startsWith('edit:') ? S.modal.slice(5) : null;
+  if (S.modal !== 'add' && !editId) { root.innerHTML = ''; return; }
   const fld = (id, label, attrs = '', wide = false) => `<label class="field${wide ? ' wide' : ''}">${label}<input class="input" id="${id}" data-draft="${id}" value="${esc(val(id))}" ${attrs}></label>`;
+  const sel = (id, label, opts, cur) => `<label class="field">${label}<span class="selw" style="width:100%"><select id="${id}" data-draft="${id}" style="width:100%;max-width:none">${opts.map(([v, l]) => `<option value="${esc(v)}" ${String(cur) === String(v) ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select>${icon('chevD', 'sm')}</span></label>`;
   const src = val('f-source', 'xarid');
-  root.innerHTML = `<div class="modal" data-act="modalBg"><form class="dialog" data-form="add" role="dialog" aria-modal="true" aria-label="Tender qo‘shish">
-    <div style="display:flex;justify-content:space-between;align-items:center"><h2>Tender qo‘shish</h2><button type="button" class="closeb" data-act="closeModal" aria-label="Yopish">${icon('x', 'sm')}</button></div>
-    <p class="muted" style="margin:6px 0 0">Telegram kanal yoki tanishlar orqali topgan tenderingizni qo‘shing. Moslik avtomatik hisoblanadi.</p>
+  const types = TYPES_BY_SOURCE[src] || [];
+  const curType = val('f-type', types[0] || '');
+  const typeOpts = (types.includes(curType) || !curType ? types : [curType, ...types]).map(t => [t, t]);
+  const title = editId ? 'Tenderni tahrirlash' : 'Tender qo‘shish';
+  root.innerHTML = `<div class="modal" data-act="modalBg"><form class="dialog" data-form="add" role="dialog" aria-modal="true" aria-label="${title}">
+    <div style="display:flex;justify-content:space-between;align-items:center"><h2>${title}</h2><button type="button" class="closeb" data-act="closeModal" aria-label="Yopish">${icon('x', 'sm')}</button></div>
+    <p class="muted" style="margin:6px 0 0">${editId ? 'Lot ma’lumotlarini o‘zgartiring. Holat, izoh va AI tahlil saqlanib qoladi.' : 'Platformada topgan tenderingiz ma’lumotlarini kiriting. Moslik bo‘sh qolsa, kalit so‘zlar bo‘yicha hisoblanadi.'}</p>
     <div class="form">
       ${fld('f-title', 'Tender nomi *', 'required', true)}
-      <label class="field">Platforma<span class="selw" style="width:100%"><select id="f-source" data-draft="f-source" style="width:100%;max-width:none">${Object.entries(SOURCES).map(([k, s]) => `<option value="${k}" ${src === k ? 'selected' : ''}>${esc(s.name)}</option>`).join('')}</select>${icon('chevD', 'sm')}</span></label>
-      <label class="field">Xarid turi<span class="selw" style="width:100%"><select id="f-type" data-draft="f-type" style="width:100%;max-width:none">${(TYPES_BY_SOURCE[src] || []).map(t => `<option ${val('f-type') === t ? 'selected' : ''}>${esc(t)}</option>`).join('')}</select>${icon('chevD', 'sm')}</span></label>
+      ${sel('f-source', 'Platforma', Object.entries(SOURCES).map(([k, s]) => [k, s.name]), src)}
+      ${sel('f-type', 'Xarid turi', typeOpts, curType)}
       ${fld('f-lot', 'Lot raqami')}
-      ${fld('f-price', 'Boshlang‘ich narx (so‘m)', 'inputmode="numeric"')}
+      ${src === 'coop' ? fld('f-oferta', 'Oferta raqami') : fld('f-offers', 'Takliflar soni', 'inputmode="numeric"')}
+      ${fld('f-price', 'Boshlang‘ich narx', 'inputmode="numeric"')}
+      ${sel('f-currency', 'Valyuta', [['UZS', 'so‘m (UZS)'], ['USD', 'dollar (USD)']], val('f-currency', 'UZS'))}
       ${fld('f-customer', 'Buyurtmachi')}
       ${fld('f-region', 'Hudud')}
       ${fld('f-deadline', 'Tugash sanasi va vaqti *', 'type="datetime-local" required')}
+      ${sel('f-direction', 'Yo‘nalish', [['', 'Avtomatik aniqlash'], ...DIRECTIONS.map(d => [d, d])], val('f-direction', ''))}
+      ${sel('f-funding', 'Moliyalashtirish', [['', 'Ko‘rsatilmagan'], ...FUNDINGS.map(f => [f, f])], val('f-funding', ''))}
+      ${sel('f-lang', 'Hujjatlar tili', [['', 'Ko‘rsatilmagan'], ...LANGS.map(l => [l, l])], val('f-lang', ''))}
+      ${fld('f-match', 'Moslik, % (ixtiyoriy)', 'inputmode="numeric" placeholder="avtomatik"')}
       ${fld('f-url', 'Havola', 'type="url" placeholder="https://"')}
       <label class="field wide">Qisqa tavsif<textarea class="input" id="f-desc" data-draft="f-desc">${esc(val('f-desc'))}</textarea></label>
     </div>
-    <div class="actions" style="justify-content:flex-end;margin-top:18px"><button type="button" class="btn btn-ghost" data-act="closeModal">Bekor qilish</button><button type="submit" class="btn btn-primary">Qo‘shish</button></div>
+    <div class="actions" style="justify-content:flex-end;margin-top:18px"><button type="button" class="btn btn-ghost" data-act="closeModal">Bekor qilish</button><button type="submit" class="btn btn-primary">${editId ? 'Saqlash' : 'Qo‘shish'}</button></div>
   </form></div>`;
 }
 async function submitAdd() {
   const g = k => String(val(k) || '').trim();
+  const editId = S.modal && S.modal.startsWith('edit:') ? S.modal.slice(5) : null;
   const title = g('f-title'), dl = g('f-deadline');
   if (!title || !dl) { toast('Tender nomi va tugash sanasini kiriting'); return; }
+  const deadline = new Date(dl);
+  if (isNaN(deadline)) { toast('Tugash sanasini to‘g‘ri kiriting'); return; }
   const source = g('f-source') || 'xarid';
   const desc = g('f-desc');
   const m = scoreMatch(title + ' ' + desc);
+  const manualMatch = g('f-match') === '' ? null : Math.max(0, Math.min(100, Math.round(Number(g('f-match').replace(',', '.')) || 0)));
+  const offers = g('f-offers') === '' ? null : Number(g('f-offers').replace(/[^\d]/g, '')) || 0;
+  const url = /^https?:\/\//i.test(g('f-url')) ? g('f-url') : (SOURCES[source] || {}).url || '';
+  const data = {
+    title, source, type: g('f-type') || (TYPES_BY_SOURCE[source] || ['Tender'])[0], lot: g('f-lot') || '—', customer: g('f-customer') || '—', region: g('f-region') || '—',
+    price: Number(g('f-price').replace(/[^\d.]/g, '')) || 0, currency: g('f-currency') || 'UZS', funding: g('f-funding'), lang: g('f-lang'), offers,
+    deadline: deadline.toISOString(), direction: g('f-direction') || m.dir, description: desc, url,
+  };
+  if (source === 'coop') data.oferta = g('f-oferta');
+  if (editId) {
+    const t = S.tenders.find(x => x.id === editId);
+    if (!t) { toast('Tender topilmadi'); return; }
+    if (manualMatch != null) data.match = manualMatch;
+    else if (t.title !== title || (t.description || '') !== desc) Object.assign(data, { match: m.score, reasons: m.hits.slice(0, 6) });
+    const ok = await save(() => Store.update('tenders', editId, data), 'O‘zgarishlar saqlandi');
+    if (ok) { clearFormDrafts(); S.modal = null; render(); }
+    return;
+  }
   const now = new Date().toISOString();
   const id = 'm' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
-  const deadline = new Date(dl);
   const t = {
-    title, source, type: g('f-type') || (TYPES_BY_SOURCE[source] || ['Tender'])[0], lot: g('f-lot') || '—', customer: g('f-customer') || '—', region: g('f-region') || '—',
-    price: Number(g('f-price').replace(/[^\d]/g, '')) || 0, currency: 'UZS', funding: '', lang: '', offers: null,
-    publishedAt: now, deadline: isNaN(deadline) ? now : deadline.toISOString(), direction: m.dir, match: m.score, reasons: m.hits.slice(0, 6),
-    description: desc, req: { docs: [], skills: [] }, url: /^https?:\/\//.test(g('f-url')) ? g('f-url') : (SOURCES[source] || {}).url || '',
+    ...data, publishedAt: now, match: manualMatch != null ? manualMatch : m.score, reasons: m.hits.slice(0, 6), req: { docs: [], skills: [] },
     status: 'new', history: [{ s: 'new', at: now }], submittedAt: null, wonAt: null, lostAt: null, note: '', ai: null, foundAt: now, sample: false, manual: true,
   };
   S.selfAdded.add(id);
   const ok = await save(() => Store.set('tenders', id, t), 'Tender qo‘shildi');
-  if (ok) {
-    for (const k of Object.keys(S.drafts)) if (k.startsWith('f-')) delete S.drafts[k];
-    S.modal = null; S.sel = id; render();
-  }
+  if (ok) { clearFormDrafts(); S.modal = null; S.sel = id; render(); }
 }
 
 /* ---------- Amallar ---------- */
@@ -1725,12 +1740,12 @@ function csv() {
 }
 function backup() {
   const pack = list => Object.fromEntries(list.map(x => [x.id, strip(x)]));
-  return JSON.stringify({ tenders: pack(S.tenders), docs: pack(S.docs), news: pack(S.news), scans: pack(S.scans), settings: { main: strip(S.settings) } }, null, 1);
+  return JSON.stringify({ tenders: pack(S.tenders), docs: pack(S.docs), news: pack(S.news), settings: { main: strip(S.settings) } }, null, 1);
 }
 async function importData(text) {
   let data;
   try { data = JSON.parse(text); } catch (e) { toast('Fayl JSON formatida emas'); return; }
-  const cols = ['tenders', 'docs', 'news', 'scans', 'settings'];
+  const cols = ['tenders', 'docs', 'news', 'settings'];
   if (!data || typeof data !== 'object' || !cols.some(c => data[c] && typeof data[c] === 'object')) { toast('Faylda Winder ma’lumotlari topilmadi'); return; }
   let n = 0;
   toast('Yuklanmoqda…');
@@ -1749,7 +1764,7 @@ async function importData(text) {
 async function clearSamples() {
   S.confirm = null;
   const jobs = [];
-  for (const c of ['tenders', 'docs', 'news', 'scans']) for (const x of S[c]) if (x.sample) jobs.push([c, x.id]);
+  for (const c of ['tenders', 'docs']) for (const x of S[c]) if (x.sample) jobs.push([c, x.id]);
   for (const [c, id] of jobs) { const ok = await save(() => Store.remove(c, id)); if (!ok) return; }
   S.sel = null;
   toast('Namuna ma’lumotlar o‘chirildi');
@@ -1797,15 +1812,16 @@ document.addEventListener('click', async e => {
     case 'togglePaid': { const m = a.dataset.m; await saveSettings({ paid: { ...(S.settings.paid || {}), [m]: !(S.settings.paid && S.settings.paid[m]) } }); break; }
     case 'dirToggle': { const d = a.dataset.d, cur = S.settings.directions || []; await saveSettings({ directions: cur.includes(d) ? cur.filter(x => x !== d) : [...cur, d] }); break; }
     case 'kwDel': { const k = a.dataset.k, i = Number(a.dataset.i); await saveSettings({ [k]: (S.settings[k] || []).filter((_, j) => j !== i) }); break; }
-    case 'srcToggle': { const k = a.dataset.k, cur = { ...DEFAULT_SETTINGS.sources, ...(S.settings.sources || {}) }; cur[k] = cur[k] === false; await saveSettings({ sources: cur }); break; }
+    case 'srcFilter': Object.assign(S.f, { status: 'active', q: '', source: a.dataset.k, dir: '', type: '', region: '', due: '', minMatch: '0' }); S.listMode = 'list'; saveUI(); location.hash = 'tenderlar'; render(); break;
     case 'exportCsv': exportFile(`winder-tenderlar-${new Date().toISOString().slice(0, 10)}.csv`, csv(), 'text/csv'); break;
     case 'exportJson': exportFile(`winder-zaxira-${new Date().toISOString().slice(0, 10)}.json`, backup(), 'application/json'); break;
     case 'import': $('importFile').click(); break;
     case 'askClearSamples': S.confirm = 'clearSamples'; render(); break;
     case 'clearSamples': clearSamples(); break;
-    case 'openAdd': S.modal = 'add'; render(); setTimeout(() => { const i = $('f-title'); if (i) i.focus(); }, 30); break;
-    case 'closeModal': S.modal = null; render(); break;
-    case 'modalBg': if (e.target === a) { S.modal = null; render(); } break;
+    case 'openAdd': if (S.modal && S.modal.startsWith('edit:')) clearFormDrafts(); S.modal = 'add'; render(); setTimeout(() => { const i = $('f-title'); if (i) i.focus(); }, 30); break;
+    case 'openEdit': openEdit(id); break;
+    case 'closeModal': if (S.modal && S.modal.startsWith('edit:')) clearFormDrafts(); S.modal = null; render(); break;
+    case 'modalBg': if (e.target === a) { if (S.modal.startsWith('edit:')) clearFormDrafts(); S.modal = null; render(); } break;
     case 'moreGo': S.more = false; renderMore(); location.hash = a.dataset.v; break;
   }
 });
@@ -1823,7 +1839,7 @@ document.addEventListener('input', e => {
   if (el.dataset.draft) {
     S.drafts[el.dataset.draft] = el.value;
     if (el.id === 'chatInput') { el.style.height = 'auto'; el.style.height = Math.min(160, el.scrollHeight) + 'px'; }
-    if (el.id === 'f-source') render();
+    if (el.id === 'f-source') { delete S.drafts['f-type']; render(); }
   }
   if (el.dataset.f === 'q') { S.f.q = el.value; saveUI(); render(); }
 });
@@ -1880,7 +1896,7 @@ document.addEventListener('submit', async e => {
 document.addEventListener('keydown', e => {
   if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[role="button"][data-act]')) { e.preventDefault(); e.target.click(); return; }
   if (e.key === 'Escape') {
-    if (S.modal) { S.modal = null; render(); } else if (S.more) { S.more = false; renderMore(); } else if (S.sel) closeSheet();
+    if (S.modal) { if (S.modal.startsWith('edit:')) clearFormDrafts(); S.modal = null; render(); } else if (S.more) { S.more = false; renderMore(); } else if (S.sel) closeSheet();
   }
   if (e.key === 'Enter' && !e.shiftKey && e.target.id === 'chatInput') { e.preventDefault(); sendChat(e.target.value); }
   if (e.key === '/' && S.view === 'tenderlar' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { e.preventDefault(); const i = $('fq'); if (i) i.focus(); }
@@ -1969,7 +1985,7 @@ async function boot() {
   await Store.init();
   S.mode = Store.mode;
   if (S.mode === 'local') S.sample = null;
-  for (const c of ['tenders', 'docs', 'news', 'scans', 'settings']) Store.watch(c, list => onData(c, list));
+  for (const c of ['tenders', 'docs', 'news', 'settings']) Store.watch(c, list => onData(c, list));
   if (window.claude && typeof window.claude.use === 'function') {
     window.claude.use('sample').then(fn => { S.sample = fn || null; schedule(); }).catch(() => { S.sample = null; schedule(); });
     window.claude.use('downloads').then(d => { S.downloads = d || null; }).catch(() => {});
