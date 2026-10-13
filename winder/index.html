@@ -760,6 +760,21 @@ select option,select optgroup{background-color:var(--menu-bg);color:var(--menu-i
   .pal{padding-top:8vh}
 }
 @media (prefers-reduced-motion: reduce){::view-transition-old(root),::view-transition-new(root){animation:none}}
+
+/* Telegramga ulashish */
+.share-dlg{width:min(640px,100%)}
+.sh-opts{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0 12px}
+.sh-opts .chip{height:30px;padding:0 12px}
+.share-dlg textarea.share-text{width:100%;min-height:300px;max-height:52vh;resize:vertical;font-size:14px;line-height:1.5;white-space:pre-wrap;padding:12px 14px}
+.share-meta{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:12px;margin:8px 2px 0}
+#shareCount{white-space:nowrap}
+.share-acts{justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+@media (max-width: 640px){
+  .share-dlg h2{font-size:22px}
+  .share-dlg textarea.share-text{min-height:240px;max-height:46vh}
+  .share-acts .btn{flex:1 1 auto;justify-content:center}
+  .share-acts #tgLink{flex-basis:100%;order:-1}
+}
 </style>
 <div class="ambient" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i><i class="a4"></i><i class="a5"></i></div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="lg-refract" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.006 0.011" numOctaves="2" seed="11" result="noise"/><feGaussianBlur in="noise" stdDeviation="2.5" result="soft"/><feDisplacementMap in="SourceGraphic" in2="soft" scale="22" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
@@ -851,6 +866,8 @@ const MORE_VIEWS = ['natijalar', 'raqobat', 'hujjatlar', 'yangiliklar', 'sozlama
 const SRC_ABBR = { xarid: 'UX', etender: 'ET', xt: 'XT', coop: 'KP', mc: 'QV', ebirja: 'EB' };
 
 const ICONS = {
+  plane: 'M21.5 2.5 10.5 13.5M21.5 2.5l-7 19-4-8-8-4z',
+  share: 'M12 3v12M8 7l4-4 4 4M5 11v8a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8',
   grid: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z',
   list: 'M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01',
   spark: 'M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9zM18.5 15.5l.7 1.8 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7z',
@@ -1300,6 +1317,7 @@ function viewTenders() {
   <div class="phead"><div><h1>Tenderlar</h1><p class="sub">${T.length ? `${list.length} ta tender ko‘rsatilmoqda · ${T.filter(t => ACTIVE.includes(t.status)).length} tasi faol` : 'Barcha tenderlaringiz shu yerda.'}</p></div>
   <div class="actions">
     <div class="seg" role="group" aria-label="Ko‘rinish"><button data-act="mode" data-m="list" aria-pressed="${S.listMode === 'list'}">${icon('list', 'sm')}Ro‘yxat</button><button data-act="mode" data-m="kanban" aria-pressed="${S.listMode === 'kanban'}">${icon('cols', 'sm')}Kanban</button></div>
+    ${T.length ? `<button class="btn btn-ghost" data-act="share" data-k="list" title="Joriy filtrdagi tenderlarni Telegramga yuborish">${icon('plane')}Telegram</button>` : ''}
     <button class="btn btn-ghost" data-act="exportCsv">${icon('download')}Eksport</button>
     <button class="btn btn-primary" data-act="openAdd">${icon('plus')}Tender qo‘shish</button>
   </div></div>`;
@@ -1363,12 +1381,15 @@ function renderSheet() {
   sh.scrollTop = keepScroll;
   sh.classList.add('on'); sc.classList.add('on');
 }
-function sheetHTML(t) {
-  const src = SOURCES[t.source] || { name: t.source, url: '#' };
-  const reqDocs = (t.req && t.req.docs || []).map(k => {
+function reqDocsOf(t) {
+  return (t.req && t.req.docs || []).map(k => {
     const d = S.docs.find(x => x.id === k);
     return { k, name: d ? d.name : k, st: d ? effState(d) : 'missing', exp: d && d.expires };
   });
+}
+function sheetHTML(t) {
+  const src = SOURCES[t.source] || { name: t.source, url: '#' };
+  const reqDocs = reqDocsOf(t);
   const readyN = reqDocs.filter(d => d.st === 'ready').length;
   const ai = t.ai;
   const busy = S.aiBusy[t.id];
@@ -1386,6 +1407,7 @@ function sheetHTML(t) {
     <div class="sh-actions">
       <button class="btn btn-ghost btn-sm" data-act="openEdit" data-id="${id}">Tahrirlash</button>
       <a class="btn btn-ghost btn-sm" href="${esc(gcalUrl(t))}" target="_blank" rel="noopener" style="text-decoration:none">${icon('cal', 'sm')}Google Kalendarga</a>
+      <button class="btn btn-ghost btn-sm" data-act="share" data-k="${id}" title="T">${icon('plane', 'sm')}Telegramga yuborish</button>
       <a class="btn btn-ghost btn-sm" href="${esc(safeUrl(t.url || src.url))}" target="_blank" rel="noopener" style="text-decoration:none">Platformada ochish ${icon('ext', 'sm')}</a>
     </div>
 
@@ -1761,7 +1783,7 @@ function viewSettings() {
   <div class="group"><div class="group-h">Ko‘rinish</div><div class="glist">
     <div class="gitem"><div class="main"><div class="t">Mavzu</div><div class="d">Avtomatik — qurilma sozlamasiga qarab</div></div><div class="seg" role="group" aria-label="Mavzu">${[['auto', 'Avtomatik'], ['light', 'Kunduzgi'], ['dark', 'Tungi']].map(([k, l]) => `<button data-act="theme" data-t="${k}" aria-pressed="${appearance.theme === k}">${l}</button>`).join('')}</div></div>
     <div class="gitem"><div class="main"><div class="t">Asosiy rang</div><div class="d">Tugmalar, havolalar va fon nuri rangi</div></div><div class="swatches">${Object.entries(ACCENTS).map(([k, a]) => `<button class="sw" style="background:${a.sw}" data-act="accent" data-a="${k}" aria-pressed="${appearance.accent === k}" aria-label="${a.name}" title="${a.name}"></button>`).join('')}</div></div>
-    <div class="gitem"><div class="main"><div class="t">Tezkor tugmalar</div><div class="d">Ctrl/⌘ + K — qidiruv · N — yangi tender · E — tahrirlash · 1–7 — tender holati · / — ro‘yxatda qidirish · Esc — yopish</div></div></div>
+    <div class="gitem"><div class="main"><div class="t">Tezkor tugmalar</div><div class="d">Ctrl/⌘ + K — qidiruv · N — yangi tender · E — tahrirlash · T — Telegramga yuborish · 1–7 — tender holati · / — ro‘yxatda qidirish · Esc — yopish</div></div></div>
   </div></div>
   <div class="group"><div class="group-h">Faoliyat yo‘nalishlari</div><div class="glist"><div class="dirs">${DIRECTIONS.map(d => `<button class="chip" data-act="dirToggle" data-d="${esc(d)}" aria-pressed="${(s.directions || []).includes(d)}">${esc(d)}</button>`).join('')}</div></div></div>
   ${kwBlock('keywords', 'Kalit so‘zlar — qo‘lda qo‘shilgan tenderning moslik bahosini oshiradi', 'Kalit so‘z qo‘shing')}
@@ -1801,6 +1823,7 @@ function openEdit(id) {
 function renderModal() {
   const root = $('modalRoot');
   const editId = S.modal && S.modal.startsWith('edit:') ? S.modal.slice(5) : null;
+  if (S.modal && S.modal.startsWith('share:')) { root.innerHTML = shareDialog(); if (!root.innerHTML) S.modal = null; return; }
   if (S.modal !== 'add' && !editId) { root.innerHTML = ''; return; }
   const fld = (id, label, attrs = '', wide = false) => `<label class="field${wide ? ' wide' : ''}">${label}<input class="input" id="${id}" data-draft="${id}" value="${esc(val(id))}" ${attrs}></label>`;
   const sel = (id, label, opts, cur) => `<label class="field">${label}<span class="selw" style="width:100%"><select id="${id}" data-draft="${id}" style="width:100%;max-width:none">${opts.map(([v, l]) => `<option value="${esc(v)}" ${String(cur) === String(v) ? 'selected' : ''}>${esc(l)}</option>`).join('')}</select>${icon('chevD', 'sm')}</span></label>`;
@@ -2001,6 +2024,164 @@ function gcalUrl(t) {
     + '&dates=' + f(start) + '/' + f(end) + '&details=' + encodeURIComponent(details) + '&location=' + encodeURIComponent(t.customer && t.customer !== '—' ? t.customer : '');
 }
 
+/* ---------- Telegramga ulashish ---------- */
+// Matn t.me/share/url orqali beriladi: bot va token kerak emas, qaysi chatga yuborishni foydalanuvchi Telegramda tanlaydi.
+const TG_LIMIT = 4096;
+const SHARE_PARTS = [['desc', 'Tavsif'], ['zakalat', 'Zakalat'], ['checklist', 'Checklist'], ['docs', 'Hujjatlar'], ['result', 'Natija'], ['ai', 'AI tahlil'], ['note', 'Izoh'], ['history', 'Tarix']];
+const SHARE_OFF = ['history'];
+const SHARE_KEY = 'winder:share';
+let shareOpts = {};
+try { shareOpts = JSON.parse(localStorage.getItem(SHARE_KEY) || '{}') || {}; } catch (e) {}
+const shareOn = k => (k in shareOpts ? !!shareOpts[k] : !SHARE_OFF.includes(k));
+function toggleShareOpt(k) {
+  shareOpts[k] = !shareOn(k);
+  try { localStorage.setItem(SHARE_KEY, JSON.stringify(shareOpts)); } catch (e) {}
+}
+const has = v => v != null && String(v).trim() !== '' && v !== '—';
+const httpUrl = u => (/^https?:\/\//i.test(String(u || '').trim()) ? String(u).trim() : '');
+function deadlineLine(iso) {
+  if (isNaN(D(iso))) return '';
+  const c = countdown(iso);
+  return `${fmtDate(iso, true)} · ${c.c === 'over' ? 'muddati tugagan' : c.t.replace(/ daq$/, ' daqiqa') + ' qoldi'}`;
+}
+const mark = st => (st === 'ready' ? '✔️' : st === 'update' ? '⚠️' : '✖️');
+
+function tenderText(t) {
+  const L = [];
+  const add = (...x) => L.push(...x);
+  const st = (ST[t.status] || {}).l || t.status;
+  add(`📌 ${t.title}`, '');
+  if (has(t.customer)) add(`🏛 Buyurtmachi: ${t.customer}`);
+  add(`🌐 Platforma: ${srcName(t.source)}${has(t.type) ? ' · ' + t.type : ''}`);
+  if (has(t.lot)) add(`🔢 Lot: ${t.lot}${has(t.oferta) ? ` · oferta ${t.oferta}` : ''}`);
+  if (t.price > 0) add(`💰 Boshlang‘ich narx: ${money(t.price, t.currency)}`);
+  if (shareOn('zakalat')) {
+    const z = zakalat(t);
+    if (z.pct > 0 && t.price > 0) add(`🛡 Zakalat: ${money(z.amount, t.currency)} (${String(z.pct).replace('.', ',')}%) · ${ZAK_STATES[z.state].toLowerCase()}`);
+  }
+  const dl = deadlineLine(t.deadline);
+  if (dl) add(`⏰ Tugash muddati: ${dl}`);
+  if (has(t.region)) add(`📍 Hudud: ${t.region}`);
+  if (has(t.direction)) add(`🧭 Yo‘nalish: ${t.direction}`);
+  if (has(t.funding)) add(`🏦 Moliyalashtirish: ${t.funding}`);
+  if (has(t.lang)) add(`🗣 Hujjatlar tili: ${t.lang}`);
+  if (has(t.offers)) add(`👥 Takliflar soni: ${t.offers}`);
+  if (t.match != null && t.match !== '') add(`🎯 Moslik: ${t.match}%`);
+  add(`📊 Holat: ${st}`);
+  if (t.publishedAt && !isNaN(D(t.publishedAt))) add(`🗓 Joylangan: ${fmtDate(t.publishedAt, true)}`);
+
+  if (shareOn('desc') && has(t.description)) add('', '📝 Tavsif', t.description.trim());
+
+  if (shareOn('checklist')) {
+    const c = checkState(t);
+    add('', `✅ Topshirish checklisti: ${c.done}/${c.total}`, ...c.items.map(i => `${i.done ? '✔️' : '▫️'} ${i.l}`));
+  }
+
+  if (shareOn('docs')) {
+    const rd = reqDocsOf(t);
+    if (rd.length) add('', `📂 Zarur hujjatlar: ${rd.filter(d => d.st === 'ready').length}/${rd.length} tayyor`, ...rd.map(d => `${mark(d.st)} ${d.name}${d.st !== 'ready' ? ` — ${DOC_STATE[d.st].l.toLowerCase()}` : ''}`));
+    const skills = (t.req && t.req.skills) || [];
+    if (skills.length) add(`🧩 Ko‘nikmalar: ${skills.join(', ')}`);
+  }
+
+  if (shareOn('result') && ['submitted', 'won', 'lost'].includes(t.status)) {
+    const r = resultOf(t), out = [];
+    const winner = r.winner || (t.status === 'won' ? S.settings.company || 'Biz' : '');
+    if (r.ourPrice > 0) out.push(`Bizning taklif: ${money(r.ourPrice, t.currency)}`);
+    if (winner) out.push(`G‘olib: ${winner}${r.winnerPrice > 0 ? ' — ' + money(r.winnerPrice, t.currency) : ''}`);
+    const parts = r.participants.filter(p => has(p.name));
+    if (parts.length) out.push('Ishtirokchilar:', ...parts.map(p => `• ${p.name}${p.price > 0 ? ' — ' + money(p.price, t.currency) : ''}`));
+    if (has(r.note)) out.push(`Izoh: ${r.note}`);
+    if (out.length) add('', '🏁 Natija', ...out);
+  }
+
+  if (shareOn('ai') && t.ai) {
+    const a = t.ai;
+    add('', `🤖 AI tahlil${a.chance != null ? ` · yutish ehtimoli ${a.chance}%` : ''}`);
+    if (has(a.summary)) add(a.summary);
+    if (Array.isArray(a.risks) && a.risks.length) add('Xavflar:', ...a.risks.map(x => '• ' + x));
+    if (Array.isArray(a.tips) && a.tips.length) add('Tavsiyalar:', ...a.tips.map(x => '• ' + x));
+  }
+
+  if (shareOn('note') && has(t.note)) add('', '💬 Izoh', t.note.trim());
+
+  if (shareOn('history') && Array.isArray(t.history) && t.history.length) add('', '🕓 Tarix', ...t.history.map(h => `${fmtDate(h.at, true)} — ${(ST[h.s] || {}).l || h.s}`));
+
+  const link = httpUrl(t.url);
+  if (link) add('', `🔗 ${link}`);
+  return L.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+}
+
+function listText(list) {
+  const today = new Date();
+  let out = `📋 Tenderlar · ${today.getDate()}-${MONTHS[today.getMonth()]} · ${list.length} ta`;
+  let n = 0;
+  for (const t of list) {
+    const b = [`${n + 1}. ${t.title}`];
+    b.push(`${srcName(t.source)}${has(t.type) ? ' · ' + t.type : ''}${has(t.lot) ? ' · lot ' + t.lot : ''}`);
+    const money1 = t.price > 0 ? `💰 ${money(t.price, t.currency)}` : '';
+    const dl = deadlineLine(t.deadline);
+    b.push([money1, dl ? `⏰ ${dl}` : ''].filter(Boolean).join(' · '));
+    b.push([has(t.customer) ? `🏛 ${t.customer}` : '', `📊 ${(ST[t.status] || {}).l || t.status}`].filter(Boolean).join(' · '));
+    const link = httpUrl(t.url);
+    if (link) b.push(`🔗 ${link}`);
+    const block = b.filter(Boolean).join('\n');
+    if ((out + '\n\n' + block).length > TG_LIMIT - 40) break;
+    out += '\n\n' + block; n++;
+  }
+  if (n < list.length) out += `\n\n… va yana ${list.length - n} ta tender`;
+  return out;
+}
+
+const tgUrl = text => 'https://t.me/share/url?url=' + encodeURIComponent(text);
+function shareTarget() {
+  const k = S.modal && S.modal.startsWith('share:') ? S.modal.slice(6) : null;
+  if (!k) return null;
+  if (k === 'list') return { k, list: filtered() };
+  const t = S.tenders.find(x => x.id === k);
+  return t ? { k, t } : null;
+}
+function openShare(k) {
+  if (k === 'list' && !filtered().length) { toast('Ro‘yxat bo‘sh — yuboradigan tender yo‘q'); return; }
+  if (k !== 'list' && !S.tenders.some(x => x.id === k)) return;
+  delete S.drafts['share:' + k];
+  S.modal = 'share:' + k; render();
+  setTimeout(() => { const a = $('tgLink'); if (a) a.focus({ preventScroll: true }); }, 30);
+}
+function shareDialog() {
+  const sh = shareTarget();
+  if (!sh) return '';
+  const text = val('share:' + sh.k, sh.t ? tenderText(sh.t) : listText(sh.list));
+  const len = text.length;
+  return `<div class="modal" data-act="modalBg"><div class="dialog share-dlg" role="dialog" aria-modal="true" aria-label="Telegramga yuborish">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2 style="display:flex;gap:10px;align-items:center">${icon('plane')}Telegramga yuborish</h2><button type="button" class="closeb" data-act="closeModal" aria-label="Yopish">${icon('x', 'sm')}</button></div>
+    <p class="muted" style="margin:6px 0 0">${sh.t ? esc(cut(sh.t.title, 110)) : `Joriy filtr bo‘yicha ${sh.list.length} ta tender`}</p>
+    ${sh.t ? `<div class="sh-opts" role="group" aria-label="Xabarga kiradigan bo‘limlar">${SHARE_PARTS.map(([k, l]) => `<button type="button" class="chip" data-act="shareOpt" data-k="${k}" aria-pressed="${shareOn(k)}">${esc(l)}</button>`).join('')}</div>` : '<div style="height:14px"></div>'}
+    <textarea class="input share-text" id="shareText" data-draft="share:${esc(sh.k)}" aria-label="Xabar matni" spellcheck="false">${esc(text)}</textarea>
+    <div class="share-meta"><span class="muted">Yuborishdan oldin matnni tahrirlash mumkin.</span><span id="shareCount" class="tnum ${len > TG_LIMIT ? 'c-red' : 'muted'}">${len} / ${TG_LIMIT}</span></div>
+    <div class="actions share-acts">
+      ${navigator.share ? `<button type="button" class="btn btn-ghost" data-act="shareNative">${icon('share')}Ulashish</button>` : ''}
+      <button type="button" class="btn btn-ghost" data-act="shareCopy">${icon('copy')}Nusxalash</button>
+      <a class="btn btn-primary" id="tgLink" href="${esc(tgUrl(text))}" target="_blank" rel="noopener" style="text-decoration:none">${icon('plane')}Telegramda ochish</a>
+    </div>
+  </div></div>`;
+}
+function syncShareMeta(text) {
+  const a = $('tgLink'); if (a) a.href = tgUrl(text);
+  const c = $('shareCount'); if (c) { c.textContent = `${text.length} / ${TG_LIMIT}`; c.className = 'tnum ' + (text.length > TG_LIMIT ? 'c-red' : 'muted'); }
+}
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); return true; } catch (e) {}
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+    document.body.appendChild(ta); ta.select();
+    const ok = document.execCommand('copy'); ta.remove();
+    return ok;
+  } catch (e) { return false; }
+}
+const shareTextNow = () => { const ta = $('shareText'); return ta ? ta.value : ''; };
+
 /* ---------- Bugungi fokus va taqvim ---------- */
 const WD3 = ['Yak', 'Dush', 'Sesh', 'Chor', 'Pay', 'Jum', 'Shan'];
 function focusItems() {
@@ -2172,6 +2353,8 @@ function palItems(q) {
   const nav = VIEWS.map(v => ({ kind: 'Bo‘limlar', label: v.l, ico: v.ico, run: () => { location.hash = v.k; } }));
   const acts = [
     { kind: 'Amallar', label: 'Yangi tender qo‘shish', sub: 'N', ico: 'plus', run: () => { S.modal = 'add'; render(); setTimeout(() => { const i = $('f-title'); if (i) i.focus(); }, 30); } },
+    ...(S.sel && S.tenders.some(t => t.id === S.sel) ? [{ kind: 'Amallar', label: 'Ochiq tenderni Telegramga yuborish', sub: 'T', ico: 'plane', run: () => openShare(S.sel) }] : []),
+    { kind: 'Amallar', label: 'Tenderlar ro‘yxatini Telegramga yuborish', ico: 'plane', run: () => openShare('list') },
     { kind: 'Amallar', label: 'Tenderlarni CSV ga eksport qilish', ico: 'download', run: () => exportFile(`winder-tenderlar-${new Date().toISOString().slice(0, 10)}.csv`, csv(), 'text/csv') },
     { kind: 'Amallar', label: 'Mavzuni almashtirish (kunduzgi / tungi)', ico: 'sliders', run: () => setAppearance({ theme: isDark() ? 'light' : 'dark' }) },
   ];
@@ -2504,6 +2687,14 @@ document.addEventListener('click', async e => {
     case 'openAdd': if (S.modal && S.modal.startsWith('edit:')) clearFormDrafts(); S.modal = 'add'; render(); setTimeout(() => { const i = $('f-title'); if (i) i.focus(); }, 30); break;
     case 'openEdit': openEdit(id); break;
     case 'palette': openPal(); break;
+    case 'share': openShare(a.dataset.k); break;
+    case 'shareOpt': toggleShareOpt(a.dataset.k); delete S.drafts[S.modal]; render(); break;
+    case 'shareCopy': toast(await copyText(shareTextNow()) ? 'Matn nusxalandi — Telegramga joylashtiring' : 'Nusxalab bo‘lmadi — matnni belgilab oling'); break;
+    case 'shareNative': {
+      try { await navigator.share({ text: shareTextNow() }); }
+      catch (err) { if (!err || err.name !== 'AbortError') toast('Ulashish oynasi bu yerda ochilmadi — “Telegramda ochish”ni bosing'); }
+      break;
+    }
     case 'palRun': runPal(Number(a.dataset.i)); break;
     case 'palBg': if (e.target === a) closePal(); break;
     case 'check': await toggleCheck(id, a.dataset.k); break;
@@ -2536,6 +2727,7 @@ document.addEventListener('input', e => {
     if (el.id === 'chatInput') { el.style.height = 'auto'; el.style.height = Math.min(160, el.scrollHeight) + 'px'; }
     if (el.id === 'f-source') { delete S.drafts['f-type']; render(); }
   }
+  if (el.id === 'shareText') { syncShareMeta(el.value); return; }
   if (el.id === 'palQ') { PAL.q = el.value; PAL.i = 0; renderPalList(); return; }
   if (el.id === 'cq') { render(); return; }
   if (el.dataset.f === 'q') { S.f.q = el.value; saveUI(); render(); }
@@ -2636,6 +2828,7 @@ document.addEventListener('keydown', e => {
   if (S.modal) return;
   if (S.sel && /^[1-7]$/.test(e.key)) { e.preventDefault(); setStatus(S.sel, STATUSES[Number(e.key) - 1].k); return; }
   if (S.sel && (e.key === 'e' || e.key === 'E')) { e.preventDefault(); openEdit(S.sel); return; }
+  if (S.sel && (e.key === 't' || e.key === 'T')) { e.preventDefault(); openShare(S.sel); return; }
   if (e.key === 'n' || e.key === 'N') { e.preventDefault(); S.modal = 'add'; render(); setTimeout(() => { const i = $('f-title'); if (i) i.focus(); }, 30); }
 });
 
