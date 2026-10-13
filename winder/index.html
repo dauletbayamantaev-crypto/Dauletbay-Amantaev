@@ -460,7 +460,7 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
   --ink:#1d1d1f; --ink-2:#55555b; --ink-3:#76767c; --line:rgba(60,60,67,.2); --hair:rgba(60,60,67,.12);
   --nav:var(--glass-strong); --scrim:rgba(20,24,33,.2);
   --primary-top:#3b95ff; --primary-bot:#0071e3; --primary-glow:rgba(0,113,227,.32);
-  --toast-bg:rgba(28,28,30,.8); --toast-ink:#ffffff;
+  --toast-bg:rgba(28,28,30,.8); --toast-ink:#ffffff; --menu-bg:#ffffff; --menu-ink:#1d1d1f;
   --r-tile:28px; --r-card:22px;
 }
 @media (prefers-color-scheme: dark){
@@ -476,7 +476,7 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
     --ink:#f5f5f7; --ink-2:#b0b0b6; --ink-3:#8e8e93; --line:rgba(255,255,255,.16); --hair:rgba(255,255,255,.09);
     --nav:var(--glass-strong); --scrim:rgba(0,0,0,.45);
     --primary-top:#3aa0ff; --primary-bot:#0a7cff; --primary-glow:rgba(10,132,255,.38);
-    --toast-bg:rgba(245,245,247,.88); --toast-ink:#1d1d1f;
+    --toast-bg:rgba(245,245,247,.88); --toast-ink:#1d1d1f; --menu-bg:#2c2c2e; --menu-ink:#f5f5f7;
     color-scheme:dark;
   }
 }
@@ -492,7 +492,7 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
   --ink:#f5f5f7; --ink-2:#b0b0b6; --ink-3:#8e8e93; --line:rgba(255,255,255,.16); --hair:rgba(255,255,255,.09);
   --nav:var(--glass-strong); --scrim:rgba(0,0,0,.45);
   --primary-top:#3aa0ff; --primary-bot:#0a7cff; --primary-glow:rgba(10,132,255,.38);
-  --toast-bg:rgba(245,245,247,.88); --toast-ink:#1d1d1f;
+  --toast-bg:rgba(245,245,247,.88); --toast-ink:#1d1d1f; --menu-bg:#2c2c2e; --menu-ink:#f5f5f7;
   color-scheme:dark;
 }
 
@@ -560,6 +560,8 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
 .btn-danger{box-shadow:inset 0 0 0 1px var(--rim-2)}
 .chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);box-shadow:0 4px 14px rgba(0,0,0,.18)}
 .selw select.on{background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent-soft)}
+/* Ochiladigan ro'yxat bandlari: Windows va boshqa tizimlarda shaffof fon oq bo'lib qolmasligi uchun */
+select option,select optgroup{background-color:var(--menu-bg);color:var(--menu-ink)}
 .seg button[aria-pressed="true"],.mini-seg button[aria-pressed="true"]:not([class*="s-"]){background:var(--glass-press);box-shadow:0 2px 6px rgba(0,0,0,.14),inset 0 1px 0 var(--rim-1)}
 .month-sw button:hover{background:var(--glass-press)}
 
