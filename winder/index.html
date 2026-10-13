@@ -530,6 +530,7 @@ table.tbl{width:100%;border-collapse:collapse;font-size:14px}
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:.75;
 }
 .sheet::after{opacity:.5}
+.sheet::before,.sheet::after,.dialog::before,.dialog::after{content:none}
 .tile{border-radius:var(--r-tile);padding:26px}
 .tile.click{transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s}
 .tile.click:hover,.trow:hover,.sg:hover,.news:hover{transform:translateY(-2px);box-shadow:inset 0 0 0 1px var(--rim-2),inset 0 1px 0 var(--rim-1),inset 0 -1px 0 var(--shade),0 2px 4px rgba(15,23,42,.05),0 18px 40px rgba(15,23,42,.13)}
@@ -574,7 +575,7 @@ select option,select optgroup{background-color:var(--menu-bg);color:var(--menu-i
 
 /* Varaq, modal, kanban */
 .sheet{background:var(--glass-strong);border-radius:30px;box-shadow:inset 0 0 0 1px var(--rim-2),inset 0 1px 0 var(--rim-1),var(--shadow-lg)}
-.sheet-h{background:transparent;-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);border-radius:30px 30px 0 0}
+.sheet-h{background:var(--menu-bg);border-bottom:1px solid var(--hair);border-radius:30px 30px 0 0}
 .facts{background:var(--hair);border-radius:18px;box-shadow:inset 0 0 0 1px var(--rim-2)}
 .fact{background:var(--tile-2)}
 .checks,.ai-card{background:var(--tile-2);border:0;box-shadow:inset 0 0 0 1px var(--rim-2),inset 0 1px 0 var(--rim-2)}
@@ -619,6 +620,146 @@ select option,select optgroup{background-color:var(--menu-bg);color:var(--menu-i
   .sheet-h{border-radius:28px 28px 0 0}
 }
 @media (prefers-reduced-motion: reduce){.ambient i{animation:none}}
+
+/* ===================== Qulaylik qatlami ===================== */
+/* Platforma belgilari */
+.sb{display:inline-grid;place-items:center;min-width:24px;height:20px;padding:0 5px;border-radius:6px;font-size:10.5px;font-weight:700;letter-spacing:.02em;flex:none;line-height:1;color:var(--sbc);background:var(--sbb)}
+.sb-xarid{--sbc:#0a58c7;--sbb:rgba(0,113,227,.13)}
+.sb-etender{--sbc:#4b45c6;--sbb:rgba(88,86,214,.14)}
+.sb-xt{--sbc:#0b7a70;--sbb:rgba(48,176,160,.16)}
+.sb-coop{--sbc:#b4530a;--sbb:rgba(255,149,0,.17)}
+.sb-mc{--sbc:#8a5a12;--sbb:rgba(162,132,94,.2)}
+.sb-ebirja{--sbc:#b8235a;--sbb:rgba(255,55,95,.13)}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .sb-xarid{--sbc:#7cb8ff;--sbb:rgba(10,132,255,.24)}
+  :root:not([data-theme="light"]) .sb-etender{--sbc:#b0adff;--sbb:rgba(94,92,230,.3)}
+  :root:not([data-theme="light"]) .sb-xt{--sbc:#5fe0cf;--sbb:rgba(48,176,160,.24)}
+  :root:not([data-theme="light"]) .sb-coop{--sbc:#ffbf66;--sbb:rgba(255,159,10,.22)}
+  :root:not([data-theme="light"]) .sb-mc{--sbc:#e3c08f;--sbb:rgba(172,142,104,.28)}
+  :root:not([data-theme="light"]) .sb-ebirja{--sbc:#ff8fb0;--sbb:rgba(255,55,95,.24)}
+}
+:root[data-theme="dark"] .sb-xarid{--sbc:#7cb8ff;--sbb:rgba(10,132,255,.24)}
+:root[data-theme="dark"] .sb-etender{--sbc:#b0adff;--sbb:rgba(94,92,230,.3)}
+:root[data-theme="dark"] .sb-xt{--sbc:#5fe0cf;--sbb:rgba(48,176,160,.24)}
+:root[data-theme="dark"] .sb-coop{--sbc:#ffbf66;--sbb:rgba(255,159,10,.22)}
+:root[data-theme="dark"] .sb-mc{--sbc:#e3c08f;--sbb:rgba(172,142,104,.28)}
+:root[data-theme="dark"] .sb-ebirja{--sbc:#ff8fb0;--sbb:rgba(255,55,95,.24)}
+.src .sb{margin-right:2px}
+.row-meta .sb{vertical-align:1px;margin-right:4px}
+
+/* Bugungi fokus */
+.fi-ico{width:34px;height:34px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--glass-soft);box-shadow:inset 0 0 0 1px var(--rim-2)}
+.calm{display:flex;gap:14px;align-items:center;padding:18px 4px}
+
+/* Muddatlar taqvimi */
+.wk-scroll{overflow-x:auto;margin:0 -6px;padding:2px 6px 6px;scrollbar-width:thin}
+.wk-days{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(128px,1fr);gap:10px}
+.wk-day{border-radius:16px;background:var(--glass-soft);box-shadow:inset 0 0 0 1px var(--rim-2);padding:10px;min-height:118px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.wk-day.today{box-shadow:inset 0 0 0 1.5px var(--accent)}
+.wk-day.wkend{background:var(--fill-2)}
+.wk-dh{font-size:12px;color:var(--ink-2);display:flex;justify-content:space-between;align-items:baseline}
+.wk-dh b{color:var(--ink);font-size:16px;font-family:var(--f-display);font-variant-numeric:tabular-nums}
+.wk-chip{display:flex;gap:6px;align-items:flex-start;text-align:left;font-size:12px;line-height:1.3;padding:6px 7px;border-radius:10px;background:var(--glass-press);box-shadow:inset 0 0 0 1px var(--rim-2);width:100%;color:var(--ink)}
+.wk-chip:hover{box-shadow:inset 0 0 0 1px var(--accent)}
+.wk-chip .t{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-width:0}
+
+/* Checklist, zakalat, natija */
+.endrow{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.ckp{display:inline-flex;align-items:center;gap:3px;font-size:12px;font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ckp .ico{width:13px;height:13px}
+.ckp.done{color:var(--green)}
+.check.ck{width:100%;text-align:left;cursor:pointer;background:none;border:0;border-top:1px solid var(--hair);color:var(--ink);font-size:14px;align-items:center}
+.check.ck:first-child{border-top:0}
+.check.ck:hover{background:var(--glass-soft)}
+.check.ck[disabled]{cursor:default;opacity:.75}
+.check.ck .ico{margin-top:0}
+.sh-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.zak{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:10px}
+.res-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.res-grid .input{width:100%}
+.part{display:grid;grid-template-columns:minmax(0,1fr) 150px 32px;gap:8px;margin-top:8px;align-items:center}
+.part .input{width:100%}
+.autofill{margin-top:14px;padding:14px;border-radius:18px;background:var(--glass-soft);box-shadow:inset 0 0 0 1px var(--rim-2)}
+.autofill textarea.input{width:100%;min-height:72px;margin-top:6px}
+
+/* Natijalar grafiklari */
+.hbs{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.hb{display:grid;grid-template-columns:minmax(0,170px) minmax(0,1fr) 44px;gap:10px;align-items:center;font-size:13px;padding:4px 0}
+.hb-l{display:flex;gap:6px;align-items:center;min-width:0}
+.hb-l span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hb-t{display:block;min-width:0}
+.hb .trk{display:flex;height:12px;border-radius:6px;overflow:hidden;gap:2px}
+.hb .trk i{display:block;height:100%}
+.sg-w{background:var(--green)} .sg-l{background:var(--red)} .sg-p{background:var(--purple)}
+.hb b{text-align:right}
+.legend i{display:inline-block}
+.chart .mb-s{fill:var(--purple)} .chart .mb-w{fill:var(--green)}
+.tbl tr.click{cursor:pointer}
+.tbl tr.click:hover td{background:var(--glass-soft)}
+
+/* Raqobatchilar */
+.comp{border-top:1px solid var(--hair)}
+.comp:first-child{border-top:0}
+.comp-h{display:flex;gap:14px;align-items:center;width:100%;text-align:left;padding:14px 16px;color:var(--ink)}
+.comp-h:hover{background:var(--glass-soft)}
+.comp-h .main{flex:1;min-width:0;display:flex;flex-direction:column}
+.comp-h .t{font-size:15px;font-weight:600}
+.comp-h .d{font-size:13px;color:var(--ink-2);margin-top:2px}
+.comp-dirs{justify-content:flex-end}
+.comp-b{padding:0 16px 16px}
+.av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--glass-press);box-shadow:inset 0 0 0 1px var(--rim-2);font-weight:700;font-size:13px}
+
+/* Tezkor qidiruv */
+.pal{position:fixed;inset:0;z-index:80;display:flex;justify-content:center;align-items:flex-start;padding:12vh 16px 16px;background:var(--scrim);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.pal-box{width:min(640px,100%);border-radius:24px;background:var(--glass-strong);-webkit-backdrop-filter:var(--blur-strong);backdrop-filter:var(--blur-strong);box-shadow:inset 0 0 0 1px var(--rim-2),inset 0 1px 0 var(--rim-1),var(--shadow-lg);overflow:hidden;animation:fadeup .2s ease both}
+.pal-in{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--hair);color:var(--ink-2)}
+.pal-in input{flex:1;border:0;background:none;outline:none;font-size:18px;color:var(--ink);min-width:0}
+.pal kbd{font:12px var(--f-text);color:var(--ink-3);border:1px solid var(--line);border-radius:6px;padding:1px 6px;margin:0 2px}
+.pal-list{max-height:min(56vh,460px);overflow:auto;padding:6px 8px 10px}
+.pal-sec{font-size:12px;color:var(--ink-2);padding:10px 10px 4px;font-weight:600}
+.pal-it{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:9px 10px;border-radius:12px;color:var(--ink)}
+.pal-it .main{display:flex;flex-direction:column;min-width:0}
+.pal-it .lb{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pal-it .sub{font-size:12px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pal-it[aria-selected="true"]{background:var(--accent);color:#fff}
+.pal-it[aria-selected="true"] .sub{color:rgba(255,255,255,.8)}
+.pal-it[aria-selected="true"] .sb{background:rgba(255,255,255,.22);color:#fff}
+.pal-ft{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--ink-3);padding:10px 16px;border-top:1px solid var(--hair)}
+
+/* Ko'rinish sozlamalari */
+.swatches{display:flex;gap:10px;flex-wrap:wrap}
+.sw{width:28px;height:28px;border-radius:50%;box-shadow:inset 0 0 0 2px rgba(255,255,255,.45),0 1px 3px rgba(0,0,0,.2)}
+.sw[aria-pressed="true"]{outline:2px solid var(--ink);outline-offset:3px}
+
+/* Yutildi lahzasi */
+.confetti{position:fixed;inset:0;width:100%;height:100%;z-index:96;pointer-events:none}
+.cele{position:fixed;left:50%;top:38%;z-index:97;transform:translate(-50%,-50%) scale(.92);opacity:0;transition:opacity .3s ease,transform .45s cubic-bezier(.2,.9,.25,1.2);pointer-events:none;text-align:center;padding:26px 34px;border-radius:30px;background:var(--glass-strong);-webkit-backdrop-filter:var(--blur-strong);backdrop-filter:var(--blur-strong);box-shadow:inset 0 0 0 1px var(--rim-2),inset 0 1px 0 var(--rim-1),var(--shadow-lg);max-width:calc(100vw - 32px)}
+.cele.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.cele h2{font-size:32px;margin:6px 0 2px}
+.cele p{margin:4px 0 0}
+.cele-ico{width:56px;height:56px;margin:0 auto;border-radius:18px;display:grid;place-items:center;color:#fff;background:linear-gradient(180deg,#ffcc4d,#f5a300);box-shadow:0 8px 20px rgba(245,163,0,.35)}
+
+/* Sahifa o'tishlari va telefon imo-ishoralari */
+.gnav{view-transition-name:gnav}
+.tabbar{view-transition-name:tabbar}
+.ambient{view-transition-name:ambient}
+::view-transition-old(root){animation:vt-out .16s ease both}
+::view-transition-new(root){animation:vt-in .28s cubic-bezier(.2,.8,.2,1) both}
+@keyframes vt-out{to{opacity:0;transform:translateY(-6px)}}
+@keyframes vt-in{from{opacity:0;transform:translateY(8px)}}
+.trow{touch-action:pan-y}
+.trow.swipe-ready{box-shadow:inset 0 0 0 2px var(--green),var(--glass-shadow)}
+.grab{display:none}
+@media (max-width: 640px){
+  .grab{display:block;position:absolute;left:50%;top:6px;width:40px;height:5px;border-radius:3px;background:var(--line);transform:translateX(-50%)}
+  .sheet-h{touch-action:none}
+  .res-grid{grid-template-columns:1fr}
+  .part{grid-template-columns:minmax(0,1fr) 110px 32px}
+  .hb{grid-template-columns:minmax(0,110px) minmax(0,1fr) 40px}
+  .comp-dirs{display:none}
+  .pal{padding-top:8vh}
+}
+@media (prefers-reduced-motion: reduce){::view-transition-old(root),::view-transition-new(root){animation:none}}
 </style>
 <div class="ambient" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i><i class="a4"></i><i class="a5"></i></div>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="lg-refract" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.006 0.011" numOctaves="2" seed="11" result="noise"/><feGaussianBlur in="noise" stdDeviation="2.5" result="soft"/><feDisplacementMap in="SourceGraphic" in2="soft" scale="22" xChannelSelector="R" yChannelSelector="G"/></filter></svg>
@@ -636,6 +777,7 @@ select option,select optgroup{background-color:var(--menu-bg);color:var(--menu-i
 <div class="scrim" id="scrim"></div>
 <aside class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Tender tafsilotlari"></aside>
 <div id="modalRoot"></div>
+<div id="palRoot"></div>
 <div class="toast" id="toast" role="status"></div>
 <div class="tip" id="tip"></div>
 <input type="file" id="importFile" accept="application/json,.json" hidden>
@@ -695,12 +837,18 @@ const WEEKDAYS = ['yakshanba', 'dushanba', 'seshanba', 'chorshanba', 'payshanba'
 const VIEWS = [
   { k: 'panel', l: 'Umumiy', ico: 'grid' },
   { k: 'tenderlar', l: 'Tenderlar', ico: 'list' },
-  { k: 'ai', l: 'AI yordamchi', ico: 'spark' },
+  { k: 'natijalar', l: 'Natijalar', ico: 'trophy' },
+  { k: 'raqobat', l: 'Raqobatchilar', ico: 'users' },
+  { k: 'ai', l: 'AI yordamchi', nav: 'AI', ico: 'spark' },
   { k: 'hujjatlar', l: 'Hujjatlar', ico: 'doc' },
   { k: 'yangiliklar', l: 'Yangiliklar', ico: 'news' },
   { k: 'moliya', l: 'Moliya', ico: 'wallet' },
   { k: 'sozlamalar', l: 'Sozlamalar', ico: 'sliders' },
 ];
+const viewOf = k => VIEWS.find(v => v.k === k);
+const TAB_VIEWS = ['panel', 'tenderlar', 'ai', 'moliya'];
+const MORE_VIEWS = ['natijalar', 'raqobat', 'hujjatlar', 'yangiliklar', 'sozlamalar'];
+const SRC_ABBR = { xarid: 'UX', etender: 'ET', xt: 'XT', coop: 'KP', mc: 'QV', ebirja: 'EB' };
 
 const ICONS = {
   grid: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z',
@@ -734,6 +882,12 @@ const ICONS = {
   pin: 'M12 21s-7-6.5-7-12a7 7 0 0 1 14 0c0 5.5-7 12-7 12zM12 6.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5z',
   bld: 'M4 21V5l8-2v18M12 7l8 2v12M8 8h.01M8 12h.01M8 16h.01M16 12h.01M16 16h.01M3 21h18',
   send: 'M12 19V5M6 11l6-6 6 6',
+  users: 'M16 19v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1M9 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM22 19v-1a4 4 0 0 0-3-3.87M16 4.13a3 3 0 0 1 0 5.74',
+  target: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10zM12 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2z',
+  shield: 'M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z',
+  circle: 'M12 3.5a8.5 8.5 0 1 0 0 17 8.5 8.5 0 0 0 0-17z',
+  image: 'M4 5h16v14H4zM4 15l4-4 4 4 3-3 5 5M15 9h.01',
+  flag: 'M5 21V4M5 4h11l-2 4 2 4H5',
 };
 const icon = (n, cls = '') => `<svg class="ico ${cls}" viewBox="0 0 24 24" aria-hidden="true"><path d="${ICONS[n] || ''}"/></svg>`;
 const logo = (size = 26) => `<svg width="${size}" height="${size}" viewBox="0 0 64 64" aria-hidden="true"><rect class="lg-bg" x="2" y="2" width="60" height="60" rx="16"/><path class="lg-w" d="M12 22 L21 48 L30 30 L39 48" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><path class="lg-a" d="M39 48 L50 16 M42.7 21.3 L50 16 L52.5 24.7" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
@@ -741,8 +895,9 @@ const logo = (size = 26) => `<svg width="${size}" height="${size}" viewBox="0 0 
 /* ---------- Holat ---------- */
 const S = {
   mode: 'loading', sample: undefined, downloads: null,
-  tenders: [], docs: [], news: [], settings: { ...DEFAULT_SETTINGS },
-  loaded: { tenders: false, docs: false, news: false, settings: false },
+  tenders: [], docs: [], news: [], competitors: [], settings: { ...DEFAULT_SETTINGS },
+  loaded: { tenders: false, docs: false, news: false, competitors: false, settings: false },
+  resPeriod: 'year', compOpen: null, afBusy: false, imgOK: false,
   view: 'panel', sel: null, more: false, modal: null, confirm: null,
   f: { q: '', status: 'active', source: '', dir: '', type: '', region: '', due: '', minMatch: '0', sort: 'match' },
   listMode: 'list', newsKind: 'all', finMonth: null,
@@ -974,7 +1129,7 @@ function render() {
   let s0 = null, s1 = null;
   if (fid && ae.tagName && /INPUT|TEXTAREA/.test(ae.tagName)) { try { s0 = ae.selectionStart; s1 = ae.selectionEnd; } catch (e) {} }
   renderChrome();
-  const fn = { panel: viewPanel, tenderlar: viewTenders, ai: viewAI, hujjatlar: viewDocs, yangiliklar: viewNews, moliya: viewFinance, sozlamalar: viewSettings }[S.view] || viewPanel;
+  const fn = { panel: viewPanel, tenderlar: viewTenders, natijalar: viewResults, raqobat: viewCompetitors, ai: viewAI, hujjatlar: viewDocs, yangiliklar: viewNews, moliya: viewFinance, sozlamalar: viewSettings }[S.view] || viewPanel;
   $('view').innerHTML = fn();
   renderSheet();
   renderModal();
@@ -991,16 +1146,15 @@ function renderChrome() {
   $('brandLink').innerHTML = `${logo(26)}<span class="wm"><b>Win</b><span>der</span></span>`;
   const newCount = S.tenders.filter(t => t.status === 'new').length;
   $('gnavLinks').innerHTML = VIEWS.filter(v => v.k !== 'sozlamalar').map(v =>
-    `<a href="#${v.k}" ${S.view === v.k ? 'aria-current="page"' : ''}>${esc(v.l)}${v.k === 'tenderlar' && newCount ? ` <span class="badge">${newCount}</span>` : ''}</a>`).join('');
+    `<a href="#${v.k}" ${S.view === v.k ? 'aria-current="page"' : ''}>${esc(v.nav || v.l)}${v.k === 'tenderlar' && newCount ? ` <span class="badge">${newCount}</span>` : ''}</a>`).join('');
   $('gnavRight').innerHTML = `
     ${S.mode === 'local' ? '<span class="tag" title="Ma’lumotlar shu brauzerda saqlanadi">Lokal</span>' : ''}
-    <button class="iconbtn" data-act="goSearch" aria-label="Tender qidirish">${icon('search')}</button>
+    <button class="iconbtn" data-act="palette" aria-label="Qidirish (Ctrl+K)" title="Qidirish (Ctrl+K)">${icon('search')}</button>
     <a class="iconbtn" href="#sozlamalar" aria-label="Sozlamalar" ${S.view === 'sozlamalar' ? 'aria-current="page"' : ''}>${icon('sliders')}</a>`;
   $('ribbon').innerHTML = hasSample()
     ? `<div class="ribbon">Hozir <b>namuna ma’lumotlar</b> ko‘rsatilmoqda. Ularni Sozlamalar → Ma’lumotlar bo‘limida o‘chirishingiz mumkin. <a href="#sozlamalar">Sozlamalar ›</a></div>` : '';
-  const tabs = [VIEWS[0], VIEWS[1], VIEWS[2], VIEWS[5]];
-  $('tabbar').innerHTML = tabs.map(v => `<a href="#${v.k}" ${S.view === v.k ? 'aria-current="page"' : ''}>${icon(v.ico, 'lg')}<span>${v.k === 'ai' ? 'AI' : esc(v.l)}</span>${v.k === 'tenderlar' && newCount ? `<span class="badge">${newCount}</span>` : ''}</a>`).join('')
-    + `<button data-act="more" ${['hujjatlar', 'yangiliklar', 'sozlamalar'].includes(S.view) ? 'aria-current="page"' : ''}>${icon('more', 'lg')}<span>Yana</span></button>`;
+  $('tabbar').innerHTML = TAB_VIEWS.map(viewOf).map(v => `<a href="#${v.k}" ${S.view === v.k ? 'aria-current="page"' : ''}>${icon(v.ico, 'lg')}<span>${esc(v.nav || v.l)}</span>${v.k === 'tenderlar' && newCount ? `<span class="badge">${newCount}</span>` : ''}</a>`).join('')
+    + `<button data-act="more" ${MORE_VIEWS.includes(S.view) ? 'aria-current="page"' : ''}>${icon('more', 'lg')}<span>Yana</span></button>`;
 }
 
 function loadingView() {
@@ -1027,46 +1181,42 @@ function viewPanel() {
   const fresh = T.filter(t => t.status === 'new');
   const todayFound = T.filter(t => t.foundAt && sameDay(D(t.foundAt), now));
   const inWork = T.filter(t => t.status === 'review' || t.status === 'prep');
-  const fin = finance(mk(now));
-  const pending = T.filter(t => t.status === 'submitted');
+  const m0 = mk(now);
+  const subM = T.filter(t => mkIso(t.submittedAt) === m0).length, wonM = T.filter(t => mkIso(t.wonAt) === m0).length;
+  const pending = T.filter(t => t.status === 'submitted').length;
   const wr = winRate();
-  const upcoming = T.filter(t => ACTIVE.includes(t.status) && D(t.deadline) > now).sort((a, b) => D(a.deadline) - D(b.deadline)).slice(0, 5);
-  const top = fresh.slice().sort((a, b) => (b.match || 0) - (a.match || 0)).slice(0, 5);
   const soon3 = T.filter(t => ACTIVE.includes(t.status) && D(t.deadline) > now && D(t.deadline) - now <= 3 * 864e5).length;
   const summaryLine = T.length ? `${fresh.length} ta yangi tender ko‘rib chiqishni kutmoqda, ${soon3} tasining muddati 3 kun ichida tugaydi.` : 'Hozircha tenderlar yo‘q.';
-  const goal = Number(S.settings.goal) || 0;
-  const pct = goal ? Math.min(100, Math.round(fin.total / goal * 100)) : 0;
-  const maxF = Math.max(1, ...STATUSES.map(s => T.filter(t => t.status === s.k).length));
-  const news = S.news.slice().sort((a, b) => D(b.date) - D(a.date)).slice(0, 3);
-  const colorOf = { new: 'blue', review: 'indigo', prep: 'orange', submitted: 'purple', won: 'green', lost: 'red', skipped: 'gray' };
-
-  if (!T.length) return `<div class="phead fade"><div><div class="eyebrow">${cap(WEEKDAYS[now.getDay()])}, ${now.getDate()}-${MONTHS[now.getMonth()]}</div><h1>${greet}${esc(name)}.</h1><p class="sub">${esc(summaryLine)}</p></div></div>${emptyData()}`;
-
-  return `
+  const head = `
   <div class="phead fade"><div>
     <div class="eyebrow">${cap(WEEKDAYS[now.getDay()])}, ${now.getDate()}-${MONTHS[now.getMonth()]}</div>
     <h1>${greet}${esc(name)}.</h1>
     <p class="sub">${esc(summaryLine)}</p>
   </div>
-  <div class="actions"><button class="btn btn-ghost" data-act="openAdd">${icon('plus')}Tender qo‘shish</button><a class="btn btn-primary" href="#tenderlar" style="text-decoration:none">Tenderlarni ko‘rish ${icon('chevR', 'sm')}</a></div></div>
-
+  <div class="actions"><button class="btn btn-ghost" data-act="openAdd">${icon('plus')}Tender qo‘shish</button><a class="btn btn-primary" href="#tenderlar" style="text-decoration:none">Tenderlarni ko‘rish ${icon('chevR', 'sm')}</a></div></div>`;
+  if (!T.length) return head + emptyData();
+  const focus = focusItems();
+  const top = fresh.slice().sort((a, b) => (b.match || 0) - (a.match || 0)).slice(0, 5);
+  const zs = zakSummary();
+  const maxF = Math.max(1, ...STATUSES.map(s => T.filter(t => t.status === s.k).length));
+  const news = S.news.slice().sort((a, b) => D(b.date) - D(a.date)).slice(0, 3);
+  const colorOf = { new: 'blue', review: 'indigo', prep: 'orange', submitted: 'purple', won: 'green', lost: 'red', skipped: 'gray' };
+  return head + `
   <div class="bento fade">
-    <div class="tile c-6 r-2 click" data-act="go" data-v="moliya">
-      <div class="t-head"><span class="t-label">${icon('wallet', 'sm')}${esc(MONTHS[now.getMonth()][0].toUpperCase() + MONTHS[now.getMonth()].slice(1))} daromadi</span><span class="link">Moliya ${icon('chevR', 'sm')}</span></div>
-      <div class="num-xl">${grp(fin.total)}<span class="unit">so‘m</span></div>
-      <div class="stat-sub">${goal ? `Oylik maqsad ${short(goal)} so‘m · ${pct}% bajarildi` : 'Oylik maqsad belgilanmagan'}</div>
-      ${goal ? `<div class="bar" style="margin-top:10px"><i style="width:${pct}%"></i></div>` : ''}
-      <div class="breakdown">
-        <div class="bd"><i style="background:var(--s1)"></i>Fiks oylik<b>${money(fin.salary)}</b></div>
-        <div class="bd"><i style="background:var(--s2)"></i>Topshirilgan <span class="x">${fin.sub.length} × ${short(S.settings.perSubmitted)}</span><b>${money(fin.subSum)}</b></div>
-        <div class="bd"><i style="background:var(--s3)"></i>Yutilgan <span class="x">${fin.won.length} × ${short(S.settings.perWon)}</span><b>${money(fin.wonSum)}</b></div>
-      </div>
+    <div class="tile c-6 r-2">
+      <div class="t-head"><span class="t-label">${icon('target', 'sm')}Bugungi fokus</span><span class="muted" style="font-size:13px">${focus.length ? `${focus.length} ta vazifa` : ''}</span></div>
+      ${focus.length ? `<div class="rows">${focus.map(f => `
+        <div class="row click" ${f.t ? `data-act="open" data-id="${esc(f.t.id)}"` : `data-act="go" data-v="${f.go}"`}>
+          <span class="fi-ico ${f.cls || ''}">${icon(f.ico, 'sm')}</span>
+          <div class="row-main"><div class="row-title">${esc(f.text)}</div><div class="row-meta">${esc(f.sub)}</div></div>${icon('chevR', 'sm faint')}
+        </div>`).join('')}</div>`
+        : `<div class="calm">${icon('check', 'lg c-green')}<div><b>Bugun shoshilinch ish yo‘q</b><div class="muted" style="font-size:14px">Muddatlar, zakalat va natijalar nazorat ostida.</div></div></div>`}
     </div>
     <div class="tile c-3 click" data-act="filterGo" data-status="new">
       <span class="t-label">${icon('radar', 'sm')}Yangi tenderlar</span>
       <div class="spacer"></div>
       <div class="num-l" style="margin-top:18px">${fresh.length}</div>
-      <div class="stat-sub">${todayFound.length ? `bugun +${todayFound.length} ta topildi` : 'bugun yangi topilmadi'}</div>
+      <div class="stat-sub">${todayFound.length ? `bugun +${todayFound.length} ta qo‘shildi` : 'bugun yangi qo‘shilmadi'}</div>
     </div>
     <div class="tile c-3 click" data-act="filterGo" data-status="active">
       <span class="t-label">${icon('clock', 'sm')}Jarayonda</span>
@@ -1077,44 +1227,49 @@ function viewPanel() {
     <div class="tile c-3 click" data-act="filterGo" data-status="submitted">
       <span class="t-label">${icon('upload', 'sm')}Bu oy topshirildi</span>
       <div class="spacer"></div>
-      <div class="num-l" style="margin-top:18px">${fin.sub.length}</div>
-      <div class="stat-sub">${pending.length} tasi natija kutmoqda</div>
+      <div class="num-l" style="margin-top:18px">${subM}</div>
+      <div class="stat-sub">${pending} tasi natija kutmoqda</div>
     </div>
-    <div class="tile c-3 click" data-act="filterGo" data-status="won">
+    <div class="tile c-3 click" data-act="go" data-v="natijalar">
       <span class="t-label">${icon('trophy', 'sm')}Bu oy yutildi</span>
       <div class="spacer"></div>
-      <div class="num-l" style="margin-top:18px">${fin.won.length}</div>
+      <div class="num-l" style="margin-top:18px">${wonM}</div>
       <div class="stat-sub">${wr == null ? 'G‘alaba ulushi hali yo‘q' : `Umumiy g‘alaba ulushi ${Math.round(wr * 100)}%`}</div>
     </div>
 
-    <div class="tile c-7">
-      <div class="t-head"><h3>Yaqin muddatlar</h3><a class="link" href="#tenderlar" data-act="sortDeadline">Barchasi ${icon('chevR', 'sm')}</a></div>
-      ${upcoming.length ? `<div class="rows">${upcoming.map(t => `
-        <div class="row click" data-act="open" data-id="${esc(t.id)}">
-          <div class="row-main"><div class="row-title">${esc(t.title)}</div><div class="row-meta">${esc(srcName(t.source))} · ${esc(priceShort(t))} · ${fmtDate(t.deadline, true)}</div></div>
-          <div class="row-end">${cdSpan(t.deadline)}<div style="margin-top:4px">${pill(t.status)}</div></div>
-        </div>`).join('')}</div>` : '<p class="muted">Yaqin kunlarda tugaydigan faol tender yo‘q.</p>'}
-    </div>
-    <div class="tile c-5">
-      <div class="t-head"><h3>Platformalar</h3><span class="muted" style="font-size:13px">faol tenderlar</span></div>
-      <div class="srcs">${Object.entries(SOURCES).map(([k, src]) => {
-        const n = T.filter(t => t.source === k && ACTIVE.includes(t.status)).length;
-        return `<div class="src"><span class="nm"><a href="${src.url}" target="_blank" rel="noopener" style="color:var(--ink)">${esc(src.name)}</a></span><button class="link ct" data-act="srcFilter" data-k="${k}">${n} ta ${icon('chevR', 'sm')}</button></div>`;
-      }).join('')}</div>
+    <div class="tile c-12">
+      <div class="t-head"><h3>Muddatlar taqvimi</h3><span class="muted" style="font-size:13px">keyingi 14 kun</span></div>
+      ${weekStrip(T)}
     </div>
 
     <div class="tile c-7">
       <div class="t-head"><h3>Eng mos yangi tenderlar</h3><a class="link" href="#tenderlar" data-act="filterGo" data-status="new">Barchasi ${icon('chevR', 'sm')}</a></div>
       ${top.length ? `<div class="rows">${top.map(t => `
         <div class="row click" data-act="open" data-id="${esc(t.id)}">${ring(t.match, 40)}
-          <div class="row-main"><div class="row-title">${esc(t.title)}</div><div class="row-meta">${esc(t.customer)} · ${esc(regionOf(t))}</div></div>
+          <div class="row-main"><div class="row-title">${esc(t.title)}</div><div class="row-meta">${srcBadge(t.source)} ${esc(t.customer)} · ${esc(regionOf(t))}</div></div>
           <div class="row-end"><div class="price" style="font-size:15px">${esc(priceShort(t))}</div>${cdSpan(t.deadline)}</div>
         </div>`).join('')}</div>` : '<p class="muted">Yangi tenderlarning hammasi ko‘rib chiqilgan.</p>'}
     </div>
     <div class="tile c-5">
+      <div class="t-head"><h3 style="display:flex;gap:8px;align-items:center">${icon('shield')}Zakalat</h3><span class="muted" style="font-size:13px">so‘mda</span></div>
+      <div class="rows">
+        <div class="row"><div class="row-main"><div class="row-title" style="font-weight:500">To‘lanishi kerak</div><div class="row-meta">${zs.due[1]} ta tender · ko‘rib chiqilmoqda yoki tayyorlanmoqda</div></div><div class="row-end num-m" style="font-size:19px">${short(zs.due[0])}</div></div>
+        <div class="row"><div class="row-main"><div class="row-title" style="font-weight:500">Zakalatda turibdi</div><div class="row-meta">${zs.paid[1]} ta tender</div></div><div class="row-end num-m" style="font-size:19px">${short(zs.paid[0])}</div></div>
+        <div class="row"><div class="row-main"><div class="row-title" style="font-weight:500">Qaytarilishi kutilmoqda</div><div class="row-meta">${zs.back[1]} ta yutqazilgan yoki o‘tkazilgan tender</div></div><div class="row-end num-m" style="font-size:19px">${short(zs.back[0])}</div></div>
+      </div>
+    </div>
+
+    <div class="tile c-6">
       <div class="t-head"><h3>Voronka</h3><span class="muted" style="font-size:13px">jami ${T.length}</span></div>
       <div class="funnel">${STATUSES.map(s => { const n = T.filter(t => t.status === s.k).length; return `
         <button class="fbar" data-act="filterGo" data-status="${s.k}" style="color:var(--${colorOf[s.k]})"><span style="color:var(--ink);text-align:left">${esc(s.l)}</span><span class="track"><span class="fill" style="display:block;width:${n / maxF * 100}%"></span></span><b style="color:var(--ink)">${n}</b></button>`; }).join('')}</div>
+    </div>
+    <div class="tile c-6">
+      <div class="t-head"><h3>Platformalar</h3><span class="muted" style="font-size:13px">faol tenderlar</span></div>
+      <div class="srcs">${Object.entries(SOURCES).map(([k, src]) => {
+        const n = T.filter(t => t.source === k && ACTIVE.includes(t.status)).length;
+        return `<div class="src">${srcBadge(k)}<span class="nm"><a href="${src.url}" target="_blank" rel="noopener" style="color:var(--ink)">${esc(src.name)}</a></span><button class="link ct" data-act="srcFilter" data-k="${k}">${n} ta ${icon('chevR', 'sm')}</button></div>`;
+      }).join('')}</div>
     </div>
 
     <div class="tile c-12">
@@ -1122,7 +1277,7 @@ function viewPanel() {
       ${news.length ? `<div class="bento" style="gap:24px">${news.map(n => `
         <div class="c-4" style="min-width:0"><div class="row-meta"><span class="kind ${n.kind === 'law' ? 'law' : 'industry'}">${n.kind === 'law' ? 'Qonunchilik' : 'Soha'}</span> · ${fmtDate(n.date)}</div>
         <a href="${esc(safeUrl(n.url))}" target="_blank" rel="noopener" style="color:var(--ink);display:block;margin-top:4px;font-weight:600;line-height:1.35">${esc(n.title)}</a>
-        <div class="row-meta">${esc(n.source)}</div></div>`).join('')}</div>` : '<p class="muted">Yangiliklar hali yuklanmagan.</p>'}
+        <div class="row-meta">${esc(n.source)}</div></div>`).join('')}</div>` : '<p class="muted">Yangiliklar hali qo‘shilmagan.</p>'}
     </div>
   </div>`;
 }
@@ -1170,14 +1325,16 @@ function viewTenders() {
 }
 function trow(t) {
   const isNew = S.fresh.has(t.id);
+  const active = ACTIVE.includes(t.status);
+  const cs = active ? checkState(t) : null;
   return `<div class="trow${isNew ? ' fresh' : ''}" role="button" tabindex="0" data-act="open" data-id="${esc(t.id)}">
     ${ring(t.match, 48)}
     <div style="min-width:0">
-      <div class="eb">${isNew ? '<span class="newtag">Yangi topildi</span><span class="sep">·</span>' : ''}<span>${esc(srcName(t.source))}</span><span class="sep">·</span><span>${esc(t.type)}</span><span class="sep">·</span><span class="tnum">${esc(t.lot)}</span></div>
+      <div class="eb">${isNew ? '<span class="newtag">Yangi qo‘shildi</span><span class="sep">·</span>' : ''}${srcBadge(t.source)}<span>${esc(srcName(t.source))}</span><span class="sep">·</span><span>${esc(t.type)}</span><span class="sep">·</span><span class="tnum">${esc(t.lot)}</span></div>
       <div class="ttl">${esc(t.title)}</div>
       <div class="who">${icon('bld', 'sm')}${esc(t.customer)} <span class="sep">·</span> ${esc(regionOf(t))}</div>
     </div>
-    <div class="end"><div class="price">${esc(priceShort(t))}</div>${ACTIVE.includes(t.status) ? cdSpan(t.deadline) : `<span class="cd over">${fmtDate(t.deadline)}</span>`}${pill(t.status)}</div>
+    <div class="end"><div class="price">${esc(priceShort(t))}</div>${active ? cdSpan(t.deadline) : `<span class="cd over">${fmtDate(t.deadline)}</span>`}<div class="endrow">${cs ? `<span class="ckp${cs.done === cs.total ? ' done' : ''}" title="Topshirish checklisti">${icon('check', 'sm')}${cs.done}/${cs.total}</span>` : ''}${pill(t.status)}</div></div>
   </div>`;
 }
 function kanban() {
@@ -1186,11 +1343,11 @@ function kanban() {
   return `<div class="kb">${cols.map(s => {
     const its = items.filter(t => t.status === s.k);
     return `<div class="kcol" data-drop="${s.k}"><div class="kcol-h">${pill(s.k)}<span class="muted tnum" style="font-size:13px">${its.length}</span></div>
-      ${its.map(t => `<div class="kcard" role="button" tabindex="0" draggable="true" data-drag="${esc(t.id)}" data-act="open" data-id="${esc(t.id)}">
-        <div class="eb muted" style="font-size:12px;margin-bottom:4px">${esc(srcName(t.source))} · ${esc(t.type)}</div>
+      ${its.map(t => { const cs = ACTIVE.includes(t.status) ? checkState(t) : null; return `<div class="kcard" role="button" tabindex="0" draggable="true" data-drag="${esc(t.id)}" data-act="open" data-id="${esc(t.id)}">
+        <div class="eb muted" style="font-size:12px;margin-bottom:4px;display:flex;gap:6px;align-items:center">${srcBadge(t.source)}${esc(t.type)}</div>
         <div class="ttl">${esc(t.title)}</div>
-        <div class="foot"><span class="price" style="font-size:14px">${esc(priceShort(t))}</span>${ACTIVE.includes(t.status) ? cdSpan(t.deadline) : `<span>${t.match}%</span>`}</div>
-      </div>`).join('')}
+        <div class="foot"><span class="price" style="font-size:14px">${esc(priceShort(t))}</span>${cs ? `<span class="ckp${cs.done === cs.total ? ' done' : ''}">${icon('check', 'sm')}${cs.done}/${cs.total}</span>` : ''}${ACTIVE.includes(t.status) ? cdSpan(t.deadline) : `<span>${t.match}%</span>`}</div>
+      </div>`; }).join('')}
       ${its.length ? '' : '<div class="muted" style="font-size:13px;text-align:center;padding:24px 8px">Kartani shu yerga torting</div>'}
     </div>`;
   }).join('')}</div>`;
@@ -1218,13 +1375,19 @@ function sheetHTML(t) {
   const canAI = !!S.sample;
   const stIcon = { ready: ['check', 'c-green'], update: ['alert', 'c-orange'], missing: ['xc', 'c-red'] };
   const confirmDel = S.confirm === 'del:' + t.id;
+  const id = esc(t.id);
   return `
-  <div class="sheet-h"><span class="muted" style="font-size:13px">${esc(src.name)} · ${esc(t.type)}</span>
-    <div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" data-act="openEdit" data-id="${esc(t.id)}">Tahrirlash</button><a class="btn btn-ghost btn-sm" href="${esc(safeUrl(t.url || src.url))}" target="_blank" rel="noopener" style="text-decoration:none">Platformada ochish ${icon('ext', 'sm')}</a><button class="closeb" data-act="close" aria-label="Yopish">${icon('x', 'sm')}</button></div></div>
+  <div class="sheet-h"><span class="grab" aria-hidden="true"></span><span class="muted" style="font-size:13px;display:flex;gap:8px;align-items:center">${srcBadge(t.source)}${esc(src.name)} · ${esc(t.type)}</span>
+    <button class="closeb" data-act="close" aria-label="Yopish">${icon('x', 'sm')}</button></div>
   <div class="sheet-b">
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">${pill(t.status)}${t.sample ? '<span class="tag">Namuna</span>' : ''}</div>
     <div class="sh-title">${esc(t.title)}</div>
     <div class="muted" style="display:flex;gap:6px;align-items:center">${icon('bld', 'sm')}${esc(t.customer)}</div>
+    <div class="sh-actions">
+      <button class="btn btn-ghost btn-sm" data-act="openEdit" data-id="${id}">Tahrirlash</button>
+      <a class="btn btn-ghost btn-sm" href="${esc(gcalUrl(t))}" target="_blank" rel="noopener" style="text-decoration:none">${icon('cal', 'sm')}Google Kalendarga</a>
+      <a class="btn btn-ghost btn-sm" href="${esc(safeUrl(t.url || src.url))}" target="_blank" rel="noopener" style="text-decoration:none">Platformada ochish ${icon('ext', 'sm')}</a>
+    </div>
 
     <div class="facts">
       <div class="fact"><div class="k">Boshlang‘ich narx</div><div class="v">${esc(money(t.price, t.currency))}</div></div>
@@ -1240,14 +1403,18 @@ function sheetHTML(t) {
 
     ${t.description ? `<p style="margin:0 0 4px;font-size:15px">${esc(t.description)}</p>` : ''}
 
-    <div class="blk"><div class="blk-h"><h3>Holat</h3><span class="muted" style="font-size:12px">Moliya avtomatik yangilanadi</span></div>
-      <div class="stseg">${STATUSES.map(s => `<button class="st-${s.k}" data-act="setStatus" data-id="${esc(t.id)}" data-s="${s.k}" aria-pressed="${t.status === s.k}"><i></i>${esc(s.l)}</button>`).join('')}</div>
+    <div class="blk"><div class="blk-h"><h3>Holat</h3><span class="muted" style="font-size:12px">Tugmalar: 1–7</span></div>
+      <div class="stseg">${STATUSES.map((s, i) => `<button class="st-${s.k}" data-act="setStatus" data-id="${id}" data-s="${s.k}" aria-pressed="${t.status === s.k}" title="${i + 1}"><i></i>${esc(s.l)}</button>`).join('')}</div>
       ${t.submittedAt || t.wonAt || t.lostAt ? `<div class="dates">
-        ${t.submittedAt ? `<label class="field">Topshirilgan sana<input class="input date" type="date" id="d-sub-${esc(t.id)}" data-date="submittedAt" data-id="${esc(t.id)}" value="${t.submittedAt.slice(0, 10)}"></label>` : ''}
-        ${t.wonAt ? `<label class="field">Yutilgan sana<input class="input date" type="date" id="d-won-${esc(t.id)}" data-date="wonAt" data-id="${esc(t.id)}" value="${t.wonAt.slice(0, 10)}"></label>` : ''}
-        ${t.lostAt ? `<label class="field">Natija sanasi<input class="input date" type="date" id="d-lost-${esc(t.id)}" data-date="lostAt" data-id="${esc(t.id)}" value="${t.lostAt.slice(0, 10)}"></label>` : ''}
+        ${t.submittedAt ? `<label class="field">Topshirilgan sana<input class="input date" type="date" id="d-sub-${id}" data-date="submittedAt" data-id="${id}" value="${t.submittedAt.slice(0, 10)}"></label>` : ''}
+        ${t.wonAt ? `<label class="field">Yutilgan sana<input class="input date" type="date" id="d-won-${id}" data-date="wonAt" data-id="${id}" value="${t.wonAt.slice(0, 10)}"></label>` : ''}
+        ${t.lostAt ? `<label class="field">Natija sanasi<input class="input date" type="date" id="d-lost-${id}" data-date="lostAt" data-id="${id}" value="${t.lostAt.slice(0, 10)}"></label>` : ''}
       </div>` : ''}
     </div>
+
+    ${['submitted', 'won', 'lost'].includes(t.status) ? resultBlock(t) : ''}
+    ${checklistBlock(t)}
+    ${zakalatBlock(t)}
 
     <div class="blk"><div class="blk-h"><h3>Moslik</h3></div>
       <div style="display:flex;gap:14px;align-items:center">${ring(t.match, 56, true)}<div class="tags">${(t.reasons || []).map(r => `<span class="tag">${esc(r)}</span>`).join('') || '<span class="muted">Sabablar ko‘rsatilmagan</span>'}</div></div>
@@ -1261,24 +1428,24 @@ function sheetHTML(t) {
     ${t.req && t.req.skills && t.req.skills.length ? `<div class="blk"><div class="blk-h"><h3>Talab qilinadigan ko‘nikmalar</h3></div><div class="tags">${t.req.skills.map(s => `<span class="tag">${esc(s)}</span>`).join('')}</div></div>` : ''}
 
     <div class="blk"><div class="blk-h"><h3 style="display:flex;gap:8px;align-items:center">${icon('spark')}AI tahlil</h3>
-      ${ai && canAI ? `<button class="link" data-act="analyze" data-id="${esc(t.id)}" ${busy ? 'disabled' : ''}>${icon('refresh', 'sm')} Qayta tahlil</button>` : ''}</div>
+      ${ai && canAI ? `<button class="link" data-act="analyze" data-id="${id}" ${busy ? 'disabled' : ''}>${icon('refresh', 'sm')} Qayta tahlil</button>` : ''}</div>
       ${busy ? `<div class="ai-card"><div class="thinking"><i></i><i></i><i></i> Claude tenderni tahlil qilmoqda…</div></div>`
         : ai ? aiCard(ai)
-        : canAI ? `<div class="ai-card"><p style="margin:0 0 12px" class="muted">Claude talab qilinadigan hujjatlar, ko‘nikmalar, xavflar va yutish imkoniyatini oshirish bo‘yicha tavsiyalar beradi.</p><button class="btn btn-primary" data-act="analyze" data-id="${esc(t.id)}">${icon('spark')}AI bilan tahlil qilish</button></div>`
+        : canAI ? `<div class="ai-card"><p style="margin:0 0 12px" class="muted">Claude talab qilinadigan hujjatlar, ko‘nikmalar, xavflar va yutish imkoniyatini oshirish bo‘yicha tavsiyalar beradi.</p><button class="btn btn-primary" data-act="analyze" data-id="${id}">${icon('spark')}AI bilan tahlil qilish</button></div>`
         : `<div class="ai-card muted">${S.sample === undefined && S.mode === 'cloud' ? 'AI ulanmoqda…' : 'AI tahlil Winder Claude ichida ochilganda ishlaydi.'}</div>`}
       ${S.aiErr[t.id] ? `<p class="c-red" style="font-size:13px">${esc(S.aiErr[t.id])}</p>` : ''}
     </div>
 
     <div class="blk"><div class="blk-h"><h3>Izohlar</h3></div>
-      <textarea class="note" id="note-${esc(t.id)}" data-draft="note:${esc(t.id)}" data-note="${esc(t.id)}" placeholder="Masalan: buyurtmachi bilan gaplashildi, narx 8% past beriladi…">${esc(val('note:' + t.id, t.note || ''))}</textarea>
+      <textarea class="note" id="note-${id}" data-draft="note:${id}" data-note="${id}" placeholder="Masalan: buyurtmachi bilan gaplashildi, narx 8% past beriladi…">${esc(val('note:' + t.id, t.note || ''))}</textarea>
     </div>
 
     <div class="blk"><div class="blk-h"><h3>Tarix</h3></div>
       <div class="timeline">${(t.history || []).slice().reverse().map(h => `<div class="tl">${pill(h.s)}<time>${fmtDate(h.at, true)}</time></div>`).join('')}</div>
     </div>
 
-    <div class="blk">${confirmDel ? `<div class="confirm">Tender butunlay o‘chirilsinmi? <span class="spacer"></span><button class="btn btn-sm btn-ghost" data-act="cancelConfirm">Bekor qilish</button><button class="btn btn-sm btn-danger" data-act="delTender" data-id="${esc(t.id)}">O‘chirish</button></div>`
-      : `<button class="link" style="color:var(--red)" data-act="askDel" data-id="${esc(t.id)}">${icon('trash', 'sm')} Tenderni o‘chirish</button>`}</div>
+    <div class="blk">${confirmDel ? `<div class="confirm">Tender butunlay o‘chirilsinmi? <span class="spacer"></span><button class="btn btn-sm btn-ghost" data-act="cancelConfirm">Bekor qilish</button><button class="btn btn-sm btn-danger" data-act="delTender" data-id="${id}">O‘chirish</button></div>`
+      : `<button class="link" style="color:var(--red)" data-act="askDel" data-id="${id}">${icon('trash', 'sm')} Tenderni o‘chirish</button>`}</div>
   </div>`;
 }
 function aiCard(ai) {
@@ -1591,6 +1758,11 @@ function viewSettings() {
     <div class="gitem"><div class="main"><div class="t">Ismingiz</div><div class="d">Bosh sahifadagi salomlashuv uchun</div></div><input class="input" style="width:220px" id="set-name" data-draft="set-name" data-settext="name" value="${esc(val('set-name', s.name))}"></div>
     <div class="gitem"><div class="main"><div class="t">Kompaniya</div><div class="d">Tenderlar shu kompaniya faoliyatiga mosligi bo‘yicha saralanadi</div></div><input class="input" style="width:280px" id="set-company" data-draft="set-company" data-settext="company" value="${esc(val('set-company', s.company))}"></div>
   </div></div>
+  <div class="group"><div class="group-h">Ko‘rinish</div><div class="glist">
+    <div class="gitem"><div class="main"><div class="t">Mavzu</div><div class="d">Avtomatik — qurilma sozlamasiga qarab</div></div><div class="seg" role="group" aria-label="Mavzu">${[['auto', 'Avtomatik'], ['light', 'Kunduzgi'], ['dark', 'Tungi']].map(([k, l]) => `<button data-act="theme" data-t="${k}" aria-pressed="${appearance.theme === k}">${l}</button>`).join('')}</div></div>
+    <div class="gitem"><div class="main"><div class="t">Asosiy rang</div><div class="d">Tugmalar, havolalar va fon nuri rangi</div></div><div class="swatches">${Object.entries(ACCENTS).map(([k, a]) => `<button class="sw" style="background:${a.sw}" data-act="accent" data-a="${k}" aria-pressed="${appearance.accent === k}" aria-label="${a.name}" title="${a.name}"></button>`).join('')}</div></div>
+    <div class="gitem"><div class="main"><div class="t">Tezkor tugmalar</div><div class="d">Ctrl/⌘ + K — qidiruv · N — yangi tender · E — tahrirlash · 1–7 — tender holati · / — ro‘yxatda qidirish · Esc — yopish</div></div></div>
+  </div></div>
   <div class="group"><div class="group-h">Faoliyat yo‘nalishlari</div><div class="glist"><div class="dirs">${DIRECTIONS.map(d => `<button class="chip" data-act="dirToggle" data-d="${esc(d)}" aria-pressed="${(s.directions || []).includes(d)}">${esc(d)}</button>`).join('')}</div></div></div>
   ${kwBlock('keywords', 'Kalit so‘zlar — qo‘lda qo‘shilgan tenderning moslik bahosini oshiradi', 'Kalit so‘z qo‘shing')}
   ${kwBlock('exclude', 'Istisno so‘zlar — shular uchrasa moslik bahosi past bo‘ladi', 'Istisno so‘z qo‘shing')}
@@ -1640,6 +1812,7 @@ function renderModal() {
   root.innerHTML = `<div class="modal" data-act="modalBg"><form class="dialog" data-form="add" role="dialog" aria-modal="true" aria-label="${title}">
     <div style="display:flex;justify-content:space-between;align-items:center"><h2>${title}</h2><button type="button" class="closeb" data-act="closeModal" aria-label="Yopish">${icon('x', 'sm')}</button></div>
     <p class="muted" style="margin:6px 0 0">${editId ? 'Lot ma’lumotlarini o‘zgartiring. Holat, izoh va AI tahlil saqlanib qoladi.' : 'Platformada topgan tenderingiz ma’lumotlarini kiriting. Moslik bo‘sh qolsa, kalit so‘zlar bo‘yicha hisoblanadi.'}</p>
+    ${editId ? '' : autofillBlock()}
     <div class="form">
       ${fld('f-title', 'Tender nomi *', 'required', true)}
       ${sel('f-source', 'Platforma', Object.entries(SOURCES).map(([k, s]) => [k, s.name]), src)}
@@ -1700,20 +1873,528 @@ async function submitAdd() {
   if (ok) { clearFormDrafts(); S.modal = null; S.sel = id; render(); }
 }
 
+/* ---------- Platforma belgilari, zakalat, checklist, natija ---------- */
+const srcBadge = k => `<span class="sb sb-${esc(k)}" title="${esc(srcName(k))}">${esc(SRC_ABBR[k] || '?')}</span>`;
+const cut = (str, n) => { str = String(str || ''); return str.length > n ? str.slice(0, n - 1) + '…' : str; };
+const avg = a => (a.length ? a.reduce((x, y) => x + y, 0) / a.length : null);
+const pct1 = n => n.toFixed(1).replace('.', ',') + '%';
+const parseAmount = v => { const n = Number(String(v).replace(/[\s ]/g, '').replace(',', '.').replace(/[^\d.]/g, '')); return isFinite(n) && n >= 0 ? n : null; };
+const uzsOf = (t, amount) => (t.currency === 'USD' ? (Number(amount) || 0) * (Number(S.settings.usdRate) || 12650) : Number(amount) || 0);
+const h36 = str => { let h = 5381; for (const ch of String(str)) h = ((h << 5) + h + ch.codePointAt(0)) | 0; return (h >>> 0).toString(36); };
+
+// Zakalat: boshlang'ich narxdan. Tenderda 5% gacha, tanlov turlarida 3% gacha, auksion va do'konlarda 3%, qolganlarida 0%.
+const ZAK5 = ['Tender', 'Elektron tender'];
+const ZAK3 = ['Tanlov', 'Tanlash', 'Eng yaxshi taklif', 'Taklif so‘rovi', 'Takliflar so‘rovi', 'Autsorsing xizmatlari', 'Auksion', 'Mahalliy auksion', 'Elektron do‘kon', 'Milliy do‘kon', 'Do‘kon'];
+const zakDefaultPct = type => (ZAK5.includes(type) ? 5 : ZAK3.includes(type) ? 3 : 0);
+const ZAK_STATES = { none: 'Kerak emas', due: 'To‘lanadi', paid: 'To‘landi', returned: 'Qaytarildi' };
+function zakalat(t) {
+  const z = t.zakalat || {};
+  const custom = z.pct != null && z.pct !== '';
+  const base = zakDefaultPct(t.type);
+  const pct = custom ? Number(z.pct) || 0 : base;
+  const amount = Math.round((Number(t.price) || 0) * pct / 100);
+  const state = pct > 0 ? (z.state && z.state !== 'none' ? z.state : 'due') : 'none';
+  return { pct, amount, state, custom, base, uzs: uzsOf(t, amount) };
+}
+function zakSummary() {
+  const r = { due: [0, 0], paid: [0, 0], back: [0, 0] };
+  for (const t of S.tenders) {
+    const z = zakalat(t);
+    if (z.pct <= 0) continue;
+    if (z.state === 'due' && (t.status === 'review' || t.status === 'prep')) { r.due[0] += z.uzs; r.due[1]++; }
+    else if (z.state === 'paid' && (t.status === 'lost' || t.status === 'skipped')) { r.back[0] += z.uzs; r.back[1]++; }
+    else if (z.state === 'paid') { r.paid[0] += z.uzs; r.paid[1]++; }
+  }
+  return r;
+}
+function zakalatBlock(t) {
+  const z = zakalat(t), id = esc(t.id);
+  return `<div class="blk"><div class="blk-h"><h3 style="display:flex;gap:8px;align-items:center">${icon('shield')}Zakalat</h3><span class="muted" style="font-size:12px">${z.custom ? 'Qo‘lda kiritilgan foiz' : `${esc(t.type)} turi bo‘yicha ${z.base}%`}</span></div>
+    <div class="zak">
+      <div><div class="num-m">${z.pct > 0 ? esc(money(z.amount, t.currency)) : '0 so‘m'}</div><div class="muted" style="font-size:13px">Boshlang‘ich narxning ${String(z.pct).replace('.', ',')}%${t.currency === 'USD' && z.pct > 0 ? ` · ≈ ${esc(money(z.uzs))}` : ''}</div></div>
+      <label class="field">Foiz<input class="input tnum" id="zak-${id}" data-zakpct="${id}" inputmode="decimal" value="${z.custom ? esc(z.pct) : ''}" placeholder="${z.base}" style="width:96px" aria-label="Zakalat foizi"></label>
+    </div>
+    ${z.pct > 0 ? `<div class="mini-seg zakseg" role="group" aria-label="Zakalat holati">${['due', 'paid', 'returned'].map(k => `<button data-act="zakState" data-id="${id}" data-s="${k}" aria-pressed="${z.state === k}">${ZAK_STATES[k]}</button>`).join('')}</div>` : '<p class="muted" style="margin:0;font-size:13px">Bu xarid turida zakalat talab qilinmaydi. Kerak bo‘lsa, foizni kiriting.</p>'}
+    <p class="faint" style="font-size:12px;margin:8px 0 0">Aniq foiz tender hujjatida ko‘rsatiladi: tenderda 5% gacha, tanlovda 3% gacha.</p>
+  </div>`;
+}
+
+const CHECKS = [
+  ['tz', 'Tender hujjatlari va TZ o‘qildi'],
+  ['eri', 'ERI amal qilish muddati tekshirildi'],
+  ['zakalat', 'Zakalat to‘landi'],
+  ['docs', 'Hujjatlar to‘plami tayyor'],
+  ['commercial', 'Tijorat taklifi tayyor'],
+  ['technical', 'Texnik taklif tayyor'],
+  ['uploaded', 'Platformaga yuklandi va imzolandi'],
+];
+function checkState(t) {
+  const c = t.checklist || {}, z = zakalat(t);
+  const items = CHECKS.map(([k, l]) => {
+    if (k === 'zakalat') {
+      if (z.pct <= 0) return { k, l: 'Zakalat talab qilinmaydi', done: true, auto: true };
+      return { k, l, done: z.state === 'paid' || z.state === 'returned' };
+    }
+    return { k, l, done: !!c[k] };
+  });
+  return { items, done: items.filter(i => i.done).length, total: items.length };
+}
+async function toggleCheck(id, k) {
+  const t = S.tenders.find(x => x.id === id); if (!t) return;
+  if (k === 'zakalat') {
+    const z = zakalat(t); if (z.pct <= 0) return;
+    await save(() => Store.update('tenders', id, { zakalat: { state: z.state === 'paid' || z.state === 'returned' ? 'due' : 'paid' } }));
+    return;
+  }
+  await save(() => Store.update('tenders', id, { checklist: { [k]: !(t.checklist && t.checklist[k]) } }));
+}
+function checklistBlock(t) {
+  const cs = checkState(t), id = esc(t.id);
+  const pct = Math.round(cs.done / cs.total * 100);
+  return `<div class="blk"><div class="blk-h"><h3>Topshirish checklisti</h3><span class="muted tnum" style="font-size:13px">${cs.done}/${cs.total}</span></div>
+    <div class="bar" style="margin-bottom:10px"><i style="width:${pct}%${cs.done === cs.total ? ';background:var(--green)' : ''}"></i></div>
+    <div class="checks">${cs.items.map(i => `<button class="check ck" data-act="check" data-id="${id}" data-k="${i.k}" aria-pressed="${i.done}" ${i.auto ? 'disabled' : ''}>${icon(i.done ? 'check' : 'circle', i.done ? 'c-green' : 'faint')}<div>${esc(i.l)}</div></button>`).join('')}</div>
+    ${cs.done === cs.total && t.status === 'prep' ? `<div class="impact" style="margin-top:10px;align-items:center">${icon('check', 'c-green')}<div style="flex:1"><b>Hammasi tayyor</b>Taklifni topshirgan bo‘lsangiz, holatni yangilang.</div><button class="btn btn-primary btn-sm" data-act="setStatus" data-id="${id}" data-s="submitted">Topshirildi</button></div>` : ''}
+  </div>`;
+}
+
+const normName = str => String(str || '').toLowerCase().replace(/[«»"'‘’`ʻ]/g, '').replace(/\b(mchj|ooo|llc|aj|ajj|xk|qk|ltd)\b/g, '').replace(/[—–-]/g, ' ').replace(/\s+/g, ' ').trim();
+function isUs(name) {
+  const n = normName(name), me = normName(S.settings.company || '');
+  return !!n && (n === 'biz' || n === me || (me && me.startsWith(n + ' ')));
+}
+function resultOf(t) {
+  const r = t.result || {};
+  return { ourPrice: r.ourPrice != null ? Number(r.ourPrice) : null, winner: r.winner || '', winnerPrice: r.winnerPrice != null ? Number(r.winnerPrice) : null, participants: Array.isArray(r.participants) ? r.participants : [], note: r.note || '' };
+}
+function resultBlock(t) {
+  const r = resultOf(t), id = esc(t.id), cur = t.currency;
+  let diff = '';
+  if (r.ourPrice > 0 && t.price > 0) diff += `Boshlang‘ich narxdan ${pct1(Math.abs((1 - r.ourPrice / t.price) * 100))} ${r.ourPrice <= t.price ? 'past' : 'yuqori'}. `;
+  if (t.status === 'lost' && r.ourPrice > 0 && r.winnerPrice > 0) { const d = (r.ourPrice - r.winnerPrice) / r.winnerPrice * 100; diff += d > 0 ? `Narxingiz g‘olibnikidan ${pct1(d)} qimmat.` : d < 0 ? `Narxingiz g‘olibnikidan ${pct1(-d)} arzon edi — demak, baho boshqa mezonlar bo‘yicha.` : 'Narxingiz g‘olibniki bilan teng.'; }
+  const names = [...new Set(competitorStats().map(c => c.name))].slice(0, 60);
+  return `<div class="blk"><div class="blk-h"><h3 style="display:flex;gap:8px;align-items:center">${icon('flag')}Natija</h3><a class="link" href="#raqobat" data-act="closeTo" data-v="raqobat">Raqobatchilar ${icon('chevR', 'sm')}</a></div>
+    <div class="res-grid">
+      <label class="field">Bizning taklif narxi${cur === 'USD' ? ' ($)' : ''}<input class="input tnum" id="res-our-${id}" data-res="ourPrice" data-id="${id}" inputmode="numeric" value="${r.ourPrice != null ? grp(r.ourPrice) : ''}"></label>
+      <label class="field">G‘olib<input class="input" id="res-win-${id}" data-res="winner" data-id="${id}" list="compNames" value="${esc(r.winner)}" placeholder="${t.status === 'won' ? esc(S.settings.company || 'Biz') : 'Kompaniya nomi'}"></label>
+      <label class="field">G‘olib narxi${cur === 'USD' ? ' ($)' : ''}<input class="input tnum" id="res-wp-${id}" data-res="winnerPrice" data-id="${id}" inputmode="numeric" value="${r.winnerPrice != null ? grp(r.winnerPrice) : ''}"></label>
+      <label class="field">Izoh<input class="input" id="res-note-${id}" data-res="note" data-id="${id}" value="${esc(r.note)}" placeholder="Masalan: ball bo‘yicha 2-o‘rin"></label>
+    </div>
+    ${diff ? `<p class="muted" style="margin:10px 0 0;font-size:13px">${esc(diff)}</p>` : ''}
+    <div class="parts">${r.participants.map((pt, i) => `<div class="part">
+      <input class="input" id="pn-${id}-${i}" data-part="${i}" data-pf="name" data-id="${id}" list="compNames" value="${esc(pt.name || '')}" placeholder="Ishtirokchi nomi" aria-label="Ishtirokchi nomi">
+      <input class="input tnum" id="pp-${id}-${i}" data-part="${i}" data-pf="price" data-id="${id}" inputmode="numeric" value="${pt.price != null ? grp(pt.price) : ''}" placeholder="Narxi" aria-label="Ishtirokchi narxi">
+      <button class="iconbtn" data-act="delPart" data-id="${id}" data-i="${i}" aria-label="O‘chirish">${icon('x', 'sm')}</button></div>`).join('')}</div>
+    <button class="link" style="margin-top:8px" data-act="addPart" data-id="${id}">${icon('plus', 'sm')} Boshqa ishtirokchi qo‘shish</button>
+    <datalist id="compNames">${names.map(n => `<option value="${esc(n)}"></option>`).join('')}</datalist>
+  </div>`;
+}
+
+/* ---------- Kalendar ---------- */
+function gcalUrl(t) {
+  const end = D(t.deadline);
+  if (isNaN(end)) return 'https://calendar.google.com/';
+  const start = new Date(end.getTime() - 60 * 60 * 1000);
+  const f = d => d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+  const details = [`Lot: ${t.lot}`, `Platforma: ${srcName(t.source)}`, `Boshlang‘ich narx: ${money(t.price, t.currency)}`, /^https?:\/\//.test(t.url || '') ? `Havola: ${t.url}` : ''].filter(Boolean).join('\n');
+  return 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent('Tender muddati: ' + cut(t.title, 90))
+    + '&dates=' + f(start) + '/' + f(end) + '&details=' + encodeURIComponent(details) + '&location=' + encodeURIComponent(t.customer && t.customer !== '—' ? t.customer : '');
+}
+
+/* ---------- Bugungi fokus va taqvim ---------- */
+const WD3 = ['Yak', 'Dush', 'Sesh', 'Chor', 'Pay', 'Jum', 'Shan'];
+function focusItems() {
+  const now = Date.now(), items = [];
+  for (const t of S.tenders) {
+    const z = zakalat(t);
+    if (ACTIVE.includes(t.status)) {
+      const ms = D(t.deadline) - now;
+      if (ms > 0 && ms <= 2 * 864e5) { const cs = checkState(t); items.push({ w: 200 - ms / 36e5, ico: 'clock', cls: 'c-red', t, text: `${countdown(t.deadline).t} qoldi · checklist ${cs.done}/${cs.total}`, sub: t.title }); }
+    }
+    if (t.status === 'prep' && z.state === 'due') items.push({ w: 90, ico: 'shield', cls: 'c-orange', t, text: `Zakalat to‘lash: ${money(z.amount, t.currency)}`, sub: t.title });
+    if (t.status === 'new' && (t.match || 0) >= 85) items.push({ w: 70 + (t.match || 0) / 10, ico: 'radar', cls: 'c-blue', t, text: `Moslik ${t.match}% — ko‘rib chiqing`, sub: t.title });
+    if (t.status === 'submitted' && t.submittedAt && now - D(t.submittedAt) > 21 * 864e5) items.push({ w: 60, ico: 'flag', cls: '', t, text: 'Natijani kiriting', sub: `${Math.floor((now - D(t.submittedAt)) / 864e5)} kun oldin topshirilgan · ${t.title}` });
+    if ((t.status === 'lost' || t.status === 'skipped') && z.state === 'paid') items.push({ w: 50, ico: 'shield', cls: 'c-blue', t, text: 'Zakalat qaytarilganini tekshiring', sub: t.title });
+  }
+  for (const d of S.docs) {
+    if (!d.expires) continue;
+    const left = (D(d.expires + 'T23:59:59') - now) / 864e5;
+    if (left >= 0 && left <= 14) items.push({ w: 55, ico: 'doc', cls: 'c-orange', go: 'hujjatlar', text: `${d.name}: muddati ${Math.ceil(left)} kunda tugaydi`, sub: 'Hujjatlar bo‘limida yangilang' });
+  }
+  const seen = new Set();
+  return items.sort((a, b) => b.w - a.w).filter(i => { const k = i.t ? i.t.id : 'doc:' + i.text; if (seen.has(k)) return false; seen.add(k); return true; }).slice(0, 5);
+}
+function weekStrip(T) {
+  const t0 = today0();
+  const days = Array.from({ length: 14 }, (_, i) => { const d = new Date(t0); d.setDate(d.getDate() + i); return d; });
+  const act = T.filter(t => ACTIVE.includes(t.status));
+  return `<div class="wk-scroll"><div class="wk-days">${days.map((d, i) => {
+    const its = act.filter(t => sameDay(D(t.deadline), d)).sort((a, b) => D(a.deadline) - D(b.deadline));
+    return `<div class="wk-day${i === 0 ? ' today' : ''}${d.getDay() === 0 || d.getDay() === 6 ? ' wkend' : ''}"><div class="wk-dh"><span>${i === 0 ? 'Bugun' : i === 1 ? 'Ertaga' : WD3[d.getDay()]}</span><b>${d.getDate()}</b></div>
+      ${its.map(t => `<button class="wk-chip" data-act="open" data-id="${esc(t.id)}" title="${esc(t.title)}">${srcBadge(t.source)}<span class="t">${esc(t.title)}</span></button>`).join('') || '<span class="faint" style="font-size:12px">—</span>'}</div>`;
+  }).join('')}</div></div>`;
+}
+
+/* ---------- Natijalar ---------- */
+function hbars(groups) {
+  const max = Math.max(1, ...groups.map(g => g.w + g.l + g.p));
+  return `<div class="hbs">${groups.map(g => {
+    const tot = g.w + g.l + g.p, rate = g.w + g.l ? Math.round(g.w / (g.w + g.l) * 100) + '%' : '—';
+    return `<div class="hb" title="Yutildi ${g.w} · Yutqazildi ${g.l} · Natija kutilmoqda ${g.p}"><span class="hb-l">${g.badge || ''}<span>${esc(g.label)}</span></span><span class="hb-t"><span class="trk" style="width:${Math.max(6, tot / max * 100)}%">${g.w ? `<i class="sg-w" style="flex:${g.w}"></i>` : ''}${g.l ? `<i class="sg-l" style="flex:${g.l}"></i>` : ''}${g.p ? `<i class="sg-p" style="flex:${g.p}"></i>` : ''}</span></span><b class="tnum">${rate}</b></div>`;
+  }).join('')}</div>`;
+}
+function monthBars(rows) {
+  const W = 640, H = 230, L = 32, R = 8, T = 24, B = 30;
+  const max = Math.max(1, ...rows.map(r => Math.max(r.sub, r.won)));
+  const step = max <= 4 ? 1 : niceStep(max / 4), top = Math.ceil(max / step) * step;
+  const y = v => T + (H - T - B) * (1 - v / top);
+  let g = '';
+  for (let v = 0; v <= top + 1e-9; v += step) g += `<line class="grid" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${v}</text>`;
+  const slot = (W - L - R) / rows.length, bw = Math.min(26, slot * 0.28);
+  const bars = rows.map((r, i) => {
+    const cx = L + slot * (i + 0.5), mm = Number(r.key.split('-')[1]);
+    const b = (v, x, cls) => (v > 0 ? `<path class="${cls}" d="${topRound(x, y(v), bw, y(0) - y(v), 4)}"/><text class="val" x="${x + bw / 2}" y="${y(v) - 6}" text-anchor="middle">${v}</text>` : '');
+    return b(r.sub, cx - bw - 1.5, 'mb-s') + b(r.won, cx + 1.5, 'mb-w') + `<text x="${cx}" y="${H - 10}" text-anchor="middle">${MON3[mm - 1]}</text>`;
+  }).join('');
+  return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Oxirgi 6 oy: topshirilgan va yutilgan tenderlar">${g}${bars}</svg>`;
+}
+function viewResults() {
+  if (!ready()) return loadingView();
+  const P = S.resPeriod || 'year', now = new Date();
+  const from = P === 'year' ? new Date(now.getFullYear(), 0, 1) : P === '6m' ? new Date(now.getFullYear(), now.getMonth() - 5, 1) : null;
+  const sub = S.tenders.filter(t => t.submittedAt && (!from || D(t.submittedAt) >= from));
+  const won = sub.filter(t => t.status === 'won'), lost = sub.filter(t => t.status === 'lost'), pend = sub.filter(t => t.status !== 'won' && t.status !== 'lost');
+  const rate = won.length + lost.length ? Math.round(won.length / (won.length + lost.length) * 100) : null;
+  const wonValue = won.reduce((a, t) => a + uzsOf(t, resultOf(t).ourPrice || t.price), 0);
+  const head = `<div class="phead"><div><h1>Natijalar</h1><p class="sub">Topshirgan tenderlaringiz: qancha yutdingiz, qayerda kuchlisiz va narxingiz qanday.</p></div>
+    <div class="actions"><div class="seg" role="group" aria-label="Davr">${[['6m', '6 oy'], ['year', 'Shu yil'], ['all', 'Hammasi']].map(([k, l]) => `<button data-act="resPeriod" data-p="${k}" aria-pressed="${P === k}">${l}</button>`).join('')}</div></div></div>`;
+  if (!sub.length) return head + `<div class="empty"><h3>Bu davrda topshirilgan tender yo‘q</h3><p>Tender holatini “Topshirildi”, keyin “Yutildi” yoki “Yutqazildi” qiling — natijalar shu yerda yig‘iladi.</p></div>`;
+  const group = keyFn => { const m = new Map(); for (const t of sub) { const k = keyFn(t); const g = m.get(k) || { k, w: 0, l: 0, p: 0 }; if (t.status === 'won') g.w++; else if (t.status === 'lost') g.l++; else g.p++; m.set(k, g); } return [...m.values()].sort((a, b) => (b.w + b.l + b.p) - (a.w + a.l + a.p)); };
+  const byPlat = group(t => t.source).map(g => ({ ...g, label: srcName(g.k), badge: srcBadge(g.k) }));
+  const byDir = group(t => t.direction || 'IT xizmatlari').map(g => ({ ...g, label: g.k }));
+  const months = Array.from({ length: 6 }, (_, i) => { const key = shiftMonth(mk(now), i - 5); return { key, sub: S.tenders.filter(t => mkIso(t.submittedAt) === key).length, won: S.tenders.filter(t => mkIso(t.wonAt) === key).length }; });
+  const disc = arr => avg(arr.map(t => { const o = resultOf(t).ourPrice; return o > 0 && t.price > 0 ? (1 - o / t.price) * 100 : null; }).filter(v => v != null));
+  const dW = disc(won), dL = disc(lost);
+  const gap = avg(lost.map(t => { const r = resultOf(t); return r.ourPrice > 0 && r.winnerPrice > 0 ? (r.ourPrice - r.winnerPrice) / r.winnerPrice * 100 : null; }).filter(v => v != null));
+  const insight = gap == null ? 'Yutqazgan tenderlarda “Natija” blokiga taklif narxingiz va g‘olib narxini kiriting — narx tahlili shu yerda chiqadi.'
+    : gap > 0 ? `Yutqazgan tenderlarda narxingiz g‘olibnikidan o‘rtacha ${pct1(gap)} qimmat bo‘lgan.` : `Yutqazgan tenderlarda narxingiz g‘olibnikidan o‘rtacha ${pct1(-gap)} arzon bo‘lgan — sabab narxda emas, texnik baholashda.`;
+  const legend = `<div class="legend"><span><i style="background:var(--green)"></i>Yutildi</span><span><i style="background:var(--red)"></i>Yutqazildi</span><span><i style="background:var(--purple)"></i>Natija kutilmoqda</span></div>`;
+  const rows = sub.slice().sort((a, b) => D(b.submittedAt) - D(a.submittedAt));
+  return head + `<div class="bento">
+    <div class="tile c-3"><span class="t-label">${icon('upload', 'sm')}Topshirildi</span><div class="num-l" style="margin-top:14px">${sub.length}</div><div class="stat-sub">${pend.length} tasi natija kutmoqda</div></div>
+    <div class="tile c-3"><span class="t-label">${icon('trophy', 'sm')}Yutildi</span><div class="num-l" style="margin-top:14px">${won.length}</div><div class="stat-sub">${lost.length} ta yutqazildi</div></div>
+    <div class="tile c-3"><span class="t-label">${icon('target', 'sm')}G‘alaba ulushi</span><div class="num-l" style="margin-top:14px">${rate == null ? '—' : rate + '%'}</div><div class="stat-sub">natijasi ma’lum tenderlardan</div></div>
+    <div class="tile c-3"><span class="t-label">${icon('wallet', 'sm')}Yutilgan shartnomalar</span><div class="num-l" style="margin-top:14px">${short(wonValue)}</div><div class="stat-sub">so‘m, taklif narxi bo‘yicha</div></div>
+    <div class="tile c-6"><div class="t-head"><h3>Platformalar bo‘yicha</h3><span class="muted" style="font-size:12px">g‘alaba ulushi</span></div>${legend}${hbars(byPlat)}</div>
+    <div class="tile c-6"><div class="t-head"><h3>Yo‘nalishlar bo‘yicha</h3><span class="muted" style="font-size:12px">g‘alaba ulushi</span></div>${legend}${hbars(byDir)}</div>
+    <div class="tile c-7"><div class="t-head"><h3>Oylik dinamika</h3><div class="legend"><span><i style="background:var(--purple)"></i>Topshirildi</span><span><i style="background:var(--green)"></i>Yutildi</span></div></div><div class="chart-scroll">${monthBars(months)}</div></div>
+    <div class="tile c-5"><h3>Narx tahlili</h3>
+      <div class="rows" style="margin-top:14px">
+        <div class="row"><div class="row-main"><div class="row-title" style="font-weight:500">Yutganlarda chegirma</div><div class="row-meta">boshlang‘ich narxdan o‘rtacha</div></div><div class="row-end num-m" style="font-size:19px">${dW == null ? '—' : pct1(dW)}</div></div>
+        <div class="row"><div class="row-main"><div class="row-title" style="font-weight:500">Yutqazganlarda chegirma</div><div class="row-meta">boshlang‘ich narxdan o‘rtacha</div></div><div class="row-end num-m" style="font-size:19px">${dL == null ? '—' : pct1(dL)}</div></div>
+        <div class="row"><div class="row-main"><div class="row-title" style="font-weight:500">G‘olibdan farq</div><div class="row-meta">yutqazgan tenderlarda</div></div><div class="row-end num-m" style="font-size:19px">${gap == null ? '—' : (gap > 0 ? '+' : '−') + pct1(Math.abs(gap))}</div></div>
+      </div>
+      <div class="impact" style="margin-top:12px">${icon('spark')}<div>${esc(insight)}</div></div>
+    </div>
+    <div class="tile c-12"><div class="t-head"><h3>Topshirilgan tenderlar</h3><span class="muted" style="font-size:13px">${rows.length} ta</span></div>
+      <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Topshirilgan</th><th>Tender</th><th class="r">Bizning narx</th><th>G‘olib</th><th class="r">G‘olib narxi</th><th class="r">Farq</th><th>Holat</th></tr></thead><tbody>
+      ${rows.map(t => { const r = resultOf(t); const d = r.ourPrice > 0 && r.winnerPrice > 0 && t.status === 'lost' ? (r.ourPrice - r.winnerPrice) / r.winnerPrice * 100 : null; return `<tr class="click" data-act="open" data-id="${esc(t.id)}">
+        <td class="tnum">${fmtDate(t.submittedAt)}</td><td><span style="display:flex;gap:6px;align-items:flex-start">${srcBadge(t.source)}<span>${esc(cut(t.title, 80))}</span></span></td>
+        <td class="r">${r.ourPrice > 0 ? esc(money(r.ourPrice, t.currency)) : '—'}</td><td>${esc(r.winner || (t.status === 'won' ? S.settings.company || 'Biz' : '—'))}</td>
+        <td class="r">${r.winnerPrice > 0 ? esc(money(r.winnerPrice, t.currency)) : '—'}</td><td class="r ${d == null ? '' : d > 0 ? 'c-red' : 'c-green'}">${d == null ? '—' : (d > 0 ? '+' : '−') + pct1(Math.abs(d))}</td><td>${pill(t.status)}</td></tr>`; }).join('')}
+      </tbody></table></div>
+    </div>
+  </div>`;
+}
+
+/* ---------- Raqobatchilar ---------- */
+function competitorStats() {
+  const map = new Map();
+  for (const t of S.tenders) {
+    const r = resultOf(t);
+    const entries = [];
+    if (r.winner && !isUs(r.winner)) entries.push({ name: r.winner, price: r.winnerPrice, won: true });
+    for (const pt of r.participants) if (pt && pt.name && !isUs(pt.name) && normName(pt.name) !== normName(r.winner)) entries.push({ name: pt.name, price: pt.price, won: false });
+    for (const e of entries) {
+      const key = normName(e.name); if (!key) continue;
+      const c = map.get(key) || { key, id: 'c' + h36(key), name: String(e.name).trim(), met: 0, wins: 0, discounts: [], dirs: {}, items: [], last: null };
+      c.met++; if (e.won) c.wins++;
+      const price = Number(e.price);
+      if (price > 0 && t.price > 0) c.discounts.push((1 - price / t.price) * 100);
+      c.dirs[t.direction || 'IT xizmatlari'] = (c.dirs[t.direction || 'IT xizmatlari'] || 0) + 1;
+      c.items.push({ t, price: price > 0 ? price : null, won: e.won });
+      const at = t.lostAt || t.wonAt || t.submittedAt || t.foundAt;
+      if (at && (!c.last || D(at) > D(c.last))) c.last = at;
+      map.set(key, c);
+    }
+  }
+  return [...map.values()].sort((a, b) => b.met - a.met || b.wins - a.wins || a.name.localeCompare(b.name));
+}
+function viewCompetitors() {
+  if (!ready()) return loadingView();
+  const all = competitorStats();
+  const q = String(val('cq', '')).trim().toLowerCase();
+  const list = q ? all.filter(c => c.name.toLowerCase().includes(q)) : all;
+  const notes = Object.fromEntries(S.competitors.map(c => [c.id, c]));
+  const head = `<div class="phead"><div><h1>Raqobatchilar</h1><p class="sub">Siz qatnashgan tenderlardagi g‘oliblar va boshqa ishtirokchilar: kim qayerda, qanday narxda yutmoqda.</p></div></div>`;
+  if (!all.length) return head + `<div class="empty"><h3>Hali raqobatchilar yo‘q</h3><p>Topshirilgan tender varag‘idagi “Natija” blokiga g‘olib va boshqa ishtirokchilarni yozing. Ular shu yerda avtomatik yig‘iladi.</p></div>`;
+  const topMet = all[0], topWin = all.slice().sort((a, b) => b.wins - a.wins)[0];
+  return head + `<div class="bento">
+    <div class="tile c-4"><span class="t-label">${icon('users', 'sm')}Raqobatchilar</span><div class="num-l" style="margin-top:14px">${all.length}</div><div class="stat-sub">kompaniya</div></div>
+    <div class="tile c-4"><span class="t-label">${icon('radar', 'sm')}Eng ko‘p uchragan</span><div class="num-m" style="margin-top:14px">${esc(cut(topMet.name, 28))}</div><div class="stat-sub">${topMet.met} marta</div></div>
+    <div class="tile c-4"><span class="t-label">${icon('trophy', 'sm')}Eng ko‘p yutgan</span><div class="num-m" style="margin-top:14px">${topWin.wins ? esc(cut(topWin.name, 28)) : '—'}</div><div class="stat-sub">${topWin.wins ? `${topWin.wins} ta tenderda` : 'hali yo‘q'}</div></div>
+  </div>
+  <div class="search" style="margin:22px 0 14px">${icon('search')}<input id="cq" data-draft="cq" type="search" placeholder="Kompaniya nomi bo‘yicha qidirish" value="${esc(val('cq', ''))}" autocomplete="off"></div>
+  <div class="glist comp-list">${list.map(c => {
+    const open = S.compOpen === c.id, d = avg(c.discounts);
+    const dirs = Object.entries(c.dirs).sort((a, b) => b[1] - a[1]).slice(0, 3).map(([k]) => `<span class="tag">${esc(k)}</span>`).join('');
+    const initials = c.name.split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+    return `<div class="comp${open ? ' open' : ''}">
+      <button class="comp-h" data-act="compToggle" data-c="${c.id}" aria-expanded="${open}">
+        <span class="av">${esc(initials)}</span>
+        <span class="main"><span class="t">${esc(c.name)}</span><span class="d">${c.met} marta uchrashdik · ${c.wins} marta yutgan${d == null ? '' : ` · boshlang‘ich narxdan o‘rtacha ${pct1(d)} past`}${c.last ? ` · oxirgi: ${fmtDate(c.last)}` : ''}</span></span>
+        <span class="tags comp-dirs">${dirs}</span>${icon(open ? 'chevD' : 'chevR', 'sm')}
+      </button>
+      ${open ? `<div class="comp-b">
+        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Tender</th><th class="r">Ularning narxi</th><th>Natija</th></tr></thead><tbody>
+          ${c.items.map(it => `<tr class="click" data-act="open" data-id="${esc(it.t.id)}"><td><span style="display:flex;gap:6px;align-items:flex-start">${srcBadge(it.t.source)}<span>${esc(cut(it.t.title, 90))}</span></span></td><td class="r">${it.price ? esc(money(it.price, it.t.currency)) : '—'}</td><td>${it.won ? '<span class="pill st-lost"><i></i>Ular yutgan</span>' : '<span class="pill st-skipped"><i></i>Ishtirokchi</span>'}</td></tr>`).join('')}
+        </tbody></table></div>
+        <label class="field" style="margin-top:12px">Izoh: kuchli tomonlari, narx siyosati, kontaktlar<textarea class="note" id="cnote-${c.id}" data-draft="cnote-${c.id}" data-cnote="${c.id}" data-cname="${esc(c.name)}">${esc(val('cnote-' + c.id, (notes[c.id] || {}).note || ''))}</textarea></label>
+      </div>` : ''}
+    </div>`;
+  }).join('') || '<div class="gitem"><div class="d">Hech narsa topilmadi.</div></div>'}</div>`;
+}
+
+/* ---------- Tezkor qidiruv (Ctrl/⌘ + K) ---------- */
+const PAL = { open: false, q: '', i: 0, items: [] };
+function palItems(q) {
+  q = String(q || '').trim().toLowerCase();
+  const nav = VIEWS.map(v => ({ kind: 'Bo‘limlar', label: v.l, ico: v.ico, run: () => { location.hash = v.k; } }));
+  const acts = [
+    { kind: 'Amallar', label: 'Yangi tender qo‘shish', sub: 'N', ico: 'plus', run: () => { S.modal = 'add'; render(); setTimeout(() => { const i = $('f-title'); if (i) i.focus(); }, 30); } },
+    { kind: 'Amallar', label: 'Tenderlarni CSV ga eksport qilish', ico: 'download', run: () => exportFile(`winder-tenderlar-${new Date().toISOString().slice(0, 10)}.csv`, csv(), 'text/csv') },
+    { kind: 'Amallar', label: 'Mavzuni almashtirish (kunduzgi / tungi)', ico: 'sliders', run: () => setAppearance({ theme: isDark() ? 'light' : 'dark' }) },
+  ];
+  const words = q.split(/\s+/).filter(Boolean);
+  const tenders = S.tenders.filter(t => { const hay = [t.title, t.lot, t.customer, t.region, srcName(t.source)].join(' ').toLowerCase(); return words.every(w => hay.includes(w)); })
+    .sort((a, b) => (ACTIVE.includes(b.status) - ACTIVE.includes(a.status)) || (b.match || 0) - (a.match || 0)).slice(0, 8)
+    .map(t => ({ kind: 'Tenderlar', label: t.title, sub: `${srcName(t.source)} · ${t.lot} · ${(ST[t.status] || {}).l || ''}`, badge: t.source, run: () => { S.sel = t.id; S.confirm = null; render(); } }));
+  const base = [...nav, ...acts].filter(x => !q || x.label.toLowerCase().includes(q));
+  return q ? [...tenders, ...base] : [...base, ...tenders];
+}
+function openPal() {
+  PAL.open = true; PAL.q = ''; PAL.i = 0;
+  $('palRoot').innerHTML = `<div class="pal" data-act="palBg"><div class="pal-box" role="dialog" aria-modal="true" aria-label="Tezkor qidiruv">
+    <div class="pal-in">${icon('search')}<input id="palQ" placeholder="Tender, bo‘lim yoki amalni qidiring…" autocomplete="off" aria-controls="palList"><kbd>Esc</kbd></div>
+    <div class="pal-list" id="palList" role="listbox"></div>
+    <div class="pal-ft"><span><kbd>↑</kbd><kbd>↓</kbd> tanlash</span><span><kbd>Enter</kbd> ochish</span><span><kbd>Ctrl</kbd>+<kbd>K</kbd> yopish</span></div>
+  </div></div>`;
+  renderPalList();
+  setTimeout(() => { const i = $('palQ'); if (i) i.focus(); }, 10);
+}
+function closePal() { PAL.open = false; $('palRoot').innerHTML = ''; }
+function renderPalList() {
+  const box = $('palList'); if (!box) return;
+  PAL.items = palItems(PAL.q);
+  if (PAL.i >= PAL.items.length) PAL.i = Math.max(0, PAL.items.length - 1);
+  let sec = '', html = '';
+  PAL.items.forEach((it, i) => {
+    if (it.kind !== sec) { sec = it.kind; html += `<div class="pal-sec">${esc(sec)}</div>`; }
+    html += `<button class="pal-it" role="option" data-act="palRun" data-i="${i}" aria-selected="${i === PAL.i}">${it.badge ? srcBadge(it.badge) : icon(it.ico)}<span class="main"><span class="lb">${esc(it.label)}</span>${it.sub ? `<span class="sub">${esc(it.sub)}</span>` : ''}</span></button>`;
+  });
+  box.innerHTML = html || '<div class="pal-sec">Hech narsa topilmadi</div>';
+  const cur = box.querySelector('[aria-selected="true"]'); if (cur) cur.scrollIntoView({ block: 'nearest' });
+}
+function runPal(i) { const it = PAL.items[i]; if (!it) return; closePal(); it.run(); }
+
+/* ---------- Ko'rinish: mavzu va asosiy rang ---------- */
+// Har bir rang: [accent, accent-ink, accent-soft, primary-top, primary-bot, primary-glow, amb-1] — kunduzgi (l) va tungi (d).
+const ACCENTS = {
+  blue: { name: 'Ko‘k', sw: '#0a84ff' },
+  green: { name: 'Yashil', sw: '#34c759', l: ['#248a3d', '#1d7a35', 'rgba(52,199,89,.14)', '#34b35a', '#248a3d', 'rgba(36,138,61,.32)', 'rgba(52,199,89,.32)'], d: ['#28a447', '#30d158', 'rgba(48,209,88,.18)', '#3cc464', '#28a447', 'rgba(48,209,88,.32)', 'rgba(48,209,88,.3)'] },
+  orange: { name: 'To‘q sariq', sw: '#ff9500', l: ['#c25100', '#b24a00', 'rgba(255,149,0,.16)', '#f07f1a', '#c95c00', 'rgba(201,92,0,.3)', 'rgba(255,149,0,.32)'], d: ['#c86400', '#ffb340', 'rgba(255,159,10,.2)', '#e8840f', '#c25e00', 'rgba(232,132,15,.32)', 'rgba(255,159,10,.28)'] },
+  purple: { name: 'Binafsha', sw: '#af52de', l: ['#8e44c9', '#8944ab', 'rgba(175,82,222,.13)', '#a35ad8', '#7b35b5', 'rgba(123,53,181,.3)', 'rgba(175,82,222,.26)'], d: ['#9246cf', '#da8fff', 'rgba(191,90,242,.2)', '#b36ae8', '#9246cf', 'rgba(191,90,242,.35)', 'rgba(191,90,242,.3)'] },
+  pink: { name: 'Pushti', sw: '#ff375f', l: ['#c92a62', '#c2255c', 'rgba(255,55,95,.12)', '#ec4f86', '#c92a62', 'rgba(201,42,98,.3)', 'rgba(255,55,95,.24)'], d: ['#d63a72', '#ff6b9a', 'rgba(255,55,95,.2)', '#f05a8e', '#d63a72', 'rgba(240,90,142,.32)', 'rgba(255,55,95,.28)'] },
+};
+const ACC_VARS = ['--accent', '--accent-ink', '--accent-soft', '--primary-top', '--primary-bot', '--primary-glow', '--amb-1'];
+const appearance = { theme: 'auto', accent: 'blue' };
+try { Object.assign(appearance, JSON.parse(localStorage.getItem('winder:appearance') || '{}')); } catch (e) { /* standart ko'rinish */ }
+let themeOwned = false;
+function isDark() { const a = document.documentElement.getAttribute('data-theme'); return a ? a === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches; }
+function applyAccent() {
+  const root = document.documentElement, a = ACCENTS[appearance.accent];
+  ACC_VARS.forEach(v => root.style.removeProperty(v));
+  if (!a || !a.l) return;
+  const vals = isDark() ? a.d : a.l;
+  ACC_VARS.forEach((v, i) => root.style.setProperty(v, vals[i]));
+}
+function applyAppearance() {
+  const root = document.documentElement;
+  if (appearance.theme === 'light' || appearance.theme === 'dark') { root.setAttribute('data-theme', appearance.theme); themeOwned = true; }
+  else if (themeOwned) { root.removeAttribute('data-theme'); themeOwned = false; }
+  applyAccent();
+}
+function setAppearance(patch) {
+  Object.assign(appearance, patch);
+  try { localStorage.setItem('winder:appearance', JSON.stringify(appearance)); } catch (e) { /* faqat shu sessiya uchun */ }
+  applyAppearance(); render();
+}
+try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyAccent); } catch (e) { /* eski brauzer */ }
+new MutationObserver(applyAccent).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+/* ---------- "Yutildi" lahzasi ---------- */
+function celebrate(title) {
+  const card = document.createElement('div');
+  card.className = 'cele'; card.setAttribute('role', 'status');
+  card.innerHTML = `<div class="cele-ico">${icon('trophy', 'lg')}</div><h2>Tabriklaymiz!</h2><p>Tender yutildi</p><p class="muted">${esc(cut(title, 90))}</p>`;
+  document.body.appendChild(card);
+  requestAnimationFrame(() => card.classList.add('on'));
+  setTimeout(() => { card.classList.remove('on'); setTimeout(() => card.remove(), 450); }, 2600);
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const c = document.createElement('canvas'); c.className = 'confetti'; document.body.appendChild(c);
+  const dpr = Math.min(2, window.devicePixelRatio || 1), W = innerWidth, H = innerHeight;
+  c.width = W * dpr; c.height = H * dpr;
+  const ctx = c.getContext('2d'); ctx.scale(dpr, dpr);
+  const cs = getComputedStyle(document.documentElement);
+  const cols = ['--s1', '--s2', '--s3', '--accent', '--purple', '--orange'].map(v => cs.getPropertyValue(v).trim() || '#0a84ff');
+  const P = Array.from({ length: 160 }, () => ({ x: W / 2 + (Math.random() - 0.5) * 160, y: H * 0.36, vx: (Math.random() - 0.5) * 13, vy: -Math.random() * 13 - 4, r: 5 + Math.random() * 5, a: Math.random() * 6.28, va: (Math.random() - 0.5) * 0.3, c: cols[Math.floor(Math.random() * cols.length)] }));
+  const t0 = performance.now();
+  const frame = now => {
+    const dt = now - t0;
+    ctx.clearRect(0, 0, W, H);
+    for (const p of P) {
+      p.vy += 0.3; p.vx *= 0.99; p.x += p.vx; p.y += p.vy; p.a += p.va;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.a); ctx.globalAlpha = Math.max(0, 1 - dt / 2300); ctx.fillStyle = p.c; ctx.fillRect(-p.r / 2, -p.r / 4, p.r, p.r / 2); ctx.restore();
+    }
+    if (dt < 2300) requestAnimationFrame(frame); else c.remove();
+  };
+  requestAnimationFrame(frame);
+}
+
+/* ---------- AI bilan formani to'ldirish ---------- */
+function autofillBlock() {
+  if (!S.sample) return `<div class="autofill muted" style="font-size:13px;display:flex;gap:8px;align-items:center">${icon('spark', 'sm')} Lot matnidan avtomatik to‘ldirish Winder Claude ichida ochilganda ishlaydi.</div>`;
+  return `<div class="autofill"><label class="field" for="f-paste">Lot sahifasidagi matnni qo‘ying — AI formani o‘zi to‘ldiradi</label>
+    <textarea class="input" id="f-paste" data-draft="f-paste" rows="3" placeholder="Masalan: Lot raqami: 26120012517052 · Boshlang‘ich narx: 148 500 000 UZS · Tugash sanasi: 17.10.2026 18:00 …">${esc(val('f-paste'))}</textarea>
+    <div class="actions" style="margin-top:8px">${S.afBusy ? '<span class="thinking"><i></i><i></i><i></i> AI to‘ldirmoqda…</span>'
+      : `<button type="button" class="btn btn-ghost btn-sm" data-act="autofill">${icon('spark', 'sm')}AI bilan to‘ldirish</button>${S.imgOK ? `<label class="btn btn-ghost btn-sm" style="cursor:pointer">${icon('image', 'sm')}Skrinshotdan<input type="file" id="f-shot" accept="image/png,image/jpeg,image/webp" hidden></label>` : ''}`}</div></div>`;
+}
+async function autofill(file) {
+  if (!S.sample || S.afBusy) return;
+  const text = String(val('f-paste') || '').trim();
+  if (!text && !file) { toast('Avval lot matnini qo‘ying yoki skrinshot tanlang'); return; }
+  S.afBusy = true; render();
+  const prompt = `Quyida O‘zbekistondagi xarid platformasidagi bitta lot (tender) haqida ma’lumot bor: sahifadan nusxalangan matn${file ? ' va/yoki skrinshot' : ''}. Undan lot maydonlarini ajratib ol.
+Bugun: ${new Date().toISOString().slice(0, 10)}, vaqt mintaqasi Toshkent (UTC+5).
+Platforma kalitlari: xarid = xarid.uzex.uz (UZEX Xarid), etender = etender.uzex.uz (UZEX E-tender), xt = xt-xarid.uz, coop = cooperation.uz (Kooperatsiya portali), mc = tender.mc.uz (Qurilish vazirligi), ebirja = ebirja.uz.
+Platformalar bo‘yicha xarid turlari: ${JSON.stringify(TYPES_BY_SOURCE)}
+Yo‘nalishlar: ${JSON.stringify(DIRECTIONS)}
+Faqat bitta JSON obyekt qaytar. Topilmagan maydonga null yoz, taxmin qilma:
+{"title": string, "source": "xarid"|"etender"|"xt"|"coop"|"mc"|"ebirja"|null, "type": ro‘yxatdagi xarid turi|null, "lot": string|null, "oferta": string|null, "price": son (valyutasiz)|null, "currency": "UZS"|"USD"|null, "customer": string|null, "region": string|null, "deadline": "YYYY-MM-DDTHH:MM" Toshkent vaqtida|null, "offers": son|null, "funding": "Davlat byudjeti"|"Korporativ mablag‘"|null, "lang": "O‘zbekcha (lotin)"|"O‘zbekcha (kirill)"|"Ruscha"|null, "direction": yo‘nalishlardan biri|null, "url": string|null, "description": 1–2 gaplik o‘zbekcha tavsif|null}
+Kirill yozuvidagi nomlarni o‘zgartirmasdan qoldir.
+Matn:
+"""${text.slice(0, 12000)}"""`;
+  try {
+    const r = await S.sample.json(prompt, file ? { images: [file] } : { modelTier: 'quick' });
+    if (!r || typeof r !== 'object' || Array.isArray(r)) throw { code: 'invalid_json' };
+    applyAutofill(r);
+    toast('Forma to‘ldirildi — tekshirib, saqlang');
+  } catch (e) {
+    toast(sampleErr(e));
+    if (e && ['not_granted', 'sampling_disabled', 'not_declared', 'capability_disabled', 'capability_removed'].includes(e.code)) S.sample = null;
+  }
+  S.afBusy = false; render();
+}
+function applyAutofill(r) {
+  const str = v => (v == null ? '' : String(v).trim());
+  const set = (k, v) => { if (v) S.drafts[k] = v; };
+  set('f-title', str(r.title).slice(0, 300));
+  const src = SOURCES[r.source] ? r.source : val('f-source', 'xarid');
+  S.drafts['f-source'] = src;
+  if (r.type && (TYPES_BY_SOURCE[src] || []).includes(r.type)) S.drafts['f-type'] = r.type; else delete S.drafts['f-type'];
+  set('f-lot', str(r.lot).slice(0, 60));
+  if (src === 'coop') set('f-oferta', str(r.oferta).slice(0, 60));
+  const price = parseAmount(r.price);
+  if (price > 0) S.drafts['f-price'] = grp(price);
+  if (r.currency === 'USD' || r.currency === 'UZS') S.drafts['f-currency'] = r.currency;
+  set('f-customer', str(r.customer).slice(0, 200));
+  set('f-region', str(r.region).slice(0, 120));
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(str(r.deadline))) S.drafts['f-deadline'] = str(r.deadline).slice(0, 16);
+  if (r.offers != null && isFinite(Number(r.offers))) S.drafts['f-offers'] = String(Math.max(0, Math.round(Number(r.offers))));
+  const fund = str(r.funding).toLowerCase();
+  if (/byudjet|budjet/.test(fund)) S.drafts['f-funding'] = 'Davlat byudjeti'; else if (/korporativ/.test(fund)) S.drafts['f-funding'] = 'Korporativ mablag‘';
+  const lang = str(r.lang).toLowerCase();
+  if (/kiril|кирил/.test(lang)) S.drafts['f-lang'] = 'O‘zbekcha (kirill)'; else if (/lotin/.test(lang)) S.drafts['f-lang'] = 'O‘zbekcha (lotin)'; else if (/rus/.test(lang)) S.drafts['f-lang'] = 'Ruscha';
+  if (DIRECTIONS.includes(r.direction)) S.drafts['f-direction'] = r.direction;
+  if (/^https?:\/\//i.test(str(r.url))) S.drafts['f-url'] = str(r.url).slice(0, 500);
+  set('f-desc', str(r.description).slice(0, 600));
+}
+
+/* ---------- Telefon: surish imo-ishoralari ---------- */
+const NEXT_STAGE = { new: 'review', review: 'prep', prep: 'submitted' };
+let swipe = null, swipeLock = false, sheetDrag = null;
+document.addEventListener('touchstart', e => {
+  if (e.touches.length !== 1) return;
+  const tc = e.touches[0];
+  const row = e.target.closest && e.target.closest('.trow');
+  if (row) swipe = { el: row, x: tc.clientX, y: tc.clientY, dx: 0, lock: null };
+  const head = e.target.closest && e.target.closest('.sheet-h');
+  if (head && window.innerWidth <= 640 && !e.target.closest('button')) sheetDrag = { el: $('sheet'), y: tc.clientY, dy: 0 };
+}, { passive: true });
+document.addEventListener('touchmove', e => {
+  const tc = e.touches[0];
+  if (swipe) {
+    const dx = tc.clientX - swipe.x, dy = tc.clientY - swipe.y;
+    if (swipe.lock == null && Math.abs(dx) + Math.abs(dy) > 10) swipe.lock = Math.abs(dx) > Math.abs(dy) * 1.3 ? 'x' : 'y';
+    if (swipe.lock === 'x') {
+      const t = S.tenders.find(x => x.id === swipe.el.dataset.id);
+      if (!t || !NEXT_STAGE[t.status]) return;
+      swipe.dx = Math.max(0, Math.min(140, dx));
+      swipe.el.style.transition = 'none';
+      swipe.el.style.transform = `translateX(${swipe.dx}px)`;
+      swipe.el.classList.toggle('swipe-ready', swipe.dx > 90);
+      swipe.el.dataset.next = ST[NEXT_STAGE[t.status]].l;
+    }
+  }
+  if (sheetDrag) {
+    sheetDrag.dy = Math.max(0, tc.clientY - sheetDrag.y);
+    sheetDrag.el.style.transition = 'none';
+    sheetDrag.el.style.transform = `translateY(${sheetDrag.dy}px)`;
+  }
+}, { passive: true });
+document.addEventListener('touchend', () => {
+  if (swipe) {
+    const { el, dx } = swipe; swipe = null;
+    el.style.transition = ''; el.style.transform = ''; el.classList.remove('swipe-ready');
+    if (dx > 90) {
+      const t = S.tenders.find(x => x.id === el.dataset.id);
+      swipeLock = true; setTimeout(() => { swipeLock = false; }, 400);
+      if (t && NEXT_STAGE[t.status]) setStatus(t.id, NEXT_STAGE[t.status]);
+    }
+  }
+  if (sheetDrag) {
+    const { el, dy } = sheetDrag; sheetDrag = null;
+    el.style.transition = ''; el.style.transform = '';
+    if (dy > 120) closeSheet();
+  }
+});
+
 /* ---------- Amallar ---------- */
 async function setStatus(id, s) {
   const t = S.tenders.find(x => x.id === id);
-  if (!t || t.status === s) return;
+  if (!t || t.status === s || !ST[s]) return;
   const now = new Date().toISOString();
   const patch = { status: s, history: [...(t.history || []), { s, at: now }] };
   if (STAGE[s] < 3) Object.assign(patch, { submittedAt: null, wonAt: null, lostAt: null });
   if (s === 'submitted') Object.assign(patch, { submittedAt: t.submittedAt || now, wonAt: null, lostAt: null });
   if (s === 'won') Object.assign(patch, { submittedAt: t.submittedAt || now, wonAt: t.wonAt || now, lostAt: null });
   if (s === 'lost') Object.assign(patch, { submittedAt: t.submittedAt || now, lostAt: t.lostAt || now, wonAt: null });
-  let msg = `Holat: ${ST[s].l}`;
-  const bonus = (!t.submittedAt && patch.submittedAt ? Number(S.settings.perSubmitted) || 0 : 0) + (!t.wonAt && patch.wonAt ? Number(S.settings.perWon) || 0 : 0);
-  if (bonus) msg = (s === 'won' ? 'Tabriklaymiz! ' : '') + `${ST[s].l} · +${money(bonus)}`;
-  await save(() => Store.update('tenders', id, patch), msg);
+  if (s === 'won') {
+    const r = resultOf(t);
+    if (!r.winner || !isUs(r.winner)) patch.result = { winner: S.settings.company || 'Biz', winnerPrice: r.ourPrice != null ? r.ourPrice : null };
+  }
+  const ok = await save(() => Store.update('tenders', id, patch), s === 'won' ? null : `Holat: ${ST[s].l}`);
+  if (ok && s === 'won') celebrate(t.title);
 }
 async function saveSettings(patch) {
   const next = { ...S.settings, ...patch };
@@ -1742,12 +2423,12 @@ function csv() {
 }
 function backup() {
   const pack = list => Object.fromEntries(list.map(x => [x.id, strip(x)]));
-  return JSON.stringify({ tenders: pack(S.tenders), docs: pack(S.docs), news: pack(S.news), settings: { main: strip(S.settings) } }, null, 1);
+  return JSON.stringify({ tenders: pack(S.tenders), docs: pack(S.docs), news: pack(S.news), competitors: pack(S.competitors), settings: { main: strip(S.settings) } }, null, 1);
 }
 async function importData(text) {
   let data;
   try { data = JSON.parse(text); } catch (e) { toast('Fayl JSON formatida emas'); return; }
-  const cols = ['tenders', 'docs', 'news', 'settings'];
+  const cols = ['tenders', 'docs', 'news', 'competitors', 'settings'];
   if (!data || typeof data !== 'object' || !cols.some(c => data[c] && typeof data[c] === 'object')) { toast('Faylda Winder ma’lumotlari topilmadi'); return; }
   let n = 0;
   toast('Yuklanmoqda…');
@@ -1782,8 +2463,8 @@ document.addEventListener('click', async e => {
     case 'go': e.preventDefault(); location.hash = a.dataset.v; break;
     case 'filterGo': e.preventDefault(); Object.assign(S.f, { status: a.dataset.status, q: '', source: '', dir: '', type: '', region: '', due: '', minMatch: '0' }); S.listMode = 'list'; saveUI(); location.hash = 'tenderlar'; render(); break;
     case 'sortDeadline': e.preventDefault(); Object.assign(S.f, { status: 'active', sort: 'deadline' }); S.listMode = 'list'; saveUI(); location.hash = 'tenderlar'; render(); break;
-    case 'goSearch': location.hash = 'tenderlar'; setTimeout(() => { const i = $('fq'); if (i) i.focus(); }, 30); break;
-    case 'open': if (a.closest('.kb') && dragMoved) return; S.sel = id; S.confirm = null; S.fresh.delete(id); render(); break;
+    case 'goSearch': openPal(); break;
+    case 'open': if ((a.closest('.kb') && dragMoved) || swipeLock) return; S.sel = id; S.confirm = null; S.fresh.delete(id); render(); break;
     case 'close': closeSheet(); break;
     case 'closeTo': e.preventDefault(); closeSheet(); location.hash = a.dataset.v; break;
     case 'more': S.more = !S.more; renderMore(); break;
@@ -1822,6 +2503,18 @@ document.addEventListener('click', async e => {
     case 'clearSamples': clearSamples(); break;
     case 'openAdd': if (S.modal && S.modal.startsWith('edit:')) clearFormDrafts(); S.modal = 'add'; render(); setTimeout(() => { const i = $('f-title'); if (i) i.focus(); }, 30); break;
     case 'openEdit': openEdit(id); break;
+    case 'palette': openPal(); break;
+    case 'palRun': runPal(Number(a.dataset.i)); break;
+    case 'palBg': if (e.target === a) closePal(); break;
+    case 'check': await toggleCheck(id, a.dataset.k); break;
+    case 'zakState': await save(() => Store.update('tenders', id, { zakalat: { state: a.dataset.s } })); break;
+    case 'addPart': { const t = S.tenders.find(x => x.id === id); if (t) await save(() => Store.update('tenders', id, { result: { participants: [...resultOf(t).participants, { name: '', price: null }] } })); break; }
+    case 'delPart': { const t = S.tenders.find(x => x.id === id); if (t) { const arr = resultOf(t).participants.filter((_, i) => i !== Number(a.dataset.i)); await save(() => Store.update('tenders', id, { result: { participants: arr } })); } break; }
+    case 'resPeriod': S.resPeriod = a.dataset.p; render(); break;
+    case 'compToggle': S.compOpen = S.compOpen === a.dataset.c ? null : a.dataset.c; render(); break;
+    case 'theme': setAppearance({ theme: a.dataset.t }); break;
+    case 'accent': setAppearance({ accent: a.dataset.a }); break;
+    case 'autofill': autofill(null); break;
     case 'closeModal': if (S.modal && S.modal.startsWith('edit:')) clearFormDrafts(); S.modal = null; render(); break;
     case 'modalBg': if (e.target === a) { if (S.modal.startsWith('edit:')) clearFormDrafts(); S.modal = null; render(); } break;
     case 'moreGo': S.more = false; renderMore(); location.hash = a.dataset.v; break;
@@ -1833,7 +2526,7 @@ function renderMore() {
   let el = $('moreSheet');
   if (!S.more) { if (el) el.remove(); if (!S.sel) $('scrim').classList.remove('on'); return; }
   if (!el) { el = document.createElement('div'); el.id = 'moreSheet'; document.body.appendChild(el); }
-  el.innerHTML = `<div class="sheet on" style="top:auto;height:auto;bottom:0;left:0;right:0;width:100%;border-radius:22px 22px 0 0;padding:12px 0 calc(24px + env(safe-area-inset-bottom,0px))"><div class="glist" style="margin:8px 16px;box-shadow:none;background:var(--tile-2)">${[VIEWS[3], VIEWS[4], VIEWS[6]].map(v => `<button class="gitem" style="width:100%;text-align:left" data-act="moreGo" data-v="${v.k}">${icon(v.ico)}<span class="main t">${esc(v.l)}</span>${icon('chevR', 'sm')}</button>`).join('')}</div></div>`;
+  el.innerHTML = `<div class="sheet on" style="top:auto;height:auto;bottom:0;left:0;right:0;width:100%;border-radius:22px 22px 0 0;padding:12px 0 calc(24px + env(safe-area-inset-bottom,0px))"><div class="glist" style="margin:8px 16px;box-shadow:none;background:var(--tile-2)">${MORE_VIEWS.map(viewOf).map(v => `<button class="gitem" style="width:100%;text-align:left" data-act="moreGo" data-v="${v.k}">${icon(v.ico)}<span class="main t">${esc(v.l)}</span>${icon('chevR', 'sm')}</button>`).join('')}</div></div>`;
   $('scrim').classList.add('on');
 }
 document.addEventListener('input', e => {
@@ -1843,6 +2536,8 @@ document.addEventListener('input', e => {
     if (el.id === 'chatInput') { el.style.height = 'auto'; el.style.height = Math.min(160, el.scrollHeight) + 'px'; }
     if (el.id === 'f-source') { delete S.drafts['f-type']; render(); }
   }
+  if (el.id === 'palQ') { PAL.q = el.value; PAL.i = 0; renderPalList(); return; }
+  if (el.id === 'cq') { render(); return; }
   if (el.dataset.f === 'q') { S.f.q = el.value; saveUI(); render(); }
 });
 document.addEventListener('change', async e => {
@@ -1858,6 +2553,31 @@ document.addEventListener('change', async e => {
     const id = el.dataset.id, f = el.dataset.date;
     if (!el.value) return;
     await save(() => Store.update('tenders', id, { [f]: new Date(el.value + 'T12:00:00').toISOString() }), 'Sana yangilandi');
+    return;
+  }
+  if (el.id === 'f-shot' && el.files && el.files[0]) { const f = el.files[0]; el.value = ''; autofill(f); return; }
+  if (el.dataset.zakpct) {
+    const raw = String(el.value).trim().replace(',', '.');
+    const pct = raw === '' ? null : Math.max(0, Math.min(20, Number(raw) || 0));
+    await save(() => Store.update('tenders', el.dataset.zakpct, { zakalat: { pct } }));
+    return;
+  }
+  if (el.dataset.res) {
+    const f = el.dataset.res, idr = el.dataset.id;
+    const v = f === 'ourPrice' || f === 'winnerPrice' ? (String(el.value).trim() === '' ? null : parseAmount(el.value)) : String(el.value).trim();
+    await save(() => Store.update('tenders', idr, { result: { [f]: v } }));
+    return;
+  }
+  if (el.dataset.part != null && el.dataset.pf) {
+    const t = S.tenders.find(x => x.id === el.dataset.id); if (!t) return;
+    const arr = resultOf(t).participants.map(p => ({ ...p }));
+    const i = Number(el.dataset.part); if (!arr[i]) return;
+    arr[i][el.dataset.pf] = el.dataset.pf === 'price' ? (String(el.value).trim() === '' ? null : parseAmount(el.value)) : String(el.value).trim();
+    await save(() => Store.update('tenders', t.id, { result: { participants: arr } }));
+    return;
+  }
+  if (el.dataset.cnote) {
+    await save(() => Store.set('competitors', el.dataset.cnote, { name: el.dataset.cname || '', note: el.value }), 'Izoh saqlandi');
     return;
   }
   if (el.dataset.exp) { await save(() => Store.update('docs', el.dataset.exp, { expires: el.value || null })); return; }
@@ -1896,12 +2616,27 @@ document.addEventListener('submit', async e => {
   }
 });
 document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && !e.altKey && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); PAL.open ? closePal() : openPal(); return; }
+  if (PAL.open) {
+    if (e.key === 'Escape') { e.preventDefault(); closePal(); }
+    else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); const n = PAL.items.length; if (n) { PAL.i = (PAL.i + (e.key === 'ArrowDown' ? 1 : n - 1)) % n; renderPalList(); } }
+    else if (e.key === 'Enter') { e.preventDefault(); runPal(PAL.i); }
+    return;
+  }
   if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[role="button"][data-act]')) { e.preventDefault(); e.target.click(); return; }
   if (e.key === 'Escape') {
     if (S.modal) { if (S.modal.startsWith('edit:')) clearFormDrafts(); S.modal = null; render(); } else if (S.more) { S.more = false; renderMore(); } else if (S.sel) closeSheet();
+    return;
   }
-  if (e.key === 'Enter' && !e.shiftKey && e.target.id === 'chatInput') { e.preventDefault(); sendChat(e.target.value); }
-  if (e.key === '/' && S.view === 'tenderlar' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) { e.preventDefault(); const i = $('fq'); if (i) i.focus(); }
+  if (e.key === 'Enter' && !e.shiftKey && e.target.id === 'chatInput') { e.preventDefault(); sendChat(e.target.value); return; }
+  const ae = document.activeElement;
+  const typing = ae && (/INPUT|TEXTAREA|SELECT/.test(ae.tagName) || ae.isContentEditable);
+  if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
+  if (e.key === '/' && S.view === 'tenderlar') { e.preventDefault(); const i = $('fq'); if (i) i.focus(); return; }
+  if (S.modal) return;
+  if (S.sel && /^[1-7]$/.test(e.key)) { e.preventDefault(); setStatus(S.sel, STATUSES[Number(e.key) - 1].k); return; }
+  if (S.sel && (e.key === 'e' || e.key === 'E')) { e.preventDefault(); openEdit(S.sel); return; }
+  if (e.key === 'n' || e.key === 'N') { e.preventDefault(); S.modal = 'add'; render(); setTimeout(() => { const i = $('f-title'); if (i) i.focus(); }, 30); }
 });
 
 /* Kanban: sudrab o‘tkazish */
@@ -1959,7 +2694,13 @@ function applyHash() {
   const h = (location.hash || '').replace('#', '');
   S.view = VIEWS.some(v => v.k === h) ? h : 'panel';
 }
-window.addEventListener('hashchange', () => { applyHash(); S.more = false; renderMore(); render(); window.scrollTo(0, 0); });
+window.addEventListener('hashchange', () => {
+  const go = () => { applyHash(); S.more = false; renderMore(); render(); window.scrollTo(0, 0); };
+  if (document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    try { document.startViewTransition(go); return; } catch (e) { /* oddiy yo'l bilan */ }
+  }
+  go();
+});
 
 /* ---------- Ma'lumotlar oqimi ---------- */
 function onData(col, list) {
@@ -1970,8 +2711,8 @@ function onData(col, list) {
     if (S.known) {
       const added = list.filter(t => !S.known.has(t.id) && !S.selfAdded.has(t.id));
       added.forEach(t => S.fresh.add(t.id));
-      if (added.length === 1) toast(`Yangi tender topildi: ${added[0].title}`);
-      else if (added.length > 1) toast(`${added.length} ta yangi tender topildi`);
+      if (added.length === 1) toast(`Yangi tender qo‘shildi: ${added[0].title}`);
+      else if (added.length > 1) toast(`${added.length} ta yangi tender qo‘shildi`);
     }
     S.known = new Set(list.map(t => t.id));
     S.tenders = list;
@@ -1982,14 +2723,18 @@ function onData(col, list) {
   schedule();
 }
 async function boot() {
+  applyAppearance();
   applyHash();
   render();
   await Store.init();
   S.mode = Store.mode;
   if (S.mode === 'local') S.sample = null;
-  for (const c of ['tenders', 'docs', 'news', 'settings']) Store.watch(c, list => onData(c, list));
+  for (const c of ['tenders', 'docs', 'news', 'competitors', 'settings']) Store.watch(c, list => onData(c, list));
   if (window.claude && typeof window.claude.use === 'function') {
-    window.claude.use('sample').then(fn => { S.sample = fn || null; schedule(); }).catch(() => { S.sample = null; schedule(); });
+    window.claude.use('sample').then(fn => {
+      S.sample = fn || null; schedule();
+      if (fn && typeof fn.limits === 'function') fn.limits().then(l => { S.imgOK = !!(l && l.images); schedule(); }).catch(() => {});
+    }).catch(() => { S.sample = null; schedule(); });
     window.claude.use('downloads').then(d => { S.downloads = d || null; }).catch(() => {});
   }
   schedule();
