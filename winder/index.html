@@ -769,11 +769,13 @@ select option,select optgroup{background-color:var(--menu-bg);color:var(--menu-i
 .share-meta{display:flex;justify-content:space-between;align-items:center;gap:12px;font-size:12px;margin:8px 2px 0}
 #shareCount{white-space:nowrap}
 .share-acts{justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+.share-note{margin:14px 0 0;padding:10px 12px;border-radius:12px;font-size:13px;line-height:1.45;color:var(--ink-2);background:var(--glass-soft);box-shadow:inset 0 0 0 1px var(--rim-2)}
+.tg-part.sent{opacity:.62}
 @media (max-width: 640px){
   .share-dlg h2{font-size:22px}
   .share-dlg textarea.share-text{min-height:240px;max-height:46vh}
   .share-acts .btn{flex:1 1 auto;justify-content:center}
-  .share-acts #tgLink{flex-basis:100%;order:-1}
+  .share-acts #tgLink,.share-acts .tg-part{flex-basis:100%;order:-1}
 }
 </style>
 <div class="ambient" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i><i class="a4"></i><i class="a5"></i></div>
@@ -1317,7 +1319,6 @@ function viewTenders() {
   <div class="phead"><div><h1>Tenderlar</h1><p class="sub">${T.length ? `${list.length} ta tender ko‘rsatilmoqda · ${T.filter(t => ACTIVE.includes(t.status)).length} tasi faol` : 'Barcha tenderlaringiz shu yerda.'}</p></div>
   <div class="actions">
     <div class="seg" role="group" aria-label="Ko‘rinish"><button data-act="mode" data-m="list" aria-pressed="${S.listMode === 'list'}">${icon('list', 'sm')}Ro‘yxat</button><button data-act="mode" data-m="kanban" aria-pressed="${S.listMode === 'kanban'}">${icon('cols', 'sm')}Kanban</button></div>
-    ${T.length ? `<button class="btn btn-ghost" data-act="share" data-k="list" title="Joriy filtrdagi tenderlarni Telegramga yuborish">${icon('plane')}Telegram</button>` : ''}
     <button class="btn btn-ghost" data-act="exportCsv">${icon('download')}Eksport</button>
     <button class="btn btn-primary" data-act="openAdd">${icon('plus')}Tender qo‘shish</button>
   </div></div>`;
@@ -1407,8 +1408,8 @@ function sheetHTML(t) {
     <div class="sh-actions">
       <button class="btn btn-ghost btn-sm" data-act="openEdit" data-id="${id}">Tahrirlash</button>
       <a class="btn btn-ghost btn-sm" href="${esc(gcalUrl(t))}" target="_blank" rel="noopener" style="text-decoration:none">${icon('cal', 'sm')}Google Kalendarga</a>
-      <button class="btn btn-ghost btn-sm" data-act="share" data-k="${id}" title="T">${icon('plane', 'sm')}Telegramga yuborish</button>
       <a class="btn btn-ghost btn-sm" href="${esc(safeUrl(t.url || src.url))}" target="_blank" rel="noopener" style="text-decoration:none">Platformada ochish ${icon('ext', 'sm')}</a>
+      <button class="btn btn-ghost btn-sm" data-act="share" data-k="${id}" title="Telegramga jo‘natish (T)">${icon('plane', 'sm')}Telegramga jo‘natish</button>
     </div>
 
     <div class="facts">
@@ -1783,7 +1784,7 @@ function viewSettings() {
   <div class="group"><div class="group-h">Ko‘rinish</div><div class="glist">
     <div class="gitem"><div class="main"><div class="t">Mavzu</div><div class="d">Avtomatik — qurilma sozlamasiga qarab</div></div><div class="seg" role="group" aria-label="Mavzu">${[['auto', 'Avtomatik'], ['light', 'Kunduzgi'], ['dark', 'Tungi']].map(([k, l]) => `<button data-act="theme" data-t="${k}" aria-pressed="${appearance.theme === k}">${l}</button>`).join('')}</div></div>
     <div class="gitem"><div class="main"><div class="t">Asosiy rang</div><div class="d">Tugmalar, havolalar va fon nuri rangi</div></div><div class="swatches">${Object.entries(ACCENTS).map(([k, a]) => `<button class="sw" style="background:${a.sw}" data-act="accent" data-a="${k}" aria-pressed="${appearance.accent === k}" aria-label="${a.name}" title="${a.name}"></button>`).join('')}</div></div>
-    <div class="gitem"><div class="main"><div class="t">Tezkor tugmalar</div><div class="d">Ctrl/⌘ + K — qidiruv · N — yangi tender · E — tahrirlash · T — Telegramga yuborish · 1–7 — tender holati · / — ro‘yxatda qidirish · Esc — yopish</div></div></div>
+    <div class="gitem"><div class="main"><div class="t">Tezkor tugmalar</div><div class="d">Ctrl/⌘ + K — qidiruv · N — yangi tender · E — tahrirlash · T — Telegramga jo‘natish · 1–7 — tender holati · / — ro‘yxatda qidirish · Esc — yopish</div></div></div>
   </div></div>
   <div class="group"><div class="group-h">Faoliyat yo‘nalishlari</div><div class="glist"><div class="dirs">${DIRECTIONS.map(d => `<button class="chip" data-act="dirToggle" data-d="${esc(d)}" aria-pressed="${(s.directions || []).includes(d)}">${esc(d)}</button>`).join('')}</div></div></div>
   ${kwBlock('keywords', 'Kalit so‘zlar — qo‘lda qo‘shilgan tenderning moslik bahosini oshiradi', 'Kalit so‘z qo‘shing')}
@@ -2026,7 +2027,11 @@ function gcalUrl(t) {
 
 /* ---------- Telegramga ulashish ---------- */
 // Matn t.me/share/url orqali beriladi: bot va token kerak emas, qaysi chatga yuborishni foydalanuvchi Telegramda tanlaydi.
-const TG_LIMIT = 4096;
+// t.me juda uzun havolani "400 Bad Request" bilan rad etadi: kodlangan matn shu chegaradan oshsa, xabar qismlarga bo'linadi.
+const TG_MAX_ENC = 3000;
+const LIST_MAX = 30;
+const tgNorm = str => String(str).replace(/[‘’ʻʼ]/g, "'");
+const encLen = str => encodeURIComponent(str).length;
 const SHARE_PARTS = [['desc', 'Tavsif'], ['zakalat', 'Zakalat'], ['checklist', 'Checklist'], ['docs', 'Hujjatlar'], ['result', 'Natija'], ['ai', 'AI tahlil'], ['note', 'Izoh'], ['history', 'Tarix']];
 const SHARE_OFF = ['history'];
 const SHARE_KEY = 'winder:share';
@@ -2109,14 +2114,14 @@ function tenderText(t) {
 
   const link = httpUrl(t.url);
   if (link) add('', `🔗 ${link}`);
-  return L.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+  return tgNorm(L.join('\n').replace(/\n{3,}/g, '\n\n').trim());
 }
 
 function listText(list) {
   const today = new Date();
   let out = `📋 Tenderlar · ${today.getDate()}-${MONTHS[today.getMonth()]} · ${list.length} ta`;
   let n = 0;
-  for (const t of list) {
+  for (const t of list.slice(0, LIST_MAX)) {
     const b = [`${n + 1}. ${t.title}`];
     b.push(`${srcName(t.source)}${has(t.type) ? ' · ' + t.type : ''}${has(t.lot) ? ' · lot ' + t.lot : ''}`);
     const money1 = t.price > 0 ? `💰 ${money(t.price, t.currency)}` : '';
@@ -2126,14 +2131,58 @@ function listText(list) {
     const link = httpUrl(t.url);
     if (link) b.push(`🔗 ${link}`);
     const block = b.filter(Boolean).join('\n');
-    if ((out + '\n\n' + block).length > TG_LIMIT - 40) break;
     out += '\n\n' + block; n++;
   }
   if (n < list.length) out += `\n\n… va yana ${list.length - n} ta tender`;
-  return out;
+  return tgNorm(out);
 }
 
 const tgUrl = text => 'https://t.me/share/url?url=' + encodeURIComponent(text);
+// Bo'lak: avval bo'limlar (bo'sh qator), sig'masa qatorlar, undan keyin so'zlar bo'yicha.
+function tgParts(text) {
+  text = tgNorm(text).trim();
+  if (!text) return [];
+  if (encLen(text) <= TG_MAX_ENC) return [text];
+  const max = TG_MAX_ENC - 30;
+  const parts = [];
+  let cur = '';
+  const flush = () => { if (cur) parts.push(cur); cur = ''; };
+  const put = (piece, sep) => {
+    const cand = cur ? cur + sep + piece : piece;
+    if (encLen(cand) <= max) { cur = cand; return true; }
+    flush();
+    if (encLen(piece) <= max) { cur = piece; return true; }
+    return false;
+  };
+  for (const block of text.split(/\n{2,}/)) {
+    if (put(block, '\n\n')) continue;
+    for (const line of block.split('\n')) {
+      if (put(line, '\n')) continue;
+      for (const word of line.split(' ')) {
+        if (put(word, ' ')) continue;
+        const cps = Array.from(word);
+        for (let i = 0; i < cps.length;) {
+          let k = Math.min(cps.length - i, max);
+          while (k > 1 && encLen(cps.slice(i, i + k).join('')) > max) k = Math.floor(k * 0.8);
+          flush(); cur = cps.slice(i, i + k).join(''); i += k;
+        }
+      }
+    }
+  }
+  flush();
+  return parts.length > 1 ? parts.map((p, i) => `${p}\n\n(${i + 1}/${parts.length})`) : parts;
+}
+const shareCountText = text => { const n = tgParts(text).length; return `${text.length} belgi${n > 1 ? ` · ${n} qism` : ''}`; };
+function shareActs(text) {
+  const parts = tgParts(text), n = parts.length;
+  const link = (p, i) => `<a class="btn ${i ? 'btn-ghost' : 'btn-primary'}${n > 1 ? ' tg-part' : ''}" ${i ? '' : 'id="tgLink"'} data-act="tgSend" href="${esc(tgUrl(p))}" target="_blank" rel="noopener" style="text-decoration:none">${icon('plane')}${n > 1 ? `${i + 1}-qismni jo‘natish` : 'Telegramga jo‘natish'}</a>`;
+  return `${n > 1 ? `<p class="share-note">Xabar uzun, Telegram uni bitta havolada qabul qilmaydi, shuning uchun ${n} qismga bo‘lindi. Qismlarni ketma-ket bosib, har safar bir xil chatni tanlang. Qisqartirish uchun keraksiz bo‘limlarni o‘chiring.</p>` : ''}
+  <div class="actions share-acts">
+    ${navigator.share ? `<button type="button" class="btn btn-ghost" data-act="shareNative">${icon('share')}Ulashish</button>` : ''}
+    <button type="button" class="btn btn-ghost" data-act="shareCopy">${icon('copy')}Nusxalash</button>
+    ${n ? parts.map(link).join('') : ''}
+  </div>`;
+}
 function shareTarget() {
   const k = S.modal && S.modal.startsWith('share:') ? S.modal.slice(6) : null;
   if (!k) return null;
@@ -2152,23 +2201,18 @@ function shareDialog() {
   const sh = shareTarget();
   if (!sh) return '';
   const text = val('share:' + sh.k, sh.t ? tenderText(sh.t) : listText(sh.list));
-  const len = text.length;
-  return `<div class="modal" data-act="modalBg"><div class="dialog share-dlg" role="dialog" aria-modal="true" aria-label="Telegramga yuborish">
-    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2 style="display:flex;gap:10px;align-items:center">${icon('plane')}Telegramga yuborish</h2><button type="button" class="closeb" data-act="closeModal" aria-label="Yopish">${icon('x', 'sm')}</button></div>
+  return `<div class="modal" data-act="modalBg"><div class="dialog share-dlg" role="dialog" aria-modal="true" aria-label="Telegramga jo‘natish">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2 style="display:flex;gap:10px;align-items:center">${icon('plane')}Telegramga jo‘natish</h2><button type="button" class="closeb" data-act="closeModal" aria-label="Yopish">${icon('x', 'sm')}</button></div>
     <p class="muted" style="margin:6px 0 0">${sh.t ? esc(cut(sh.t.title, 110)) : `Joriy filtr bo‘yicha ${sh.list.length} ta tender`}</p>
     ${sh.t ? `<div class="sh-opts" role="group" aria-label="Xabarga kiradigan bo‘limlar">${SHARE_PARTS.map(([k, l]) => `<button type="button" class="chip" data-act="shareOpt" data-k="${k}" aria-pressed="${shareOn(k)}">${esc(l)}</button>`).join('')}</div>` : '<div style="height:14px"></div>'}
     <textarea class="input share-text" id="shareText" data-draft="share:${esc(sh.k)}" aria-label="Xabar matni" spellcheck="false">${esc(text)}</textarea>
-    <div class="share-meta"><span class="muted">Yuborishdan oldin matnni tahrirlash mumkin.</span><span id="shareCount" class="tnum ${len > TG_LIMIT ? 'c-red' : 'muted'}">${len} / ${TG_LIMIT}</span></div>
-    <div class="actions share-acts">
-      ${navigator.share ? `<button type="button" class="btn btn-ghost" data-act="shareNative">${icon('share')}Ulashish</button>` : ''}
-      <button type="button" class="btn btn-ghost" data-act="shareCopy">${icon('copy')}Nusxalash</button>
-      <a class="btn btn-primary" id="tgLink" href="${esc(tgUrl(text))}" target="_blank" rel="noopener" style="text-decoration:none">${icon('plane')}Telegramda ochish</a>
-    </div>
+    <div class="share-meta"><span class="muted">Yuborishdan oldin matnni tahrirlash mumkin.</span><span id="shareCount" class="tnum muted">${shareCountText(text)}</span></div>
+    <div id="shareActs">${shareActs(text)}</div>
   </div></div>`;
 }
 function syncShareMeta(text) {
-  const a = $('tgLink'); if (a) a.href = tgUrl(text);
-  const c = $('shareCount'); if (c) { c.textContent = `${text.length} / ${TG_LIMIT}`; c.className = 'tnum ' + (text.length > TG_LIMIT ? 'c-red' : 'muted'); }
+  const c = $('shareCount'); if (c) c.textContent = shareCountText(text);
+  const a = $('shareActs'); if (a) a.innerHTML = shareActs(text);
 }
 async function copyText(text) {
   try { await navigator.clipboard.writeText(text); return true; } catch (e) {}
@@ -2353,8 +2397,8 @@ function palItems(q) {
   const nav = VIEWS.map(v => ({ kind: 'Bo‘limlar', label: v.l, ico: v.ico, run: () => { location.hash = v.k; } }));
   const acts = [
     { kind: 'Amallar', label: 'Yangi tender qo‘shish', sub: 'N', ico: 'plus', run: () => { S.modal = 'add'; render(); setTimeout(() => { const i = $('f-title'); if (i) i.focus(); }, 30); } },
-    ...(S.sel && S.tenders.some(t => t.id === S.sel) ? [{ kind: 'Amallar', label: 'Ochiq tenderni Telegramga yuborish', sub: 'T', ico: 'plane', run: () => openShare(S.sel) }] : []),
-    { kind: 'Amallar', label: 'Tenderlar ro‘yxatini Telegramga yuborish', ico: 'plane', run: () => openShare('list') },
+    ...(S.sel && S.tenders.some(t => t.id === S.sel) ? [{ kind: 'Amallar', label: 'Ochiq tenderni Telegramga jo‘natish', sub: 'T', ico: 'plane', run: () => openShare(S.sel) }] : []),
+    { kind: 'Amallar', label: 'Tenderlar ro‘yxatini Telegramga jo‘natish', ico: 'plane', run: () => openShare('list') },
     { kind: 'Amallar', label: 'Tenderlarni CSV ga eksport qilish', ico: 'download', run: () => exportFile(`winder-tenderlar-${new Date().toISOString().slice(0, 10)}.csv`, csv(), 'text/csv') },
     { kind: 'Amallar', label: 'Mavzuni almashtirish (kunduzgi / tungi)', ico: 'sliders', run: () => setAppearance({ theme: isDark() ? 'light' : 'dark' }) },
   ];
@@ -2641,7 +2685,7 @@ document.addEventListener('click', async e => {
   const a = e.target.closest('[data-act]');
   if (!a) return;
   const act = a.dataset.act, id = a.dataset.id;
-  if (a.tagName === 'A' && !['go', 'filterGo', 'sortDeadline', 'closeTo'].includes(act)) return;
+  if (a.tagName === 'A' && !['go', 'filterGo', 'sortDeadline', 'closeTo', 'tgSend'].includes(act)) return;
   switch (act) {
     case 'go': e.preventDefault(); location.hash = a.dataset.v; break;
     case 'filterGo': e.preventDefault(); Object.assign(S.f, { status: a.dataset.status, q: '', source: '', dir: '', type: '', region: '', due: '', minMatch: '0' }); S.listMode = 'list'; saveUI(); location.hash = 'tenderlar'; render(); break;
@@ -2688,11 +2732,19 @@ document.addEventListener('click', async e => {
     case 'openEdit': openEdit(id); break;
     case 'palette': openPal(); break;
     case 'share': openShare(a.dataset.k); break;
+    case 'tgSend': {
+      if (!a.classList.contains('tg-part')) break;
+      a.classList.add('sent'); a.classList.replace('btn-primary', 'btn-ghost');
+      const ic = a.querySelector('svg'); if (ic) ic.outerHTML = icon('check');
+      const nx = a.nextElementSibling;
+      if (nx && nx.classList.contains('tg-part') && !nx.classList.contains('sent')) nx.classList.replace('btn-ghost', 'btn-primary');
+      break;
+    }
     case 'shareOpt': toggleShareOpt(a.dataset.k); delete S.drafts[S.modal]; render(); break;
     case 'shareCopy': toast(await copyText(shareTextNow()) ? 'Matn nusxalandi — Telegramga joylashtiring' : 'Nusxalab bo‘lmadi — matnni belgilab oling'); break;
     case 'shareNative': {
       try { await navigator.share({ text: shareTextNow() }); }
-      catch (err) { if (!err || err.name !== 'AbortError') toast('Ulashish oynasi bu yerda ochilmadi — “Telegramda ochish”ni bosing'); }
+      catch (err) { if (!err || err.name !== 'AbortError') toast('Ulashish oynasi bu yerda ochilmadi — “Telegramga jo‘natish”ni bosing'); }
       break;
     }
     case 'palRun': runPal(Number(a.dataset.i)); break;

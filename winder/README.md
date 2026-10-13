@@ -20,8 +20,8 @@ Namuna Claude Artifact sifatida ishlaydi: <https://claude.ai/artifact/RDNzzkqidX
 | Bo‘lim | Imkoniyatlar |
 |---|---|
 | **Umumiy panel** | Bugungi fokus (5 ta eng muhim ish), yangi / jarayondagi / topshirilgan / yutilgan tenderlar soni, 14 kunlik muddatlar taqvimi, zakalat holati, voronka, platformalar, yangiliklar. Shaxsiy daromad bu yerda ko‘rinmaydi |
-| **Tenderlar** | Qidiruv; holat, platforma, yo‘nalish, xarid turi, hudud, muddat va moslik bo‘yicha filtr; saralash; ro‘yxat yoki Kanban (sudrab o‘tkazish); CSV eksport; joriy ro‘yxatni Telegramga yuborish; qo‘lda tender qo‘shish |
-| **Tender varag‘i** | Lot ma’lumotlari, 7 ta holat (Yangi → Ko‘rib chiqilmoqda → Tayyorlanmoqda → Topshirildi → Yutildi / Yutqazildi / O‘tkazib yuborildi), topshirish checklisti, zakalat hisoblagichi, natija va raqobatchilar narxi, Google Calendar’ga qo‘shish, Telegramga yuborish, zarur hujjatlar, AI tahlil, izohlar, tarix |
+| **Tenderlar** | Qidiruv; holat, platforma, yo‘nalish, xarid turi, hudud, muddat va moslik bo‘yicha filtr; saralash; ro‘yxat yoki Kanban (sudrab o‘tkazish); CSV eksport; qo‘lda tender qo‘shish |
+| **Tender varag‘i** | Lot ma’lumotlari, 7 ta holat (Yangi → Ko‘rib chiqilmoqda → Tayyorlanmoqda → Topshirildi → Yutildi / Yutqazildi / O‘tkazib yuborildi), topshirish checklisti, zakalat hisoblagichi, natija va raqobatchilar narxi, Google Calendar’ga qo‘shish, Telegramga jo‘natish, zarur hujjatlar, AI tahlil, izohlar, tarix |
 | **Natijalar** | Bizning natijalar: g‘alaba ulushi, platforma va yo‘nalish bo‘yicha, oylik grafik, narx tahlili (boshlang‘ich narxdan va g‘olibdan farq) |
 | **Raqobatchilar** | Tenderlardagi g‘oliblar va ishtirokchilar: necha marta uchragan, yutgan, o‘rtacha narx pasaytirishi, izohlar |
 | **AI yordamchi** | Barcha tenderlar, hujjatlar, moliya va yangiliklarni biladigan chat |
@@ -65,20 +65,21 @@ Aniq foiz tender hujjatida ko‘rsatiladi, shuning uchun varaqda foizni qo‘lda
 | N | Yangi tender qo‘shish |
 | 1–7 | Ochiq varaqda holatni o‘zgartirish |
 | E | Ochiq tenderni tahrirlash |
-| T | Ochiq tenderni Telegramga yuborish |
+| T | Ochiq tenderni Telegramga jo‘natish |
 | Esc | Yopish |
 
 Telefonda: tender qatorini o‘ngga surish uni keyingi bosqichga o‘tkazadi, varaqni pastga tortish uni yopadi.
 
-### Telegramga yuborish
+### Telegramga jo‘natish
 
-Tender varag‘idagi **Telegramga yuborish** tugmasi tenderning barcha ma’lumotlarini tayyor xabarga aylantiradi: nom, buyurtmachi, platforma, lot, narx, zakalat, muddat, hudud, yo‘nalish, holat, tavsif, checklist, zarur hujjatlar, natija, AI tahlil, izoh va havola. Qaysi bo‘limlar kirishini tugmachalar bilan tanlaysiz, matnni yuborishdan oldin tahrirlash mumkin.
+Tender varag‘ida **Platformada ochish** yonidagi **Telegramga jo‘natish** tugmasi tenderning barcha ma’lumotlarini tayyor xabarga aylantiradi: nom, buyurtmachi, platforma, lot, narx, zakalat, muddat, hudud, yo‘nalish, holat, tavsif, checklist, zarur hujjatlar, natija, AI tahlil, izoh va havola. Qaysi bo‘limlar kirishini tugmachalar bilan tanlaysiz, matnni jo‘natishdan oldin tahrirlash mumkin.
 
-- **Telegramda ochish** — Telegram ochiladi, chat, guruh yoki kanalni o‘zingiz tanlaysiz. Bot yoki token kerak emas.
-- **Nusxalash** — matn buferga olinadi.
+- **Telegramga jo‘natish** — Telegram ochiladi, chat, guruh yoki kanalni tanlab jo‘natasiz. Bot yoki token kerak emas.
+- **Uzun xabar** — t.me juda uzun havolani "400 Bad Request" bilan rad etadi. Shuning uchun matn taxminan 3000 belgilik havolaga sig‘masa, bo‘limlar bo‘yicha qismlarga bo‘linadi: "1-qismni jo‘natish", "2-qismni jo‘natish" va hokazo. Jo‘natilgan qism belgilanadi.
+- **Nusxalash** — butun matn buferga olinadi.
 - **Ulashish** — telefonda tizimning ulashish oynasi (brauzer ruxsat bergan joyda).
 
-Tenderlar sahifasidagi **Telegram** tugmasi joriy filtrdagi tenderlarni bitta qisqa ro‘yxat qilib yuboradi. Telegram xabari 4096 belgigacha bo‘ladi: ro‘yxat sig‘maganida oxirida "va yana N ta tender" deb yoziladi.
+Joriy filtrdagi tenderlar ro‘yxatini Ctrl/⌘ + K → "Tenderlar ro‘yxatini Telegramga jo‘natish" orqali yuborasiz (30 tagacha tender).
 
 ### Brauzerda lokal ochish
 
